@@ -1,14 +1,21 @@
 import unittest
-from dwStation import *
-from dwNode import *
+from Network.Station import Station
+from Network.Node import Node
 
 class TestStation(unittest.TestCase):
-    def test_ConstructorA(self):
+    def test_Constructor(self):
         stname = "station"
+        companyid = "companyid"
+        divisionid = "divisionid"
 
-        s = Station(stname)
+        s = Station(stname, companyid, divisionid)
 
         self.assertEqual(s.ID, stname)
+        self.assertEqual(s.CompanyID, companyid)
+        self.assertEqual(s.DivisionID, divisionid)
+        self.assertEqual(s.Company, None)
+        self.assertEqual(s.Division, None)
+        self.assertEqual(len(s.Nodes), 0)
         return
 
 

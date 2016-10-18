@@ -22,31 +22,47 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="dwNetwork.py">
+    <Compile Include="Network\Company.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="dwNode.py">
+    <Compile Include="Network\Division.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Network\Network.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Network\Node.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DWPSA.py" />
-    <Compile Include="dwStation.py">
+    <Compile Include="Network\Station.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UnitTests\TestStation.py">
+    <Compile Include="Network\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UnitTests\__init__.py">
+    <Compile Include="TestNetwork\TestCompany.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UnitTests\TestNetwork.py">
+    <Compile Include="TestNetwork\TestDivision.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UnitTests\TestNode.py">
+    <Compile Include="TestNetwork\TestStation.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestNetwork\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestNetwork\TestNetwork.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestNetwork\TestNode.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="UnitTests\" />
+    <Folder Include="Network\" />
+    <Folder Include="TestNetwork\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
