@@ -1,18 +1,39 @@
 from TestNetwork import *
 import unittest
+from Network.EMSCSVFormat.CSVFileStream import CSVFileStream
 
-suite = unittest.TestLoader().loadTestsFromTestCase(TestCompany.TestCompany)
-unittest.TextTestRunner(verbosity=2).run(suite)
+testclasses = [
+               TestCompany.TestCompany, 
+               TestDivision.TestDivision, 
+               TestStation.TestStation, 
+               TestNode.TestNode, 
+               TestNetwork.TestNetwork
+               ]
 
-suite = unittest.TestLoader().loadTestsFromTestCase(TestDivision.TestDivision)
-unittest.TextTestRunner(verbosity=2).run(suite)
 
-suite = unittest.TestLoader().loadTestsFromTestCase(TestStation.TestStation)
-unittest.TextTestRunner(verbosity=2).run(suite)
 
-suite = unittest.TestLoader().loadTestsFromTestCase(TestNode.TestNode)
-unittest.TextTestRunner(verbosity=2).run(suite)
+suitel = unittest.TestLoader()
 
-suite = unittest.TestLoader().loadTestsFromTestCase(TestNetwork.TestNetwork)
-unittest.TextTestRunner(verbosity=2).run(suite)
+
+suites_list = []
+for test_class in testclasses:
+    suite = suitel.loadTestsFromTestCase(test_class)
+    suites_list.append(suite)
+
+big_suite = unittest.TestSuite(suites_list)
+
+runner = unittest.TextTestRunner(verbosity=2)
+results = runner.run(big_suite)
+
+p2c = {}
+p2c["ColA"] = "P2"
+p2c["ColB"] = "P1"
+p2c["ColC"] = "P3"
+p2c["ColE"] = "P4"
+p2c["ColD"] = "P5"
+
+csv = CSVFileStream(".\TestNetwork\TestEMSCSVFormat\Test.csv", p2c) 
+for line in csv:
+    print(csv.P1)
+
 

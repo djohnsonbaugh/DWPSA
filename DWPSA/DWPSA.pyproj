@@ -28,6 +28,18 @@
     <Compile Include="Network\Division.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Network\EMSCSVFormat\CSVFileStream.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Network\EMSCSVFormat\Exporter.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Network\EMSCSVFormat\Importer.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Network\EMSCSVFormat\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Network\Network.py">
       <SubType>Code</SubType>
     </Compile>
@@ -62,7 +74,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Network\" />
+    <Folder Include="Network\EMSCSVFormat\" />
     <Folder Include="TestNetwork\" />
+    <Folder Include="TestNetwork\TestEMSCSVFormat\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="TestNetwork\TestEMSCSVFormat\Test.csv" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
