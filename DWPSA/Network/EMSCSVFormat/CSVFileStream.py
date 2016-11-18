@@ -3,19 +3,15 @@ from io import FileIO
 class CSVFileStream(FileIO):
     """Streams Properties from a CSV File"""
 
-    def __init__(self, filepath,  propertytofilemap, encoding="utf-8"):
+    DefaultPropertytoFileMap = {}
+
+    def __init__(self, filepath,  propertytofilemap = DefaultPropertytoFileMap, encoding="utf-8"):
         super(CSVFileStream, self).__init__(filepath, mode='r')
         self.Encoding = encoding
         self.PropertyToColumnNameMap = propertytofilemap
         self.Keys = {}
         self.Values = {}
         
-        self.P1 = None
-        self.P2 = None
-        self.P3 = None
-        self.P4 = None
-        self.P5 = None
-
         #find key properties in file headers
         strs = self.ReadCSVLine()
         while len(strs) != 0:
@@ -28,7 +24,8 @@ class CSVFileStream(FileIO):
                 break
             strs = self.ReadCSVLine()
             self.Keys = {}
-
+        if len(self.Keys) != len(self.PropertyToColumnNameMap):
+            raise Exception("Expected column headers were not found")
         return
 
     def __iter__(self):
@@ -39,8 +36,12 @@ class CSVFileStream(FileIO):
         if len(strs) == 0:
             raise StopIteration()
         for key in self.Keys.keys():
-            setattr(self, key, strs[self.Keys[key]])
-            self.Values[key] = strs[self.Keys[key]]
+            i = self.Keys[key]
+            val = ""
+            if i < len(strs):
+                val = strs[i]
+            setattr(self, key, val)
+            self.Values[key] = val
         return self.Values
 
     def ReadCSVLine(self):

@@ -28,6 +28,9 @@
     <Compile Include="Network\Division.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Network\EMSCSVFormat\CompanyCSVStream.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Network\EMSCSVFormat\CSVFileStream.py">
       <SubType>Code</SubType>
     </Compile>

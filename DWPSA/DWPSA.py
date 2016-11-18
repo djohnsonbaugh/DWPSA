@@ -1,6 +1,6 @@
 from TestNetwork import *
 import unittest
-from Network.EMSCSVFormat.CSVFileStream import CSVFileStream
+from Network.EMSCSVFormat.CompanyCSVStream import CompanyCSVStream
 
 testclasses = [
                TestCompany.TestCompany, 
@@ -23,17 +23,10 @@ for test_class in testclasses:
 big_suite = unittest.TestSuite(suites_list)
 
 runner = unittest.TextTestRunner(verbosity=2)
-results = runner.run(big_suite)
+#results = runner.run(big_suite)
 
-p2c = {}
-p2c["ColA"] = "P2"
-p2c["ColB"] = "P1"
-p2c["ColC"] = "P3"
-p2c["ColE"] = "P4"
-p2c["ColD"] = "P5"
-
-csv = CSVFileStream(".\TestNetwork\TestEMSCSVFormat\Test.csv", p2c) 
-for line in csv:
-    print(csv.P1)
+with CompanyCSVStream(".\TestNetwork\TestEMSCSVFormat\Company.csv")  as csv:
+    for line in csv:
+        print(line)
 
 
