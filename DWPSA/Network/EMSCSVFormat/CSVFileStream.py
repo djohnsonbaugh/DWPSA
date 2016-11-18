@@ -3,7 +3,7 @@ from io import FileIO
 class CSVFileStream(FileIO):
     """Streams Properties from a CSV File"""
 
-    DefaultPropertytoFileMap = {}
+    DefaultPropertyToFileMap = {}
 
     def __init__(self, filepath,  propertytofilemap = DefaultPropertytoFileMap, encoding="utf-8"):
         super(CSVFileStream, self).__init__(filepath, mode='r')
