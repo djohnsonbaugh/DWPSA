@@ -22,25 +22,28 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="EMSCSVFormat\FileType.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Network\Company.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Network\Division.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Network\EMSCSVFormat\CompanyCSVStream.py">
+    <Compile Include="EMSCSVFormat\CompanyCSVStream.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Network\EMSCSVFormat\CSVFileStream.py">
+    <Compile Include="CSVFileStream.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Network\EMSCSVFormat\Exporter.py">
+    <Compile Include="Network\EMSCSVExporter.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Network\EMSCSVFormat\Importer.py">
+    <Compile Include="Network\EMSCSVImporter.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Network\EMSCSVFormat\__init__.py">
+    <Compile Include="EMSCSVFormat\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Network\Network.py">
@@ -54,6 +57,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Network\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestCSVFileStream.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestNetwork\TestCompany.py">
@@ -77,12 +83,13 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Network\" />
-    <Folder Include="Network\EMSCSVFormat\" />
+    <Folder Include="EMSCSVFormat\" />
     <Folder Include="TestNetwork\" />
-    <Folder Include="TestNetwork\TestEMSCSVFormat\" />
+    <Folder Include="TestEMSCSVFormat\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="TestNetwork\TestEMSCSVFormat\Test.csv" />
+    <Content Include="TestEMSCSVFormat\Company.csv" />
+    <Content Include="TestEMSCSVFormat\Test.csv" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

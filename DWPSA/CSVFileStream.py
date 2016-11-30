@@ -5,7 +5,7 @@ class CSVFileStream(FileIO):
 
     DefaultPropertyToFileMap = {}
 
-    def __init__(self, filepath,  propertytofilemap = DefaultPropertytoFileMap, encoding="utf-8"):
+    def __init__(self, filepath,  propertytofilemap = DefaultPropertyToFileMap, encoding="utf-8"):
         super(CSVFileStream, self).__init__(filepath, mode='r')
         self.Encoding = encoding
         self.PropertyToColumnNameMap = propertytofilemap

@@ -1,13 +1,21 @@
 from TestNetwork import *
 import unittest
-from Network.EMSCSVFormat.CompanyCSVStream import CompanyCSVStream
+from EMSCSVFormat.CompanyCSVStream import CompanyCSVStream
+from TestCSVFileStream import TestCSVFileStream
+from Network.Network import Network
+from Network.EMSCSVImporter import EMSCSVImporter
+
+n = Network()
+imp = EMSCSVImporter("C:\PROBE\Models\EMS2015Dec")
+imp.Import(n)
 
 testclasses = [
                TestCompany.TestCompany, 
                TestDivision.TestDivision, 
                TestStation.TestStation, 
                TestNode.TestNode, 
-               TestNetwork.TestNetwork
+               TestNetwork.TestNetwork,
+               TestCSVFileStream
                ]
 
 
@@ -23,10 +31,8 @@ for test_class in testclasses:
 big_suite = unittest.TestSuite(suites_list)
 
 runner = unittest.TextTestRunner(verbosity=2)
-#results = runner.run(big_suite)
+results = runner.run(big_suite)
 
-with CompanyCSVStream(".\TestNetwork\TestEMSCSVFormat\Company.csv")  as csv:
-    for line in csv:
-        print(line)
+
 
 

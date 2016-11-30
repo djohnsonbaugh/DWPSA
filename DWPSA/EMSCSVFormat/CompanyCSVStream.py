@@ -1,6 +1,6 @@
-from Network.EMSCSVFormat.CSVFileStream  import CSVFileStream
+from CSVFileStream  import CSVFileStream
 class CompanyCSVStream(CSVFileStream):
-    """description of class"""
+    """Streams ECS Company Properties With Data Conversions"""
 
     DefaultPropertyToFileMap = {
                                 "CompanyName" : "CompanyName",
@@ -8,8 +8,9 @@ class CompanyCSVStream(CSVFileStream):
                                 "LOSS_AREA" : "EnforceLosses",
                                 "AWR_AREA" : "AWR"
                                 }
+    DefaultFileName = "Company.csv"
 
-    def __init__(self, filepath,  propertytofilemap=DefaultPropertyToFileMap , encoding="utf-8"):
+    def __init__(self, filepath=DefaultFileName,  propertytofilemap=DefaultPropertyToFileMap , encoding="utf-8"):
         super(CompanyCSVStream, self).__init__(filepath, propertytofilemap, encoding)
         self.CompanyName = ""
         self.CompanyNumber = ""
@@ -18,3 +19,14 @@ class CompanyCSVStream(CSVFileStream):
 
         return
 
+    def getCompanyName(self):
+        return self.CompanyName
+
+    def getCompanyNumber(self):
+        return self.CompanyNumber
+
+    def getAWR(self):
+        return bool(self.AWR)
+
+    def getEnforceLosses(self):
+        return bool(self.EnforceLosses)
