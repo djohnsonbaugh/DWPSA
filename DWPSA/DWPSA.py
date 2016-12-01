@@ -18,6 +18,7 @@ testclasses = [
                TestCSVFileStream,
                TestCompanyCSVStream.TestCompanyCSVStream,
                TestDivisionCSVStream.TestDivisionCSVStream,
+               TestStationCSVStream.TestStationCSVStream,
                TestEMSCSVImporter.TestEMSCSVImporter
                ]
 
