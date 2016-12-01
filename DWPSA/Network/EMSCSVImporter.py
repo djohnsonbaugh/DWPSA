@@ -1,6 +1,7 @@
 import os
 from EMSCSVFormat.FileType import FileType
 from EMSCSVFormat.CompanyCSVStream import CompanyCSVStream
+from EMSCSVFormat.DivisionCSVStream import DivisionCSVStream
 from Network.Network import Network
 
 class EMSCSVImporter(object):
@@ -19,7 +20,7 @@ class EMSCSVImporter(object):
         try:
             os.chdir(self.Directory)
             self.ImportCompanies(network)
-
+            self.ImportDivisions(network)
 
         finally:
             os.chdir(ospath)
@@ -60,5 +61,21 @@ class EMSCSVImporter(object):
         with CompanyCSVStream(filename, propertymap, self.Encoding) as csv:
             for company in csv:
                 network.AddCompanyByDef(csv.getCompanyName(), csv.getEnforceLosses(), csv.getAWR())
+
+        return
+
+    def ImportDivisions(self, network: Network):
+                
+        filename = DivisionCSVStream.DefaultFileName 
+        if FileType.Division in self.CSVFileNames:
+            filename = self.CSVFileNames[FileType.Division]
+        
+        propertymap = DivisionCSVStream.DefaultPropertyToFileMap 
+        if FileType.Division in self.CSVPropertyMaps:
+            propertymap = self.CSVPropertyMaps[FileType.Division]
+
+        with DivisionCSVStream(filename, propertymap, self.Encoding) as csv:
+            for Division in csv:
+                network.AddDivisionByDef(csv.getDivisionName(), csv.getCompanyName())
 
         return

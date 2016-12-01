@@ -12,6 +12,11 @@ class TestEMSCSVImporter(unittest.TestCase):
     #Test Company Data
     n.AddCompanyByDef("C1", False, True)
     n.AddCompanyByDef("C2", True, False)
+    n.AddDivisionByDef("D1", "C1")
+    n.AddDivisionByDef("D2", "C1")
+    n.AddDivisionByDef("D3", "C2")
+    n.AddDivisionByDef("D4", "C2")
+
     companyfile = "tempcompany.csv"
     companyheader = "CompanyName,Changed,PTINUM,LOSS_AREA,AWR_AREA"
     companypmap = {
@@ -20,6 +25,15 @@ class TestEMSCSVImporter(unittest.TestCase):
                     "LOSS_AREA" : "EnforceLosses",
                     "AWR_AREA" : "AWR"
                     }
+
+    divisionfile = "tempdivision.csv"
+    divisionheader = "DivisionName,CompanyName,Changed"
+    divisionpmap = {
+                    "CompanyName" : "CompanyName",
+                    "DivisionName" : "DivisionName"
+                    }
+
+
 
     def test_Constructor(self):
 
@@ -53,24 +67,6 @@ class TestEMSCSVImporter(unittest.TestCase):
 
 
         return
-
-    def test_Import(self):
-        
-        net = Network()
-        imp = self.GetImporter()
-
-        self.CreateCompanyFile(self.companyfile)        
-
-        imp.Import(net)
-
-        self.ValidateCompany(net)
-
-        os.remove(self.companyfile)
-
-        return
-
-
-
     def test_ImportCompanies(self):
         net = Network()
         imp = self.GetImporter()
@@ -84,6 +80,42 @@ class TestEMSCSVImporter(unittest.TestCase):
         os.remove(self.companyfile)
 
         return
+
+    def test_ImportDivisions(self):
+        net = Network()
+        imp = self.GetImporter()
+
+        self.CreateDivisionFile(self.divisionfile)        
+
+        imp.ImportDivisions(net)
+
+        self.ValidateDivision(net)
+
+        os.remove(self.divisionfile)
+
+        return
+
+    def test_Import(self):
+        
+        net = Network()
+        imp = self.GetImporter()
+
+        self.CreateCompanyFile(self.companyfile)        
+        self.CreateDivisionFile(self.divisionfile)
+
+        imp.Import(net)
+
+        self.ValidateCompany(net)
+        self.ValidateDivision(net)
+
+        os.remove(self.companyfile)
+        os.remove(self.divisionfile)
+
+        return
+
+
+
+
     def ValidateCompany(self, net : Network):
         self.assertEqual(len(self.n.Companies),len(net.Companies))
         self.assertEqual(self.n.Companies["C1"].ID, net.Companies["C1"].ID)
@@ -91,6 +123,12 @@ class TestEMSCSVImporter(unittest.TestCase):
         self.assertEqual(self.n.Companies["C1"].AWR, net.Companies["C1"].AWR)
         return
 
+    def ValidateDivision(self, net : Network):
+        self.assertEqual(len(self.n.Companies["C1"].Divisions),len(net.Companies["C1"].Divisions))
+        self.assertEqual(len(self.n.Companies["C2"].Divisions),len(net.Companies["C2"].Divisions))
+        self.assertEqual(self.n.Companies["C1"].Divisions["D1"].ID, net.Companies["C1"].Divisions["D1"].ID)
+        self.assertEqual(self.n.Companies["C1"].Divisions["D1"].CompanyID, net.Companies["C1"].Divisions["D1"].CompanyID)
+        return
     def CreateCompanyFile(self, filename=companyfile):
         with open(filename, 'w') as file:
             file.write(self.companyheader + "\n")
@@ -103,11 +141,23 @@ class TestEMSCSVImporter(unittest.TestCase):
                                         int(c.AWR)
                                       ))
         return
-
+    def CreateDivisionFile(self, filename=divisionfile):
+        with open(filename, 'w') as file:
+            file.write(self.divisionheader + "\n")
+            for c in self.n.Companies.values():
+                for d in c.Divisions.values():
+                    file.write(self.CSVLine(
+                                            d.ID,
+                                            d.CompanyID, 
+                                            "FALSE"
+                                          ))
+        return
     def GetImporter(self):
         imp = EMSCSVImporter()
         imp.setCSVFileName(FileType.Company, self.companyfile)
         imp.setCSVPropertyMap(FileType.Company, self.companypmap)
+        imp.setCSVFileName(FileType.Division, self.divisionfile)
+        imp.setCSVPropertyMap(FileType.Division, self.divisionpmap)
         return imp
     def CSVLine(self, *args):
         line = ""

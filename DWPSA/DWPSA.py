@@ -2,7 +2,6 @@ import unittest
 from TestNetwork import *
 from TestEMSCSVFormat import *
 from TestCSVFileStream import TestCSVFileStream
-#from EMSCSVFormat.CompanyCSVStream import CompanyCSVStream
 #from Network.Network import Network
 #from Network.EMSCSVImporter import EMSCSVImporter
 
@@ -18,6 +17,7 @@ testclasses = [
                TestNetwork.TestNetwork,
                TestCSVFileStream,
                TestCompanyCSVStream.TestCompanyCSVStream,
+               TestDivisionCSVStream.TestDivisionCSVStream,
                TestEMSCSVImporter.TestEMSCSVImporter
                ]
 

@@ -1,6 +1,6 @@
 from CSVFileStream  import CSVFileStream
 class CompanyCSVStream(CSVFileStream):
-    """Streams ECS Company Properties With Data Conversions"""
+    """Streams EMS Company Properties With Data Conversions"""
 
     DefaultPropertyToFileMap = {
                                 "CompanyName" : "CompanyName",
