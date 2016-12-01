@@ -12,10 +12,12 @@ class TestEMSCSVImporter(unittest.TestCase):
     #Test Company Data
     n.AddCompanyByDef("C1", False, True)
     n.AddCompanyByDef("C2", True, False)
+    #Test Division Data
     n.AddDivisionByDef("D1", "C1")
     n.AddDivisionByDef("D2", "C1")
     n.AddDivisionByDef("D3", "C2")
     n.AddDivisionByDef("D4", "C2")
+    #Test Station Data
     n.AddStationByDef("S1","C1","D1")
     n.AddStationByDef("S2","C1","D1")
     n.AddStationByDef("S3","C1","D2")
@@ -24,6 +26,21 @@ class TestEMSCSVImporter(unittest.TestCase):
     n.AddStationByDef("S6","C2","D3")
     n.AddStationByDef("S7","C2","D4")
     n.AddStationByDef("S8","C2","D4")
+    #Test Node Data
+    n.AddNodeByDef("S1", "115", "N1")
+    n.AddNodeByDef("S1", "115", "N2")
+    n.AddNodeByDef("S2", "15", "N1")
+    n.AddNodeByDef("S2", "15", "N2")
+    n.AddNodeByDef("S3", "5", "N1")
+    n.AddNodeByDef("S3", "5", "N2")
+    n.AddNodeByDef("S4", "1115", "N1")
+    n.AddNodeByDef("S5", "1115", "N2")
+    n.AddNodeByDef("S6", "115", "N1a")
+    n.AddNodeByDef("S6", "115", "N2a")
+    n.AddNodeByDef("S7", "15", "N1a")
+    n.AddNodeByDef("S7", "15", "N2a")
+    n.AddNodeByDef("S8", "5", "N11")
+    n.AddNodeByDef("S8", "5", "N22")
 
     companyfile = "tempcompany.csv"
     companyheader = "CompanyName,Changed,PTINUM,LOSS_AREA,AWR_AREA"
@@ -49,6 +66,14 @@ class TestEMSCSVImporter(unittest.TestCase):
                     "StationName" : "StationName"
                     }
 
+    nodefile = "tempnode.csv"
+    nodeheader = "NodeName,CompanyName,StationName,Voltage,changed"
+    nodepmap = {
+                "NodeName" : "NodeName",
+                "CompanyName" : "CompanyName",
+                "StationName" : "StationName",
+                "Voltage" : "Voltage"
+                }
 
     def test_Constructor(self):
 
@@ -124,6 +149,20 @@ class TestEMSCSVImporter(unittest.TestCase):
 
         return
 
+    def test_ImportNodes(self):
+        net = Network()
+        imp = self.GetImporter()
+
+        self.CreateNodeFile(self.nodefile)        
+
+        imp.ImportNodes(net)
+
+        self.ValidateNode(net)
+
+        os.remove(self.nodefile)
+
+        return
+
     def test_Import(self):
         
         net = Network()
@@ -132,16 +171,19 @@ class TestEMSCSVImporter(unittest.TestCase):
         self.CreateCompanyFile(self.companyfile)        
         self.CreateDivisionFile(self.divisionfile)
         self.CreateStationFile(self.stationfile)
+        self.CreateNodeFile(self.nodefile)
 
         imp.Import(net)
 
         self.ValidateCompany(net)
         self.ValidateDivision(net)
         self.ValidateStation(net)
+        self.ValidateNode(net)
 
         os.remove(self.companyfile)
         os.remove(self.divisionfile)
         os.remove(self.stationfile)
+        os.remove(self.nodefile)
 
         return
 
@@ -167,7 +209,11 @@ class TestEMSCSVImporter(unittest.TestCase):
         self.assertEqual(self.n.Stations["S1"].CompanyID, net.Stations["S1"].CompanyID)
         self.assertEqual(self.n.Stations["S1"].DivisionID, net.Stations["S1"].DivisionID)
         return
-
+    def ValidateNode(self, net : Network):
+        self.assertEqual(len(self.n.Nodes),len(net.Nodes))
+        self.assertEqual(self.n.Nodes[("S1","115","N1")].ID, net.Nodes[("S1","115","N1")].ID)
+        self.assertEqual(self.n.Nodes[("S1","115","N1")].CompanyID, net.Nodes[("S1","115","N1")].CompanyID)
+        return
     def CreateCompanyFile(self, filename=companyfile):
         with open(filename, 'w') as file:
             file.write(self.companyheader + "\n")
@@ -202,6 +248,18 @@ class TestEMSCSVImporter(unittest.TestCase):
                                         "FALSE"
                                       ))
         return
+    def CreateNodeFile(self, filename=nodefile):
+        with open(filename, 'w') as file:
+            file.write(self.nodeheader + "\n")
+            for s in self.n.Nodes.values():
+                file.write(self.CSVLine(
+                                        s.Name,
+                                        s.CompanyID,
+                                        s.StationID,
+                                        s.Voltage,
+                                        "FALSE"
+                                      ))
+        return
     def GetImporter(self):
         imp = EMSCSVImporter()
         imp.setCSVFileName(FileType.Company, self.companyfile)
@@ -210,6 +268,8 @@ class TestEMSCSVImporter(unittest.TestCase):
         imp.setCSVPropertyMap(FileType.Division, self.divisionpmap)
         imp.setCSVFileName(FileType.Station, self.stationfile)
         imp.setCSVPropertyMap(FileType.Station, self.stationpmap)
+        imp.setCSVFileName(FileType.Node, self.nodefile)
+        imp.setCSVPropertyMap(FileType.Node, self.nodepmap)
         return imp
     def CSVLine(self, *args):
         line = ""

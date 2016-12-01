@@ -3,6 +3,7 @@ from EMSCSVFormat.FileType import FileType
 from EMSCSVFormat.CompanyCSVStream import CompanyCSVStream
 from EMSCSVFormat.DivisionCSVStream import DivisionCSVStream
 from EMSCSVFormat.StationCSVStream import StationCSVStream
+from EMSCSVFormat.NodeCSVStream import NodeCSVStream
 from Network.Network import Network
 
 class EMSCSVImporter(object):
@@ -23,6 +24,7 @@ class EMSCSVImporter(object):
             self.ImportCompanies(network)
             self.ImportDivisions(network)
             self.ImportStations(network)
+            self.ImportNodes(network)
 
         finally:
             os.chdir(ospath)
@@ -95,5 +97,20 @@ class EMSCSVImporter(object):
         with StationCSVStream(filename, propertymap, self.Encoding) as csv:
             for Station in csv:
                 network.AddStationByDef(csv.getStationName(), csv.getCompanyName(), csv.getDivisionName())
+
+        return
+    def ImportNodes(self, network: Network):
+                
+        filename = NodeCSVStream.DefaultFileName 
+        if FileType.Node in self.CSVFileNames:
+            filename = self.CSVFileNames[FileType.Node]
+        
+        propertymap = NodeCSVStream.DefaultPropertyToFileMap 
+        if FileType.Node in self.CSVPropertyMaps:
+            propertymap = self.CSVPropertyMaps[FileType.Node]
+
+        with NodeCSVStream(filename, propertymap, self.Encoding) as csv:
+            for Node in csv:
+                network.AddNodeByDef(csv.getStationName(), csv.getVoltage(), csv.getNodeName(), csv.getCompanyName())
 
         return

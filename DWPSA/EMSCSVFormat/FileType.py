@@ -4,4 +4,5 @@ class FileType(Enum):
     Company = 1
     Division = 2
     Station = 3
+    Node = 4
 
