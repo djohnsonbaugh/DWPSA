@@ -6,10 +6,11 @@ from Network.Network import Network
 class EMSCSVImporter(object):
     """description of class"""
 
-    def __init__(self, foldername: str):
+    def __init__(self, foldername= os.getcwd(), encoding="utf-8"):
         self.CSVFileNames = {}
         self.CSVPropertyMaps = {}
         self.Directory = foldername
+        self.Encoding = encoding
         return
 
     def Import(self, network: Network):
@@ -43,7 +44,7 @@ class EMSCSVImporter(object):
            filetype         - Enum          EMSCSVFormat.FileType
            propertytofilemap- Dictionary    key (file header) value (class property)
         """
-        self.CSVPropertyMpas[filetype] = propertytofilemap
+        self.CSVPropertyMaps[filetype] = propertytofilemap
         return
 
     def ImportCompanies(self, network: Network):
@@ -56,7 +57,7 @@ class EMSCSVImporter(object):
         if FileType.Company in self.CSVPropertyMaps:
             propertymap = self.CSVPropertyMaps[FileType.Company]
 
-        with CompanyCSVStream(filename, propertymap) as csv:
+        with CompanyCSVStream(filename, propertymap, self.Encoding) as csv:
             for company in csv:
                 network.AddCompanyByDef(csv.getCompanyName(), csv.getEnforceLosses(), csv.getAWR())
 

@@ -26,7 +26,7 @@ class CompanyCSVStream(CSVFileStream):
         return self.CompanyNumber
 
     def getAWR(self):
-        return bool(self.AWR)
+        return bool(int(self.AWR))
 
     def getEnforceLosses(self):
-        return bool(self.EnforceLosses)
+        return bool(int(self.EnforceLosses))

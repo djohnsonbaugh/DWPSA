@@ -1,13 +1,14 @@
-from TestNetwork import *
 import unittest
-from EMSCSVFormat.CompanyCSVStream import CompanyCSVStream
+from TestNetwork import *
+from TestEMSCSVFormat import *
 from TestCSVFileStream import TestCSVFileStream
-from Network.Network import Network
-from Network.EMSCSVImporter import EMSCSVImporter
+#from EMSCSVFormat.CompanyCSVStream import CompanyCSVStream
+#from Network.Network import Network
+#from Network.EMSCSVImporter import EMSCSVImporter
 
-n = Network()
-imp = EMSCSVImporter("C:\PROBE\Models\EMS2015Dec")
-imp.Import(n)
+#n = Network()
+#imp = EMSCSVImporter("C:\EMS2015Dec")
+#imp.Import(n)
 
 testclasses = [
                TestCompany.TestCompany, 
@@ -15,7 +16,9 @@ testclasses = [
                TestStation.TestStation, 
                TestNode.TestNode, 
                TestNetwork.TestNetwork,
-               TestCSVFileStream
+               TestCSVFileStream,
+               TestCompanyCSVStream.TestCompanyCSVStream,
+               TestEMSCSVImporter.TestEMSCSVImporter
                ]
 
 

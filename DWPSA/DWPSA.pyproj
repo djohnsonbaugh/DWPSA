@@ -62,10 +62,19 @@
     <Compile Include="TestCSVFileStream.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TestEMSCSVFormat\TestCompanyCSVStream.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestEMSCSVFormat\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="TestNetwork\TestCompany.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestNetwork\TestDivision.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestNetwork\TestEMSCSVImporter.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestNetwork\TestStation.py">
@@ -86,10 +95,6 @@
     <Folder Include="EMSCSVFormat\" />
     <Folder Include="TestNetwork\" />
     <Folder Include="TestEMSCSVFormat\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="TestEMSCSVFormat\Company.csv" />
-    <Content Include="TestEMSCSVFormat\Test.csv" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
