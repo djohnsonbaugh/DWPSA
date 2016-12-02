@@ -5,5 +5,6 @@ __all__ = [
             "Division", 
             "Network", 
             "Node", 
+            "NodeConnector",
             "Station"
           ]

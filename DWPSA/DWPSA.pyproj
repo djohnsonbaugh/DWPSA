@@ -62,6 +62,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DWPSA.py" />
+    <Compile Include="Network\NodeConnector.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Network\Station.py">
       <SubType>Code</SubType>
     </Compile>
@@ -93,6 +96,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestNetwork\TestEMSCSVImporter.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestNetwork\TestNodeConnector.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestNetwork\TestStation.py">

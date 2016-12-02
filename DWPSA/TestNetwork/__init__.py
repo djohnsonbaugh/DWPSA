@@ -5,5 +5,6 @@ __all__ = [
             "TestDivision", 
             "TestNetwork", 
             "TestNode", 
+            "TestNodeConnector",
             "TestStation"
           ]
