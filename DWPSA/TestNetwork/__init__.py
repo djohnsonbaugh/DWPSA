@@ -1,4 +1,5 @@
 __all__ = [
+            "TestCircuitBreaker",
             "TestEMSCSVImporter", 
             #"TestEMSCSVExporter", 
             "TestCompany", 

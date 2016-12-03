@@ -34,6 +34,9 @@
     <Compile Include="EMSCSVFormat\StationCSVStream.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Network\CircuitBreaker.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Network\Company.py">
       <SubType>Code</SubType>
     </Compile>
@@ -87,6 +90,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestEMSCSVFormat\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestNetwork\TestCircuitBreaker.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestNetwork\TestCompany.py">

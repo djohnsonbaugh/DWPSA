@@ -15,6 +15,7 @@ testclasses = [
                TestStation.TestStation, 
                TestNode.TestNode, 
                TestNodeConnector.TestNodeConnector,
+               TestCircuitBreaker.TestCircuitBreaker,
                TestNetwork.TestNetwork,
                TestCSVFileStream,
                TestCompanyCSVStream.TestCompanyCSVStream,
