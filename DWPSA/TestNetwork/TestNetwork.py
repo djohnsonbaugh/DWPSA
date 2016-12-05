@@ -162,11 +162,11 @@ class TestNetwork(unittest.TestCase):
         with self.assertRaises(Exception):
             n.AddNodeByDef(stname,kv, ndid, company)
 
-        self.assertEqual(n.Nodes[nd.ID].ID, (stname, kv, ndid))
-        self.assertEqual(n.Stations[stname].Nodes[nd.ID].ID, (stname, kv, ndid))
+        self.assertEqual(n.Nodes[nd.ID].ID, (stname, ndid))
+        self.assertEqual(n.Stations[stname].Nodes[nd.ID].ID, (stname, ndid))
 
-        self.assertEqual(n.Nodes[(stname, kv, ndid2)].ID, (stname, kv, ndid2))
-        self.assertEqual(n.Stations[stname].Nodes[(stname, kv, ndid2)].ID, (stname, kv, ndid2))
+        self.assertEqual(n.Nodes[(stname, ndid2)].ID, (stname, ndid2))
+        self.assertEqual(n.Stations[stname].Nodes[(stname, ndid2)].ID, (stname, ndid2))
 
         return
 

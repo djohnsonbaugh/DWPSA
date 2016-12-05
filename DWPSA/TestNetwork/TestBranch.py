@@ -1,7 +1,8 @@
 import unittest
-from Network.NodeConnector import NodeConnector
+from Network.Branch import Branch
+from Network.RatingSet import RatingSet
 
-class TestNodeConnector(unittest.TestCase):
+class TestBranch(unittest.TestCase):
     def test_Constructor(self):
         fst = "S1"
         fkv = "161"
@@ -14,8 +15,16 @@ class TestNodeConnector(unittest.TestCase):
         x = 0.001
         r = 0.0005
         seg = "s1"
+        mon = False
+        su = RatingSet(45,35,323)
+        wi = RatingSet(15,15,123)
+        fa = RatingSet(25,25,223)
+        sp = RatingSet(55,55,523)
 
-        nc = NodeConnector(fst, fkv, fnd,tst,tkv,tnd,name,owner,r,x,seg)
+        nc = Branch(fst, fkv, fnd,
+                    tst,tkv,tnd,
+                    name,owner, mon,
+                    r,x,seg,su,wi,sp,fa)
 
         self.assertEqual(nc.ID, (fst,name,seg))
         self.assertEqual(nc.Impedance, complex(r,x))
@@ -32,6 +41,11 @@ class TestNodeConnector(unittest.TestCase):
         self.assertEqual(nc.ToNodeName, tnd)
         self.assertEqual(nc.ToStationID, tst)
         self.assertEqual(nc.ToVoltage, tkv)
+        self.assertEqual(nc.Monitored, mon)
+        self.assertEqual(nc.SuRating.Normal, su.Normal)
+        self.assertEqual(nc.WiRating.Emergency, wi.Emergency)
+        self.assertEqual(nc.FaRating.Alternate, fa.Alternate)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -10,19 +10,22 @@ from TestCSVFileStream import TestCSVFileStream
 #imp.Import(n)
 
 testclasses = [
-               TestCompany.TestCompany, 
-               TestDivision.TestDivision, 
-               TestStation.TestStation, 
-               TestNode.TestNode, 
-               TestNodeConnector.TestNodeConnector,
+               TestBranch.TestBranch,
                TestCircuitBreaker.TestCircuitBreaker,
-               TestNetwork.TestNetwork,
-               TestCSVFileStream,
+               TestCompany.TestCompany, 
                TestCompanyCSVStream.TestCompanyCSVStream,
+               TestCSVFileStream,
+               TestDivision.TestDivision, 
                TestDivisionCSVStream.TestDivisionCSVStream,
-               TestStationCSVStream.TestStationCSVStream,
+               TestEMSCSVImporter.TestEMSCSVImporter,
+               TestNetwork.TestNetwork,
+               TestNode.TestNode,
+               TestNodeConnector.TestNodeConnector,
                TestNodeCSVStream.TestNodeCSVStream,
-               TestEMSCSVImporter.TestEMSCSVImporter
+               TestRatingSet.TestRatingSet, 
+               TestStation.TestStation, 
+               TestStationCSVStream.TestStationCSVStream,
+               TestTransformer.TestTransformer
                ]
 
 

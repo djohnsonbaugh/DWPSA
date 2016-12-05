@@ -30,7 +30,7 @@ class TestStation(unittest.TestCase):
 
         s.AddNode(nd)
         #checks if Station contains nodes
-        self.assertEqual(s.Nodes[(stname, kv, ndid)].Name, ndid)
+        self.assertEqual(s.Nodes[(stname, ndid)].Name, ndid)
         
         #checks if Node knows what Station it is at.
         self.assertEqual(nd.Station.ID, stname)

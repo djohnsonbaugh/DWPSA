@@ -71,7 +71,13 @@
     <Compile Include="Network\NodeConnector.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Network\RatingSet.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Network\Station.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Network\Transformer.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Network\__init__.py">
@@ -95,6 +101,9 @@
     <Compile Include="TestEMSCSVFormat\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TestNetwork\TestBranch.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="TestNetwork\TestCircuitBreaker.py">
       <SubType>Code</SubType>
     </Compile>
@@ -110,7 +119,13 @@
     <Compile Include="TestNetwork\TestNodeConnector.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TestNetwork\TestRatingSet.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="TestNetwork\TestStation.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestNetwork\TestTransformer.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestNetwork\__init__.py">

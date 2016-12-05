@@ -9,7 +9,7 @@ class Node(object):
         #Attributes
         self.CompanyID = companyid
         self.DivisionID = divisionid
-        self.ID = (stationid, voltage, name)
+        self.ID = (stationid, name)
         self.Name = name
         self.Station = None
         self.StationID = stationid

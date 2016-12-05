@@ -211,8 +211,8 @@ class TestEMSCSVImporter(unittest.TestCase):
         return
     def ValidateNode(self, net : Network):
         self.assertEqual(len(self.n.Nodes),len(net.Nodes))
-        self.assertEqual(self.n.Nodes[("S1","115","N1")].ID, net.Nodes[("S1","115","N1")].ID)
-        self.assertEqual(self.n.Nodes[("S1","115","N1")].CompanyID, net.Nodes[("S1","115","N1")].CompanyID)
+        self.assertEqual(self.n.Nodes[("S1","N1")].ID, net.Nodes[("S1","N1")].ID)
+        self.assertEqual(self.n.Nodes[("S1","N1")].CompanyID, net.Nodes[("S1","N1")].CompanyID)
         return
     def CreateCompanyFile(self, filename=companyfile):
         with open(filename, 'w') as file:

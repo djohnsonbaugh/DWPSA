@@ -9,7 +9,7 @@ class NodeConnector(object):
         self.ID = (fstationid, name, segment)
         self.Impedance = complex(r,x)
         self.FromNode = None
-        self.FromNodeID = (fstationid, fvoltage, fnodename)            
+        self.FromNodeID = (fstationid, fnodename)            
         self.FromNodeName = fnodename
         self.FromStationID = fstationid
         self.FromVoltage = fvoltage
@@ -17,7 +17,7 @@ class NodeConnector(object):
         self.OwnerCompanyID = owner
         self.Segment = segment
         self.ToNode = None
-        self.ToNodeID = (tstationid, tvoltage, tnodename)            
+        self.ToNodeID = (tstationid, tnodename)            
         self.ToNodeName = tnodename
         self.ToStationID = tstationid
         self.ToVoltage = tvoltage

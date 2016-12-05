@@ -1,4 +1,5 @@
 __all__ = [
+            "TestBranch",
             "TestCircuitBreaker",
             "TestEMSCSVImporter", 
             #"TestEMSCSVExporter", 
@@ -7,5 +8,7 @@ __all__ = [
             "TestNetwork", 
             "TestNode", 
             "TestNodeConnector",
-            "TestStation"
+            "TestRatingSet",
+            "TestStation",
+            "TestTransformer"
           ]

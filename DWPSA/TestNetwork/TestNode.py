@@ -13,7 +13,7 @@ class TestNode(unittest.TestCase):
 
         nd = Node(stname, kv, ndid, companyid, divisionid)
 
-        self.assertEqual(nd.ID, (stname, kv, ndid))
+        self.assertEqual(nd.ID, (stname, ndid))
         self.assertEqual(nd.StationID, stname)
         self.assertEqual(nd.Voltage, kv)
         self.assertEqual(nd.Name, ndid)
