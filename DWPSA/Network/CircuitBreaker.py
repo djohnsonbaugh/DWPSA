@@ -6,7 +6,7 @@ class CBState(Enum):
     Closed = 1
 
 class CircuitBreaker(NodeConnector):
-    """description of class"""
+    """Circuit Breaker Node Connector"""
 
 
     def __init__(self, stationid: str, voltage: str, fnodename: str, tnodename: str,

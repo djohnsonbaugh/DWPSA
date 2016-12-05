@@ -58,6 +58,9 @@
     <Compile Include="EMSCSVFormat\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Network\Branch.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Network\Network.py">
       <SubType>Code</SubType>
     </Compile>
