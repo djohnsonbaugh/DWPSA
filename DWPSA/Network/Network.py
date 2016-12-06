@@ -2,6 +2,11 @@ from Network.Company import Company
 from Network.Division import Division
 from Network.Station import Station
 from Network.Node import Node
+from Network.NodeConnector import NodeConnector
+from Network.CircuitBreaker import CircuitBreaker
+from Network.Branch import Branch
+from Network.Transformer import Transformer
+from Network.PhaseShifter import PhaseShifter
 
 class Network(object):
     """ Physical Description of a Power System """
@@ -11,6 +16,11 @@ class Network(object):
         self.Nodes = {}
         self.Stations = {}
         self.Companies = {}
+        self.NodeConnectors = {}
+        self.CircuitBreakers = {}
+        self.Lines = {}
+        self.Transformers = {}
+        self.PhaseShifters = {}
         return
     #Company Methods
     def AddCompany(self, company):
@@ -62,7 +72,7 @@ class Network(object):
     #Node Methods
     def AddNodeByDef(self, stationid, voltage, name, companyid = "", divisionid = ""):
         return self.AddNode(Node(stationid, voltage, name, companyid, divisionid))
-    def AddNode(self, node):
+    def AddNode(self, node: Node):
         if node.ID in self.Nodes:
             raise Exception("Node already exists in the network", node.ID)
         station = self.FindOrAddStation(node.StationID, node.CompanyID, node.DivisionID)
@@ -71,6 +81,24 @@ class Network(object):
         station.AddNode(node)               
         return node
 
-
+    #Node Connector Methods
+    def AddNodeConnector(self, nc: NodeConnector):
+        if nc.FromNodeID not in self.Nodes or nc.ToNodeID not in self.Nodes:
+            raise Exception("From or To Node for node connector does not exit in network", nc.FromNodeID, nc.ToNodeID)
+        if nc.ID in self.NodeConnectors:
+            raise Exception("Node Connector already exists in the network", nc.ID)        
+        self.Nodes[nc.FromNodeID].AddNodeConnector(nc)
+        if nc.FromNodeID != nc.ToNodeID:
+            self.Nodes[nc.ToNodeID].AddNodeConnector(nc)
+        self.NodeConnectors[nc.ID] = nc
+        if type(nc) is PhaseShifter:
+            self.PhaseShifters[nc.ID] = nc
+        if type(nc) is Transformer:
+            self.Transformers[nc.ID] = nc
+        if type(nc) is Branch:
+            self.Lines[nc.ID] = nc
+        if type(nc) is CircuitBreaker:
+            self.CircuitBreakers[nc.ID] = nc
+        return
 
 

@@ -22,6 +22,7 @@ testclasses = [
                TestNode.TestNode,
                TestNodeConnector.TestNodeConnector,
                TestNodeCSVStream.TestNodeCSVStream,
+               TestPhaseShifter.TestPhaseShifter,
                TestRatingSet.TestRatingSet, 
                TestStation.TestStation, 
                TestStationCSVStream.TestStationCSVStream,

@@ -8,6 +8,7 @@ __all__ = [
             "TestNetwork", 
             "TestNode", 
             "TestNodeConnector",
+            "TestPhaseShifter",
             "TestRatingSet",
             "TestStation",
             "TestTransformer"

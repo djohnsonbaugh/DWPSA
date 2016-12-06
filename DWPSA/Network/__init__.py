@@ -9,6 +9,7 @@ __all__ = [
             "Network", 
             "Node", 
             "NodeConnector",
+            "PhaseShifter",
             "RatingSet",
             "Station",
             "Transformer"

@@ -1,3 +1,4 @@
+from Network.NodeConnector import NodeConnector
 class Node(object):
     """Physical Location in a Power System"""
 
@@ -14,5 +15,11 @@ class Node(object):
         self.Station = None
         self.StationID = stationid
         self.Voltage = voltage
-
+        self.NodeConnectors = {}
     #Methods
+    def AddNodeConnector(self, nc: NodeConnector):
+        self.NodeConnectors[nc.ID] = nc
+        if self.ID == nc.FromNodeID:
+            nc.FromNode = self
+        if self.ID == nc.ToNodeID:
+            nc.ToNode = self

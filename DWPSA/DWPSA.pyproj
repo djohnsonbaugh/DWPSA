@@ -71,6 +71,9 @@
     <Compile Include="Network\NodeConnector.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Network\PhaseShifter.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Network\RatingSet.py">
       <SubType>Code</SubType>
     </Compile>
@@ -117,6 +120,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestNetwork\TestNodeConnector.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestNetwork\TestPhaseShifter.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestNetwork\TestRatingSet.py">

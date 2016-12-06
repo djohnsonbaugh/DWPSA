@@ -4,6 +4,12 @@ from Network.Station import Station
 from Network.Node import Node
 from Network.Company import Company
 from Network.Division import Division
+from Network.NodeConnector import NodeConnector
+from Network.CircuitBreaker import CircuitBreaker
+from Network.Branch import Branch
+from Network.Transformer import Transformer
+from Network.PhaseShifter import PhaseShifter
+from Network.CircuitBreaker import CBState
 
 class TestNetwork(unittest.TestCase):
     """Test class for the Network Class"""
@@ -170,7 +176,83 @@ class TestNetwork(unittest.TestCase):
 
         return
 
+    def test_AddNodeConnector(self):
+        st1 = "ST1"
+        st2 = "ST2"
+        kv115 = "115"
+        kv365 = "365"
+        ndid1 = "N1"
+        ndid2 = "N2"
+        ndid3 = "N3"
+        ndid4 = "N4"
+        cbid1 = "12"
+        trname = "23"
+        psname = "ps12"
+        lnname = "lnname"
+        cbid2 = "34"        
+        company = "ABC"
+
+        n = Network()
+        #Station #1
+        s1 = Station(st1)
+        nd11 = Node(st1, kv115, ndid1, company)
+        nd12 = Node(st1, kv115, ndid2, company)
+        nd13 = Node(st1, kv365, ndid3, company)
+        nd14 = Node(st1, kv365, ndid4, company)
+        cb11 = CircuitBreaker(st1, kv115, ndid1, ndid2, cbid1, company, CBState.Closed, "CB")
+        tr11 = Transformer(st1, kv115, ndid2, kv365, ndid3, trname, company, True)
+        cb12 = CircuitBreaker(st1, kv365, ndid3, ndid4, cbid2, company, CBState.Closed, "CB")
+
+        n.AddStation(s1)
+        #both nodes mising     
+        with self.assertRaises(Exception):
+            n.AddNodeConnector(cb11)
+
+        n.AddNode(nd12)
+        #from node missing
+        with self.assertRaises(Exception):
+            n.AddNodeConnector(cb11)
+
+        n.AddNode(nd11)
+        n.AddNodeConnector(cb11)
+        #to node missing
+        with self.assertRaises(Exception):
+            n.AddNodeConnector(tr11)
+        #duplicate connector
+        with self.assertRaises(Exception):
+            n.AddNodeConnector(cb11)
 
 
+        n.AddNode(nd13)
+        n.AddNode(nd14)
+        n.AddNodeConnector(tr11)
+        n.AddNodeConnector(cb12)
+        
+        #Station #2
+        s2 = Station(st2)
+        n.AddStation(s2) 
+        nd21 = Node(st2, kv115, ndid1, company)
+        n.AddNode(nd21)
+        nd22 = Node(st2, kv115, ndid2, company)
+        n.AddNode(nd22)
+        ps = PhaseShifter(st2, kv115,  ndid1, kv115, ndid2, psname, company, False)
+        n.AddNodeConnector(ps)
+
+        ln = Branch(st1, kv115, ndid1, st2, kv115, ndid1, lnname, company, True)
+        n.AddNodeConnector(ln)
+
+        self.assertEqual(len(n.NodeConnectors), 5)
+        self.assertEqual(len(n.CircuitBreakers), 2)
+        self.assertEqual(len(n.Transformers), 1)
+        self.assertEqual(len(n.PhaseShifters), 1)
+        self.assertEqual(len(n.Lines), 1)
+        self.assertEqual(len(nd11.NodeConnectors), 2)
+        self.assertEqual(len(nd12.NodeConnectors), 2)
+        self.assertEqual(len(nd13.NodeConnectors), 2)
+        self.assertEqual(len(nd14.NodeConnectors), 1)
+        self.assertEqual(len(nd21.NodeConnectors), 2)
+        self.assertEqual(len(nd22.NodeConnectors), 1)
+        
+        
 if __name__ == '__main__':
     unittest.main()
