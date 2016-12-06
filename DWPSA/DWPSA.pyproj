@@ -22,6 +22,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="EMSCSVFormat\CircuitBreakerCSVStream.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="EMSCSVFormat\DivisionCSVStream.py">
       <SubType>Code</SubType>
     </Compile>
@@ -87,6 +90,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestCSVFileStream.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestEMSCSVFormat\TestCircuitBreakerCSVStream.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestEMSCSVFormat\TestCompanyCSVStream.py">

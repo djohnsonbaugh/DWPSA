@@ -5,6 +5,7 @@ from EMSCSVFormat.DivisionCSVStream import DivisionCSVStream
 from EMSCSVFormat.StationCSVStream import StationCSVStream
 from EMSCSVFormat.NodeCSVStream import NodeCSVStream
 from Network.Network import Network
+from EMSCSVFormat.CircuitBreakerCSVStream import CircuitBreakerCSVStream
 
 class EMSCSVImporter(object):
     """description of class"""
@@ -25,6 +26,7 @@ class EMSCSVImporter(object):
             self.ImportDivisions(network)
             self.ImportStations(network)
             self.ImportNodes(network)
+            self.ImportCircuitBreakers(network)
 
         finally:
             os.chdir(ospath)
@@ -112,5 +114,20 @@ class EMSCSVImporter(object):
         with NodeCSVStream(filename, propertymap, self.Encoding) as csv:
             for Node in csv:
                 network.AddNodeByDef(csv.getStationName(), csv.getVoltage(), csv.getNodeName(), csv.getCompanyName())
+
+        return
+    def ImportCircuitBreakers(self, network: Network):
+                
+        filename = CircuitBreakerCSVStream.DefaultFileName 
+        if FileType.CircuitBreaker in self.CSVFileNames:
+            filename = self.CSVFileNames[FileType.CircuitBreaker]
+        
+        propertymap = CircuitBreakerCSVStream.DefaultPropertyToFileMap 
+        if FileType.CircuitBreaker in self.CSVPropertyMaps:
+            propertymap = self.CSVPropertyMaps[FileType.CircuitBreaker]
+
+        with CircuitBreakerCSVStream(filename, propertymap, self.Encoding) as csv:
+            for CB in csv:
+                network.AddNodeConnector(csv.getCircuitBreaker())
 
         return

@@ -1,5 +1,6 @@
 __all__ = [
-            "FileType", 
+            "FileType",
+            "CircuitBreakerCSVStream", 
             "CompanyCSVStream",
             "DivisionCSVStream",
             "StationCSVStream",

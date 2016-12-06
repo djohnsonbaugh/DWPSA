@@ -5,6 +5,8 @@ from  Network.EMSCSVImporter import EMSCSVImporter
 from EMSCSVFormat.FileType import FileType
 from Network.Network import Network
 from Network.Company import Company
+from Network.CircuitBreaker import CircuitBreaker
+from Network.CircuitBreaker import CBState
 
 class TestEMSCSVImporter(unittest.TestCase):
     #Test Network
@@ -41,6 +43,13 @@ class TestEMSCSVImporter(unittest.TestCase):
     n.AddNodeByDef("S7", "15", "N2a")
     n.AddNodeByDef("S8", "5", "N11")
     n.AddNodeByDef("S8", "5", "N22")
+    #Test CB Data
+    n.AddNodeConnector(CircuitBreaker("S1", "115", "N1", "N2", "CB1", "C1", CBState.Closed, "CB"))
+    n.AddNodeConnector(CircuitBreaker("S2", "15", "N1", "N2", "CB1", "C1", CBState.Closed, "CB"))
+    n.AddNodeConnector(CircuitBreaker("S3", "5", "N1", "N2", "CB1", "C1", CBState.Closed, "CB"))
+    n.AddNodeConnector(CircuitBreaker("S6", "115", "N1a", "N2a", "CB1", "C2", CBState.Open, "SW"))
+    n.AddNodeConnector(CircuitBreaker("S7", "15", "N1a", "N2a", "CB1", "C2", CBState.Open, "BR"))
+    n.AddNodeConnector(CircuitBreaker("S8", "5", "N11", "N22", "CB1", "C2", CBState.Open, "BR"))
 
     companyfile = "tempcompany.csv"
     companyheader = "CompanyName,Changed,PTINUM,LOSS_AREA,AWR_AREA"
@@ -73,6 +82,18 @@ class TestEMSCSVImporter(unittest.TestCase):
                 "CompanyName" : "CompanyName",
                 "StationName" : "StationName",
                 "Voltage" : "Voltage"
+                }
+    cbfile = "tempcb.csv"
+    cbheader = "ID_CO,ID_DV,ID_ST,CBTYP Name,CB Name,From Node,To Node,Normal State,KV_ID,Changed"
+    cbpmap = {
+                "ID_CO" : "Owner",
+                "ID_ST" : "StationName",
+                "CBTYP Name" : "CBType",
+                "CB Name" : "CBName",
+                "From Node" : "FromNodeName",
+                "To Node" : "ToNodeName",
+                "Normal State" : "NormalState",
+                "KV_ID" : "Voltage"
                 }
 
     def test_Constructor(self):
@@ -172,6 +193,7 @@ class TestEMSCSVImporter(unittest.TestCase):
         self.CreateDivisionFile(self.divisionfile)
         self.CreateStationFile(self.stationfile)
         self.CreateNodeFile(self.nodefile)
+        self.CreateCBFile(self.cbfile)
 
         imp.Import(net)
 
@@ -179,11 +201,13 @@ class TestEMSCSVImporter(unittest.TestCase):
         self.ValidateDivision(net)
         self.ValidateStation(net)
         self.ValidateNode(net)
+        self.ValidateCB(net)
 
         os.remove(self.companyfile)
         os.remove(self.divisionfile)
         os.remove(self.stationfile)
         os.remove(self.nodefile)
+        os.remove(self.cbfile)
 
         return
 
@@ -213,6 +237,12 @@ class TestEMSCSVImporter(unittest.TestCase):
         self.assertEqual(len(self.n.Nodes),len(net.Nodes))
         self.assertEqual(self.n.Nodes[("S1","N1")].ID, net.Nodes[("S1","N1")].ID)
         self.assertEqual(self.n.Nodes[("S1","N1")].CompanyID, net.Nodes[("S1","N1")].CompanyID)
+        return
+    def ValidateCB(self, net : Network):
+        self.assertEqual(len(self.n.CircuitBreakers),len(net.CircuitBreakers))
+        self.assertEqual(self.n.CircuitBreakers[("S1","CB1","CB")].ID, net.CircuitBreakers[("S1","CB1","CB")].ID)
+        self.assertEqual(self.n.CircuitBreakers[("S1","CB1","CB")].FromNodeID, net.CircuitBreakers[("S1","CB1","CB")].FromNodeID)
+        self.assertEqual(self.n.CircuitBreakers[("S1","CB1","CB")].ToNodeID, net.CircuitBreakers[("S1","CB1","CB")].ToNodeID)
         return
     def CreateCompanyFile(self, filename=companyfile):
         with open(filename, 'w') as file:
@@ -260,6 +290,22 @@ class TestEMSCSVImporter(unittest.TestCase):
                                         "FALSE"
                                       ))
         return
+    def CreateCBFile(self, filename=cbfile):
+        with open(filename, 'w') as file:
+            file.write(self.cbheader + "\n")
+            for s in self.n.CircuitBreakers.values():
+                file.write(self.CSVLine(
+                                        s.OwnerCompanyID, "",
+                                        s.StationID,
+                                        s.CBType,
+                                        s.Name,
+                                        s.FromNodeName,
+                                        s.ToNodeName,
+                                        str(s.NormalState.name),
+                                        s.Voltage,
+                                        "FALSE"
+                                      ))
+        return
     def GetImporter(self):
         imp = EMSCSVImporter()
         imp.setCSVFileName(FileType.Company, self.companyfile)
@@ -270,6 +316,8 @@ class TestEMSCSVImporter(unittest.TestCase):
         imp.setCSVPropertyMap(FileType.Station, self.stationpmap)
         imp.setCSVFileName(FileType.Node, self.nodefile)
         imp.setCSVPropertyMap(FileType.Node, self.nodepmap)
+        imp.setCSVFileName(FileType.CircuitBreaker, self.cbfile)
+        imp.setCSVPropertyMap(FileType.CircuitBreaker, self.cbpmap)
         return imp
     def CSVLine(self, *args):
         line = ""

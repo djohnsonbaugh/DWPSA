@@ -6,12 +6,14 @@ from TestCSVFileStream import TestCSVFileStream
 #from Network.EMSCSVImporter import EMSCSVImporter
 
 #n = Network()
-#imp = EMSCSVImporter("C:\EMS2015Dec")
+#imp = EMSCSVImporter("C:\PROBE\Models\EMS2015Dec")
+##imp = EMSCSVImporter("C:\EMS2015Dec")
 #imp.Import(n)
 
 testclasses = [
                TestBranch.TestBranch,
                TestCircuitBreaker.TestCircuitBreaker,
+               TestCircuitBreakerCSVStream.TestCircuitBreakerCSVStream,
                TestCompany.TestCompany, 
                TestCompanyCSVStream.TestCompanyCSVStream,
                TestCSVFileStream,
