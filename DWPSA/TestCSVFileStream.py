@@ -8,14 +8,15 @@ class TestCSVFileStream(unittest.TestCase):
     def test_Constructor(self):
         testfilename = "testcsvfilestream.csv"
         lines = [
-                    "" + os.linesep,
-                    "" + os.linesep,
-                    "#GARBAGE IN THE FILE, 23233232" + os.linesep,
-                    "ColA, ColB, ColC, Col, ColE, ColD" + os.linesep,
-                    "2,3,,,,,,,,,," + os.linesep,
-                    "2" + os.linesep,
-                    "1,5,6,8,9,12," + os.linesep,
-                    "" + os.linesep
+                    "\n",
+                    "\n",
+                    "#GARBAGE IN THE FILE, 23233232\n" ,
+                    "ColA, ColB, ColC, Col, ColE, ColD\n",
+                    "2,3,,,,,,,,,,\n",
+                    "\n",
+                    "2\n",
+                    "1,5,6,8,9,12,\n",
+                    "\n"
                     ]
         propertytofilemap = {
                                 "ColB" : "BCol",

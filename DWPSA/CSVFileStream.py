@@ -1,17 +1,21 @@
-from io import FileIO
+import io
 
-class CSVFileStream(FileIO):
+class CSVFileStream(object):
     """Streams Properties from a CSV File"""
 
     DefaultPropertyToFileMap = {}
 
     def __init__(self, filepath,  propertytofilemap = DefaultPropertyToFileMap, encoding="utf-8"):
-        super(CSVFileStream, self).__init__(filepath, mode='r')
         self.Encoding = encoding
         self.PropertyToColumnNameMap = propertytofilemap
         self.Keys = {}
         self.Values = {}
-        
+        self.AllLines = []
+        self.Index = 0
+        self.FilePath = filepath
+        with open(self.FilePath, mode='r') as f:
+            self.AllLines = f.readlines()
+        self.Index = 0
         #find key properties in file headers
         strs = self.ReadCSVLine()
         while len(strs) != 0:
@@ -31,10 +35,22 @@ class CSVFileStream(FileIO):
     def __iter__(self):
         return self
 
+    def __enter__(self):
+
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return
+
     def __next__(self):
-        strs = self.ReadCSVLine()
-        if len(strs) == 0:
-            raise StopIteration()
+        while True:
+            if len(self.AllLines) <= self.Index:
+                raise StopIteration()
+            strs = self.ReadCSVLine()
+            if len(strs) > 1:
+                break
+            if strs[0] != "":
+                break
         for key in self.Keys.keys():
             i = self.Keys[key]
             val = ""
@@ -45,11 +61,8 @@ class CSVFileStream(FileIO):
         return self.Values
 
     def ReadCSVLine(self):
-        strs = {}
-        buff = self.readline().decode(self.Encoding)
-        if buff == "":
-            return strs
-        strs = buff.split(",")
+        strs = self.AllLines[self.Index].split(",")
         for i in range(len(strs)):
             strs[i] = strs[i].strip()
+        self.Index += 1
         return strs
