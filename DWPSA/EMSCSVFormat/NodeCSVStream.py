@@ -1,4 +1,4 @@
-from CSVFileStream  import CSVFileStream
+from EMSCSVFormat.CSVFileStream import CSVFileStream
 class NodeCSVStream(CSVFileStream):
     """Streams EMS Node Properties With Data Conversions"""
 

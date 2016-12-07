@@ -1,7 +1,7 @@
 import unittest
 import io
 import os
-from CSVFileStream import CSVFileStream
+from EMSCSVFormat.CSVFileStream import CSVFileStream
 
 
 class TestCSVFileStream(unittest.TestCase):

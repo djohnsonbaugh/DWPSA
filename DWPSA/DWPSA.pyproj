@@ -49,13 +49,13 @@
     <Compile Include="EMSCSVFormat\CompanyCSVStream.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="CSVFileStream.py">
+    <Compile Include="EMSCSVFormat\CSVFileStream.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Network\EMSCSVExporter.py">
+    <Compile Include="EMSCSVFormat\EMSCSVExporter.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Network\EMSCSVImporter.py">
+    <Compile Include="EMSCSVFormat\EMSCSVImporter.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="EMSCSVFormat\__init__.py">
@@ -89,7 +89,7 @@
     <Compile Include="Network\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="TestCSVFileStream.py">
+    <Compile Include="TestEMSCSVFormat\TestCSVFileStream.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestEMSCSVFormat\TestCircuitBreakerCSVStream.py">
@@ -122,7 +122,7 @@
     <Compile Include="TestNetwork\TestDivision.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="TestNetwork\TestEMSCSVImporter.py">
+    <Compile Include="TestEMSCSVFormat\TestEMSCSVImporter.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestNetwork\TestNodeConnector.py">

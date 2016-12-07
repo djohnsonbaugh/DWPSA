@@ -1,7 +1,7 @@
 import unittest
 import io
 import os
-from  Network.EMSCSVImporter import EMSCSVImporter
+from EMSCSVFormat.EMSCSVImporter import EMSCSVImporter
 from EMSCSVFormat.FileType import FileType
 from Network.Network import Network
 from Network.Company import Company
