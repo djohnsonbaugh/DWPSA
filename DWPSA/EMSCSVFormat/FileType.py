@@ -6,4 +6,5 @@ class FileType(Enum):
     Station = 3
     Node = 4
     CircuitBreaker = 5
+    Line = 6
 
