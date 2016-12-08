@@ -8,7 +8,7 @@ class Branch(NodeConnector):
     def __init__(self, fstationid: str, fvoltage: str, fnodename: str, 
                  tstationid: str, tvoltage: str, tnodename: str,
                  name: str, owner: str, monitored: bool,
-                 r: float = 0, x: float = 0, segment: str = "",
+                 r: float = 0.0, x: float = 0.0, segment: str = "",
                  summer : RatingSet = None, winter : RatingSet = None,
                  spring : RatingSet = None, fall : RatingSet = None):
         super(Branch, self).__init__(fstationid, fvoltage, fnodename, 

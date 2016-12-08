@@ -17,8 +17,8 @@ class CSVFileStream(object):
             self.AllLines = f.readlines()
         self.Index = 0
         #find key properties in file headers
-        strs = self.ReadCSVLine()
-        while len(strs) != 0:
+        while len(self.AllLines) > self.Index:
+            strs = self.ReadCSVLine()
             for col in range(len(strs)):
                 for n in self.PropertyToColumnNameMap.keys():
                     if n == strs[col]:
@@ -26,7 +26,6 @@ class CSVFileStream(object):
                         break
             if len(self.Keys) == len(self.PropertyToColumnNameMap):
                 break
-            strs = self.ReadCSVLine()
             self.Keys = {}
         if len(self.Keys) != len(self.PropertyToColumnNameMap):
             raise Exception("Expected column headers were not found")

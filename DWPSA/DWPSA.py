@@ -10,7 +10,6 @@ from TestEMSCSVFormat import *
 #imp.Import(n)
 
 testclasses = [
-
                TestBranch.TestBranch,
                TestCircuitBreaker.TestCircuitBreaker,
                TestCircuitBreakerCSVStream.TestCircuitBreakerCSVStream,
@@ -20,6 +19,7 @@ testclasses = [
                TestDivision.TestDivision, 
                TestDivisionCSVStream.TestDivisionCSVStream,
                TestEMSCSVImporter.TestEMSCSVImporter,
+               TestLineCSVStream.TestLineCSVStream,
                TestNetwork.TestNetwork,
                TestNode.TestNode,
                TestNodeConnector.TestNodeConnector,
