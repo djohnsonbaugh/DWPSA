@@ -8,4 +8,5 @@ class FileType(Enum):
     CircuitBreaker = 5
     Line = 6
     Transformer = 7
+    PhaseShifter = 8
 

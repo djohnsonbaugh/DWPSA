@@ -13,7 +13,6 @@ class TestPhaseShifter(unittest.TestCase):
         owner = "C1"
         x = 0.001
         r = 0.0005
-        mon = True
         su = RatingSet(45,35,323)
         wi = RatingSet(15,15,123)
         fa = RatingSet(25,25,223)
@@ -28,7 +27,7 @@ class TestPhaseShifter(unittest.TestCase):
         ptap = "PT1"
 
         nc = PhaseShifter(st, fkv, fnd, tkv,tnd,
-                    name,owner, mon,
+                    name,owner, 
                     r,x,su,wi,sp,fa,
                     ftap, ftapn, ttap, ttapn, regnode, avr, ptap,awr)
 
@@ -45,7 +44,6 @@ class TestPhaseShifter(unittest.TestCase):
         self.assertEqual(nc.ToNodeID, (st,tnd))
         self.assertEqual(nc.ToNodeName, tnd)
         self.assertEqual(nc.ToVoltage, tkv)
-        self.assertEqual(nc.Monitored, mon)
         self.assertEqual(nc.SuRating.Normal, su.Normal)
         self.assertEqual(nc.WiRating.Emergency, wi.Emergency)
         self.assertEqual(nc.FaRating.Alternate, fa.Alternate)

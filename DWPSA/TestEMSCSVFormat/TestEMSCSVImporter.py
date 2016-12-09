@@ -10,6 +10,7 @@ from Network.RatingSet import RatingSet
 from Network.CircuitBreaker import CircuitBreaker
 from Network.CircuitBreaker import CBState
 from Network.Transformer import Transformer
+from Network.PhaseShifter import PhaseShifter
 
 class TestEMSCSVImporter(unittest.TestCase):
     #Test Network
@@ -70,6 +71,13 @@ class TestEMSCSVImporter(unittest.TestCase):
     n.AddNodeConnector(Transformer("S2", "15", "N1", "115", "N3", "XF", "C1", True, 1.1, 2.2))
     n.AddNodeConnector(Transformer("S3", "5", "N1", "115", "N3", "XF", "C1", True, 1.1, 2.2))
     n.AddNodeConnector(Transformer("S6", "115", "N1a", "345", "N3", "XF", "C2", False, 1.1, 2.2))
+    #Test PhaseShifter Data
+    n.AddNodeConnector(PhaseShifter("S1", "115", "N1", "115", "N2","PS1","C1",1.1,2.5, RatingSet(400,500), RatingSet(600, 700)))
+    n.AddNodeConnector(PhaseShifter("S2", "15", "N1", "15", "N2","PS1","C1",1.1,2.5, RatingSet(400,500), RatingSet(600, 700)))
+    n.AddNodeConnector(PhaseShifter("S3", "5", "N1", "5", "N2","PS1","C1",1.1,2.5, RatingSet(400,500), RatingSet(600, 700)))
+    n.AddNodeConnector(PhaseShifter("S6", "115", "N1a", "115", "N2a","PS2","C2",1.1,2.5, RatingSet(400,500), RatingSet(600, 700)))
+    n.AddNodeConnector(PhaseShifter("S8", "5", "N11", "5", "N22","PS","C2",1.1,2.5, RatingSet(400,500), RatingSet(600, 700)))
+
     companyfile = "tempcompany.csv"
     companyheader = "CompanyName,Changed,PTINUM,LOSS_AREA,AWR_AREA"
     companypmap = {
@@ -157,6 +165,31 @@ class TestEMSCSVImporter(unittest.TestCase):
                 "WinterNormalLimit" : "WinNorm",
                 "WinterEmergencyLimit" : "WinEmer",
                 "Monitored" : "Monitored"
+                }
+    psfile = "tempps.csv"
+    psheader = "Company,Division,Station,TransformerName,FromNode,FromNominalVoltage,FromLTCTapType,FromNormalPosition,ToConnectionNode,ToNominalVoltage,ToLTCTapType,ToNormalTap,RegulationNode,r,x,VoltageRegulationSchedule,AVRStatus,PhaseTapType,AWRStatus,MWRegulationSchedule,Summer Normal,Summer Emergency,Winter Normal,Winter Emergency,changed"
+    pspmap = {
+                "Company" : "Owner",
+                "Station" : "StationName",
+                "TransformerName" : "PhaseShifterName",
+                "FromNode" : "FromNodeName",
+                "FromNominalVoltage" : "FromVoltage",
+                "FromLTCTapType" : "FromTapType",
+                "FromNormalPosition" : "FromTapNormPosition",
+                "ToConnectionNode" : "ToNodeName",
+                "ToNominalVoltage" : "ToVoltage",
+                "ToLTCTapType" : "ToTapType",
+                "ToNormalTap" : "ToTapNormPosition",
+                "RegulationNode" : "RegulationNodeName",
+                "r" : "r",
+                "x" : "x",
+                "AVRStatus" : "AVRStatus",
+                "PhaseTapType" : "PhaseTapType",
+                "AWRStatus" : "AWRStatus",
+                "Summer Normal" : "SumNorm",
+                "Summer Emergency" : "SumEmer",
+                "Winter Normal" : "WinNorm",
+                "Winter Emergency" : "WinEmer"
                 }
     def test_Constructor(self):
 
@@ -258,6 +291,7 @@ class TestEMSCSVImporter(unittest.TestCase):
         self.CreateCBFile(self.cbfile)
         self.CreateLineFile(self.linefile)
         self.CreateTransformerFile(self.xffile)
+        self.CreatePhaseShifterFile(self.psfile)
 
         imp.Import(net)
 
@@ -267,6 +301,7 @@ class TestEMSCSVImporter(unittest.TestCase):
         self.ValidateNode(net)
         self.ValidateCB(net)
         self.ValidateLine(net)
+        self.ValidatePhaseShifter(net)
 
         os.remove(self.companyfile)
         os.remove(self.divisionfile)
@@ -275,6 +310,7 @@ class TestEMSCSVImporter(unittest.TestCase):
         os.remove(self.cbfile)
         os.remove(self.linefile)
         os.remove(self.xffile)
+        os.remove(self.psfile)
         return
 
 
@@ -324,6 +360,13 @@ class TestEMSCSVImporter(unittest.TestCase):
         self.assertEqual(self.n.Transformers[("S2","XF","XF")].Impedance, net.Transformers[("S2","XF","XF")].Impedance)
         self.assertEqual(self.n.Transformers[("S3","XF","XF")].Monitored, net.Transformers[("S3","XF","XF")].Monitored)
         self.assertEqual(self.n.Transformers[("S6","XF","XF")].ID, net.Transformers[("S6","XF","XF")].ID)
+        return
+    def ValidatePhaseShifter(self, net : Network):
+        self.assertEqual(len(self.n.PhaseShifters),len(net.PhaseShifters))
+        self.assertEqual(self.n.PhaseShifters[("S1","PS1","PS1")].ID, net.PhaseShifters[("S1","PS1","PS1")].ID)
+        self.assertEqual(self.n.PhaseShifters[("S2","PS1","PS1")].Impedance, net.PhaseShifters[("S2","PS1","PS1")].Impedance)
+        self.assertEqual(self.n.PhaseShifters[("S3","PS1","PS1")].Monitored, net.PhaseShifters[("S3","PS1","PS1")].Monitored)
+        self.assertEqual(self.n.PhaseShifters[("S8","PS","PS")].ID, net.PhaseShifters[("S8","PS","PS")].ID)
         return
     def CreateCompanyFile(self, filename=companyfile):
         with open(filename, 'w') as file:
@@ -441,6 +484,33 @@ class TestEMSCSVImporter(unittest.TestCase):
                                         str(s.Monitored)
                                       ))
         return
+    def CreatePhaseShifterFile(self, filename=psfile):
+        with open(filename, 'w') as file:
+            file.write(self.psheader + "\n")
+            for s in self.n.PhaseShifters.values():
+                file.write(self.CSVLine(
+                                        s.OwnerCompanyID,
+                                        "",
+                                        s.StationID,
+                                        s.Name,
+                                        s.FromNodeName,
+                                        s.FromVoltage,
+                                        s.FromTapType,
+                                        s.FromTapNormPosition,
+                                        s.ToNodeName,
+                                        s.ToVoltage,
+                                        s.ToTapType,
+                                        s.ToTapNormPosition,
+                                        s.RegulationNodeName,
+                                        str(s.Impedance.real),
+                                        str(s.Impedance.imag),
+                                        "",
+                                        str(s.AVRStatus),
+                                        s.PhaseTapType,
+                                        str(s.AWRStatus),
+                                        "","","","",
+                                        ""                                      ))
+        return
     def GetImporter(self):
         imp = EMSCSVImporter()
         imp.setCSVFileName(FileType.Company, self.companyfile)
@@ -457,6 +527,8 @@ class TestEMSCSVImporter(unittest.TestCase):
         imp.setCSVPropertyMap(FileType.Line, self.linepmap)
         imp.setCSVFileName(FileType.Transformer, self.xffile)
         imp.setCSVPropertyMap(FileType.Transformer, self.xfpmap)
+        imp.setCSVFileName(FileType.PhaseShifter, self.psfile)
+        imp.setCSVPropertyMap(FileType.PhaseShifter, self.pspmap)
         return imp
     def CSVLine(self, *args):
         line = ""

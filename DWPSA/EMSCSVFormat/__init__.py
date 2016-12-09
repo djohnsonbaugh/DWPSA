@@ -7,6 +7,7 @@ __all__ = [
             "EMSCSVExporter", 
             "DivisionCSVStream",
             "LineCSVStream",
+            "PhaseShifterCSVStream",
             "StationCSVStream",
             "TransformerCSVStream",
             "NodeCSVStream"

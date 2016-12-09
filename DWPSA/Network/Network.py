@@ -91,6 +91,9 @@ class Network(object):
         if nc.FromNodeID != nc.ToNodeID:
             self.Nodes[nc.ToNodeID].AddNodeConnector(nc)
         self.NodeConnectors[nc.ID] = nc
+        if isinstance(nc, Transformer):
+            if nc.RegulationNodeID in self.Nodes:
+                nc.RegulationNode = self.Nodes[nc.RegulationNodeID]
         if type(nc) is PhaseShifter:
             self.PhaseShifters[nc.ID] = nc
         if type(nc) is Transformer:

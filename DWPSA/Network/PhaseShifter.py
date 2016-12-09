@@ -7,7 +7,7 @@ class PhaseShifter(Transformer):
 
     def __init__(self, stationid: str, fvoltage: str, fnodename: str, 
                  tvoltage: str, tnodename: str,
-                 name: str, owner: str, monitored: bool,
+                 name: str, owner: str,
                  r: float = 0, x: float = 0, 
                  summer : RatingSet = None, winter : RatingSet = None,
                  spring : RatingSet = None, fall : RatingSet = None,
@@ -16,7 +16,7 @@ class PhaseShifter(Transformer):
                  ptaptype: str = "", awr: bool = False ):
 
         super(PhaseShifter, self).__init__(stationid, fvoltage, fnodename, tvoltage, tnodename,
-                                           name, owner, monitored, r, x, 
+                                           name, owner, False, r, x, 
                                            summer, winter, spring, fall,
                                            ftaptype, fnormtapposition, ttaptype, tnormtapposition, regnodename, avr)
 

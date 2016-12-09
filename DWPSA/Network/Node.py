@@ -23,3 +23,8 @@ class Node(object):
             nc.FromNode = self
         if self.ID == nc.ToNodeID:
             nc.ToNode = self
+
+    def __repr__(self):
+        return self.StationID + " " + self.Name + " " + self.Voltage
+
+    o = object()

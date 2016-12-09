@@ -6,6 +6,7 @@ __all__ = [
             #"TestEMSCSVExporter",
             "TestDivisionCSVStream",
             "TestLineCSVStream",
+            "TestPhaseShifterCSVStream",
             "TestStationCSVStream",
             "TestTransformerCSVStream",
             "TestNodeCSVStream"
