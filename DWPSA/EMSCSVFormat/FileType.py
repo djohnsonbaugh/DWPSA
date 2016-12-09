@@ -7,4 +7,5 @@ class FileType(Enum):
     Node = 4
     CircuitBreaker = 5
     Line = 6
+    Transformer = 7
 

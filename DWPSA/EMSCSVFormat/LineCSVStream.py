@@ -61,10 +61,15 @@ class LineCSVStream(CSVFileStream):
     def getSegment (self) -> str:
         return self.Segment
     def getSummerRatings (self) -> RatingSet:
-        if self.SumNorm == "":
-            self.SumNorm = "99999"
-        if self.SumEmer == "":
-            self.SumEmer = "99999"
+        try:
+            n = float(self.SumNorm)
+        except ValueError:
+            n = 99999.0
+        try:
+            e = float(self.SumEmer)
+        except ValueError:
+            e = 99999.0
+        return RatingSet(n, e) 
         return RatingSet(float(self.SumNorm), float(self.SumEmer)) 
     def getToNodeName (self) -> str:
         return self.ToNodeName
@@ -75,10 +80,15 @@ class LineCSVStream(CSVFileStream):
     def getx (self) -> float:
         return float(self.x)
     def getWinterRatings (self) -> RatingSet:
-        if self.WinNorm == "":
-            self.WinNorm = "99999"
-        if self.WinEmer == "":
-            self.WinEmer = "99999"
+        try:
+            n = float(self.WinNorm)
+        except ValueError:
+            n = 99999.0
+        try:
+            e = float(self.WinEmer)
+        except ValueError:
+            e = 99999.0
+        return RatingSet(n, e) 
         return RatingSet(float(self.WinNorm), float(self.WinEmer))
 
     def getBranch(self) -> Branch:

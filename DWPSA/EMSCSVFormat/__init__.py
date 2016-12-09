@@ -8,5 +8,6 @@ __all__ = [
             "DivisionCSVStream",
             "LineCSVStream",
             "StationCSVStream",
+            "TransformerCSVStream",
             "NodeCSVStream"
           ]

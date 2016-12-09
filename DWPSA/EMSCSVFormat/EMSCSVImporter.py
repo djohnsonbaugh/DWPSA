@@ -1,12 +1,13 @@
 import os
-from EMSCSVFormat.FileType import FileType
+from EMSCSVFormat.CircuitBreakerCSVStream import CircuitBreakerCSVStream
 from EMSCSVFormat.CompanyCSVStream import CompanyCSVStream
 from EMSCSVFormat.DivisionCSVStream import DivisionCSVStream
-from EMSCSVFormat.StationCSVStream import StationCSVStream
-from EMSCSVFormat.NodeCSVStream import NodeCSVStream
+from EMSCSVFormat.FileType import FileType
 from EMSCSVFormat.LineCSVStream import LineCSVStream
+from EMSCSVFormat.NodeCSVStream import NodeCSVStream
+from EMSCSVFormat.StationCSVStream import StationCSVStream
+from EMSCSVFormat.TransformerCSVStream import TransformerCSVStream
 from Network.Network import Network
-from EMSCSVFormat.CircuitBreakerCSVStream import CircuitBreakerCSVStream
 
 class EMSCSVImporter(object):
     """description of class"""
@@ -29,7 +30,7 @@ class EMSCSVImporter(object):
             self.ImportNodes(network)
             self.ImportCircuitBreakers(network)
             self.ImportLines(network)
-
+            self.ImportTransformers(network)
         finally:
             os.chdir(ospath)
         return
@@ -146,5 +147,20 @@ class EMSCSVImporter(object):
         with LineCSVStream(filename, propertymap, self.Encoding) as csv:
             for LN in csv:
                 network.AddNodeConnector(csv.getBranch())
+
+        return
+    def ImportTransformers(self, network: Network):
+                
+        filename = TransformerCSVStream.DefaultFileName 
+        if FileType.Transformer in self.CSVFileNames:
+            filename = self.CSVFileNames[FileType.Transformer]
+        
+        propertymap = TransformerCSVStream.DefaultPropertyToFileMap 
+        if FileType.Transformer in self.CSVPropertyMaps:
+            propertymap = self.CSVPropertyMaps[FileType.Transformer]
+
+        with TransformerCSVStream(filename, propertymap, self.Encoding) as csv:
+            for XF in csv:
+                network.AddNodeConnector(csv.getTransformer())
 
         return

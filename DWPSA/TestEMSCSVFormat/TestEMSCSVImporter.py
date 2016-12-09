@@ -9,6 +9,7 @@ from Network.Branch import Branch
 from Network.RatingSet import RatingSet
 from Network.CircuitBreaker import CircuitBreaker
 from Network.CircuitBreaker import CBState
+from Network.Transformer import Transformer
 
 class TestEMSCSVImporter(unittest.TestCase):
     #Test Network
@@ -33,14 +34,18 @@ class TestEMSCSVImporter(unittest.TestCase):
     #Test Node Data
     n.AddNodeByDef("S1", "115", "N1")
     n.AddNodeByDef("S1", "115", "N2")
+    n.AddNodeByDef("S1", "345", "N3")
     n.AddNodeByDef("S2", "15", "N1")
     n.AddNodeByDef("S2", "15", "N2")
+    n.AddNodeByDef("S2", "115", "N3")
     n.AddNodeByDef("S3", "5", "N1")
     n.AddNodeByDef("S3", "5", "N2")
+    n.AddNodeByDef("S3", "115", "N3")
     n.AddNodeByDef("S4", "1115", "N1")
     n.AddNodeByDef("S5", "1115", "N2")
     n.AddNodeByDef("S6", "115", "N1a")
     n.AddNodeByDef("S6", "115", "N2a")
+    n.AddNodeByDef("S6", "345", "N3")
     n.AddNodeByDef("S7", "15", "N1a")
     n.AddNodeByDef("S7", "15", "N2a")
     n.AddNodeByDef("S8", "5", "N11")
@@ -60,7 +65,11 @@ class TestEMSCSVImporter(unittest.TestCase):
     n.AddNodeConnector(Branch("S3","5","N1", "S8", "5", "N11", "LN3", "C2", False, 0.0005, 0.001, "A", RatingSet(1400,1500), RatingSet(1600, 1700)))
     n.AddNodeConnector(Branch("S3","5","N1", "S8", "5", "N22", "LN4", "C2", False, 0.051, 0.052, "B", RatingSet(140,150), RatingSet(160, 170)))
     n.AddNodeConnector(Branch("S4","1115","N1", "S5", "1115", "N2", "LN5", "C1", False, 0.051, 0.052, "C", RatingSet(140,150), RatingSet(160, 170)))
-
+    #Test Transformer Data
+    n.AddNodeConnector(Transformer("S1", "115", "N1", "345", "N3", "XF", "C1", True, 1.1, 2.2))
+    n.AddNodeConnector(Transformer("S2", "15", "N1", "115", "N3", "XF", "C1", True, 1.1, 2.2))
+    n.AddNodeConnector(Transformer("S3", "5", "N1", "115", "N3", "XF", "C1", True, 1.1, 2.2))
+    n.AddNodeConnector(Transformer("S6", "115", "N1a", "345", "N3", "XF", "C2", False, 1.1, 2.2))
     companyfile = "tempcompany.csv"
     companyheader = "CompanyName,Changed,PTINUM,LOSS_AREA,AWR_AREA"
     companypmap = {
@@ -123,6 +132,30 @@ class TestEMSCSVImporter(unittest.TestCase):
                 "Summer Emergency rating" : "SumEmer",
                 "Winter Normal rating" : "WinNorm",
                 "Winter Emergency rating" : "WinEmer",
+                "Monitored" : "Monitored"
+                }
+    xffile = "tempxf.csv"
+    xfheader = "ID_CO,ID_DV,ID_ST,ID,From Connection Node (LTC SIDE),From Nominal Voltage (LTC SIDE),From Tap Type (LTC SIDE),From Normal Position (LTC SIDE),To Connection Node (FIXED SIDE),To Nominal KV (FIXED SIDE),To Tap Type (FIXED SIDE),To Normal Tap (FIXED SIDE),Regulation Node,r,x,Regulation Schedule,AVR Status,SummerNormalLimit,SummerEmergencyLimt,WinterNormalLimit,WinterEmergencyLimit,Changed,Monitored"
+    xfpmap = {
+                "ID_CO" : "Owner",
+                "ID_ST" : "StationName",
+                "ID" : "TransformerName",
+                "From Connection Node (LTC SIDE)" : "FromNodeName",
+                "From Nominal Voltage (LTC SIDE)" : "FromVoltage",
+                "From Tap Type (LTC SIDE)" : "FromTapType",
+                "From Normal Position (LTC SIDE)" : "FromTapNormPosition",
+                "To Connection Node (FIXED SIDE)" : "ToNodeName",
+                "To Nominal KV (FIXED SIDE)" : "ToVoltage",
+                "To Tap Type (FIXED SIDE)" : "ToTapType",
+                "To Normal Tap (FIXED SIDE)" : "ToTapNormPosition",
+                "Regulation Node" : "RegulationNodeName",
+                "r" : "r",
+                "x" : "x",
+                "AVR Status" : "AVRStatus",
+                "SummerNormalLimit" : "SumNorm",
+                "SummerEmergencyLimt" : "SumEmer",
+                "WinterNormalLimit" : "WinNorm",
+                "WinterEmergencyLimit" : "WinEmer",
                 "Monitored" : "Monitored"
                 }
     def test_Constructor(self):
@@ -224,6 +257,7 @@ class TestEMSCSVImporter(unittest.TestCase):
         self.CreateNodeFile(self.nodefile)
         self.CreateCBFile(self.cbfile)
         self.CreateLineFile(self.linefile)
+        self.CreateTransformerFile(self.xffile)
 
         imp.Import(net)
 
@@ -240,6 +274,7 @@ class TestEMSCSVImporter(unittest.TestCase):
         os.remove(self.nodefile)
         os.remove(self.cbfile)
         os.remove(self.linefile)
+        os.remove(self.xffile)
         return
 
 
@@ -282,6 +317,13 @@ class TestEMSCSVImporter(unittest.TestCase):
         self.assertEqual(self.n.Lines[("S3","LN3","A")].Monitored, net.Lines[("S3","LN3","A")].Monitored)
         self.assertEqual(self.n.Lines[("S4","LN5","C")].WiRating.Normal, net.Lines[("S4","LN5","C")].WiRating.Normal)
         self.assertEqual(self.n.Lines[("S1","LN1","1")].ID, net.Lines[("S1","LN1","1")].ID)
+        return
+    def ValidateTransformer(self, net : Network):
+        self.assertEqual(len(self.n.Transformers),len(net.Transformers))
+        self.assertEqual(self.n.Transformers[("S1","XF","XF")].ID, net.Transformers[("S1","XF","XF")].ID)
+        self.assertEqual(self.n.Transformers[("S2","XF","XF")].Impedance, net.Transformers[("S2","XF","XF")].Impedance)
+        self.assertEqual(self.n.Transformers[("S3","XF","XF")].Monitored, net.Transformers[("S3","XF","XF")].Monitored)
+        self.assertEqual(self.n.Transformers[("S6","XF","XF")].ID, net.Transformers[("S6","XF","XF")].ID)
         return
     def CreateCompanyFile(self, filename=companyfile):
         with open(filename, 'w') as file:
@@ -349,7 +391,6 @@ class TestEMSCSVImporter(unittest.TestCase):
         with open(filename, 'w') as file:
             file.write(self.lineheader + "\n")
             for s in self.n.Lines.values():
-                heaer= "Line_Name     ,Segment Name,r,x,bch,CO_OWNER,Summer Normal rating,Summer Emergency rating,Winter Normal rating,Winter Emergency rating,Changed,Monitored"
                 file.write(self.CSVLine("","","",
                                         s.FromStationID,
                                         s.FromVoltage,
@@ -373,6 +414,33 @@ class TestEMSCSVImporter(unittest.TestCase):
                                         str(s.Monitored)
                                       ))
         return
+    def CreateTransformerFile(self, filename=xffile):
+        with open(filename, 'w') as file:
+            file.write(self.xfheader + "\n")
+            for s in self.n.Transformers.values():
+                file.write(self.CSVLine(
+                                        s.OwnerCompanyID,
+                                        "",
+                                        s.StationID,
+                                        s.Name,
+                                        s.FromNodeName,
+                                        s.FromVoltage,
+                                        s.FromTapType,
+                                        s.FromTapNormPosition,
+                                        s.ToNodeName,
+                                        s.ToVoltage,
+                                        s.ToTapType,
+                                        s.ToTapNormPosition,
+                                        s.RegulationNodeName,
+                                        str(s.Impedance.real),
+                                        str(s.Impedance.imag),
+                                        "",
+                                        str(s.AVRStatus),
+                                        "","","","",
+                                        "",
+                                        str(s.Monitored)
+                                      ))
+        return
     def GetImporter(self):
         imp = EMSCSVImporter()
         imp.setCSVFileName(FileType.Company, self.companyfile)
@@ -387,6 +455,8 @@ class TestEMSCSVImporter(unittest.TestCase):
         imp.setCSVPropertyMap(FileType.CircuitBreaker, self.cbpmap)
         imp.setCSVFileName(FileType.Line, self.linefile)
         imp.setCSVPropertyMap(FileType.Line, self.linepmap)
+        imp.setCSVFileName(FileType.Transformer, self.xffile)
+        imp.setCSVPropertyMap(FileType.Transformer, self.xfpmap)
         return imp
     def CSVLine(self, *args):
         line = ""
