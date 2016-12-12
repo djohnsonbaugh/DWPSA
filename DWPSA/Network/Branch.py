@@ -20,3 +20,6 @@ class Branch(NodeConnector):
         self.WiRating = winter
         self.SpRating = spring
         self.FaRating = fall
+
+    def __repr__(self):
+        return "{BR} " + self.FromStationID + "->" + self.ToStationID + " " + self.FromVoltage + " [" + self.Name + " " + self.Segment + "]"

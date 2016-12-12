@@ -7,6 +7,10 @@ from Network.CircuitBreaker import CircuitBreaker
 from Network.Branch import Branch
 from Network.Transformer import Transformer
 from Network.PhaseShifter import PhaseShifter
+from Network.Unit import Unit
+from Network.Device import Device
+from Network.Shunt import Shunt
+from Network.Load import Load
 
 class Network(object):
     """ Physical Description of a Power System """
@@ -21,6 +25,10 @@ class Network(object):
         self.Lines = {}
         self.Transformers = {}
         self.PhaseShifters = {}
+        self.Devices = {}
+        self.Loads = {}
+        self.Shunts = {}
+        self.Units = {}
         return
     #Company Methods
     def AddCompany(self, company):
@@ -83,6 +91,11 @@ class Network(object):
 
     #Node Connector Methods
     def AddNodeConnector(self, nc: NodeConnector):
+        if nc.FromStationID not in self.Stations or nc.ToStationID not in self.Stations:
+            raise Exception("From or To Station for node connector does not exit in network", nc.FromStationID, nc.ToStationID)
+        self.Stations[nc.FromStationID].AddNodeConnector(nc)
+        if nc.FromStationID != nc.ToStationID:
+            self.Stations[nc.ToStationID].AddNodeConnector(nc)
         if nc.FromNodeID not in self.Nodes or nc.ToNodeID not in self.Nodes:
             raise Exception("From or To Node for node connector does not exit in network", nc.FromNodeID, nc.ToNodeID)
         if nc.ID in self.NodeConnectors:
@@ -105,3 +118,24 @@ class Network(object):
         return
 
 
+    #Device Methods
+    def AddDevice(self, d: Device):
+        if d.StationID not in self.Stations:
+            raise Exception("Station for device does not exit in network", d.StationID)
+        self.Stations[d.StationID].AddDevice(d)
+        if d.NodeID not in self.Nodes:
+            raise Exception("Node for device does not exit in network", d.NodeID)
+        if d.ID in self.Devices:
+            raise Exception("Device already exists in the network", d.ID)        
+        self.Nodes[d.NodeID].AddDevice(d)
+        if isinstance(d, Shunt) or isinstance(d, Unit):
+            if d.RegulationNodeID in self.Nodes:
+                d.RegulationNode = self.Nodes[d.RegulationNodeID]
+        self.Devices[d.ID] = d
+        if type(d) is Load:
+            self.Loads[d.ID] = d
+        if type(d) is Shunt:
+            self.Shunts[d.ID] = d
+        if type(d) is Unit:
+            self.Units[d.ID] = d
+        return

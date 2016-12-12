@@ -26,3 +26,6 @@ class Transformer(Branch):
         self.RegulationNodeName = regnodename
         self.RegulationNodeID = (stationid, regnodename)
         self.AVRStatus = avr
+
+    def __repr__(self):
+        return "{XF} " + self.StationID + " " + self.FromVoltage + "->" + self.ToVoltage + " [" + self.Name + "]"

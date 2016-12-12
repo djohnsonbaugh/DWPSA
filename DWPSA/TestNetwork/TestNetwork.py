@@ -10,6 +10,9 @@ from Network.Branch import Branch
 from Network.Transformer import Transformer
 from Network.PhaseShifter import PhaseShifter
 from Network.CircuitBreaker import CBState
+from Network.Load import Load
+from Network.Unit import Unit
+from Network.Shunt import Shunt
 
 class TestNetwork(unittest.TestCase):
     """Test class for the Network Class"""
@@ -253,6 +256,55 @@ class TestNetwork(unittest.TestCase):
         self.assertEqual(len(nd21.NodeConnectors), 2)
         self.assertEqual(len(nd22.NodeConnectors), 1)
         
+    def test_AddDevice(self):
+        st1 = "ST1"
+        st2 = "ST2"
+        kv115 = "115"
+        kv365 = "365"
+        ndid1 = "N1"
+        ndid2 = "N2"
+        ndid3 = "N3"
+        ndid4 = "N4"
+        company = "ABC"
+        ldid = "LD1"
+        shid = "SH1"
+        uid = "U1"
+        n = Network()
+        #Station #1
+        s1 = Station(st1)
+        nd11 = Node(st1, kv115, ndid1, company)
+        nd12 = Node(st1, kv115, ndid2, company)
+        nd13 = Node(st1, kv365, ndid3, company)
+        nd14 = Node(st1, kv365, ndid4, company)
+        l1 = Load(st1, kv115, ndid1, ldid, company, 1,1,.97)
+        sh1 = Shunt(st1, kv115, ndid2, shid, company, 1)
+        u1 = Unit(st1, kv365, ndid3, uid, company, 10, 10,5,5,.8, False, 7)
+
+        n.AddStation(s1)
+
+        with self.assertRaises(Exception):
+            n.AddDevice(l1)
+
+        n.AddNode(nd12)
+        n.AddNode(nd11)
+        n.AddNode(nd13)
+        n.AddNode(nd14)
+        n.AddDevice(l1)
+        n.AddDevice(sh1)
+        n.AddDevice(u1)
+        #duplicate device
+        with self.assertRaises(Exception):
+            n.AddDevice(l1)
+
+
+
+        self.assertEqual(len(n.Devices), 3)
+        self.assertEqual(len(n.Loads), 1)
+        self.assertEqual(len(n.Units), 1)
+        self.assertEqual(len(n.Shunts), 1)
+        self.assertEqual(len(nd11.Devices), 1)
+        self.assertEqual(len(nd12.Devices), 1)
+        self.assertEqual(len(nd13.Devices), 1)
         
 if __name__ == '__main__':
     unittest.main()

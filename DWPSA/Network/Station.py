@@ -11,9 +11,17 @@ class Station(object):
         self.DivisionID = divisionid
         self.ID = stationid
         self.Nodes = {}
+        self.NodeConnectors = {}
+        self.Devices = {}
 
     #Methods
     def AddNode(self, node):
         self.Nodes[node.ID] = node
         node.Station = self
         node.StationID = self.ID
+
+    def AddNodeConnector(self, nc: NodeConnector):
+        self.NodeConnectors[nc.ID] = nc
+    
+    def AddDevice(self, d: Device):
+        self.Devices[d.ID] = d

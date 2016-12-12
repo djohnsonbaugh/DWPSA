@@ -19,3 +19,5 @@ class CircuitBreaker(NodeConnector):
         self.StationID = stationid
         self.Voltage = voltage
 
+    def __repr__(self):
+        return "{CB} " + self.StationID + " " + self.FromNodeName + "->" + self.ToNodeName + " " + self.FromVoltage + " [" + self.Name + "]"
