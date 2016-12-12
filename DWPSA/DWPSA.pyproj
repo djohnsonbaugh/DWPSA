@@ -52,6 +52,9 @@
     <Compile Include="Network\Company.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Network\Device.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Network\Division.py">
       <SubType>Code</SubType>
     </Compile>
@@ -73,6 +76,9 @@
     <Compile Include="Network\Branch.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Network\Load.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Network\Network.py">
       <SubType>Code</SubType>
     </Compile>
@@ -89,10 +95,16 @@
     <Compile Include="Network\RatingSet.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Network\Shunt.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Network\Station.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Network\Transformer.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Network\Unit.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Network\__init__.py">
@@ -137,10 +149,16 @@
     <Compile Include="TestNetwork\TestCompany.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TestNetwork\TestDevice.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="TestNetwork\TestDivision.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestEMSCSVFormat\TestEMSCSVImporter.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestNetwork\TestLoad.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestNetwork\TestNodeConnector.py">
@@ -152,10 +170,16 @@
     <Compile Include="TestNetwork\TestRatingSet.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TestNetwork\TestShunt.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="TestNetwork\TestStation.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestNetwork\TestTransformer.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestNetwork\TestUnit.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestNetwork\__init__.py">

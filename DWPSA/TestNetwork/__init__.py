@@ -2,12 +2,16 @@ __all__ = [
             "TestBranch",
             "TestCircuitBreaker",
             "TestCompany", 
-            "TestDivision", 
+            "TestDevice",
+            "TestDivision",
+            "TestLoad",
             "TestNetwork", 
             "TestNode", 
             "TestNodeConnector",
             "TestPhaseShifter",
             "TestRatingSet",
+            "TestShunt",
             "TestStation",
-            "TestTransformer"
+            "TestTransformer",
+            "TestUnit"
           ]
