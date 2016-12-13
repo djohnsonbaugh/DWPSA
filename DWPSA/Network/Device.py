@@ -2,8 +2,8 @@ class Device(object):
     """Physical Device at a Node"""
 
     #Constructor
-    def __init__(self, stationid: str, voltage: str, nodename: str, name: str, owner: str):
-        self.ID = (stationid, name)
+    def __init__(self, stationid: str, voltage: str, nodename: str, name: str, dtype: str,  owner: str):
+        self.ID = (stationid, name, dtype)
         self.Name = name
         self.Node = None
         self.NodeID = (stationid, nodename)            

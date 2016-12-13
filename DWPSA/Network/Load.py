@@ -4,7 +4,7 @@ class Load(Device):
 
     def __init__(self, stationid: str, voltage: str, nodename: str, name: str, owner: str, 
                  mwcon: float, mvcon: float, pfcon: float, mwncon: float = 0, mvncon: float = 0):
-        super(Load, self).__init__(stationid, voltage, nodename, name, owner)
+        super(Load, self).__init__(stationid, voltage, nodename, name, "LD", owner)
 
         self.Conforming = complex(mwcon, mvcon)
         self.NonConforming = complex(mwncon, mvncon)

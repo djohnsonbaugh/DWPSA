@@ -1,13 +1,13 @@
 import unittest
 from TestNetwork import *
 from TestEMSCSVFormat import *
-#from Network.Network import Network
-#from EMSCSVFormat.EMSCSVImporter import EMSCSVImporter
+from Network.Network import Network
+from EMSCSVFormat.EMSCSVImporter import EMSCSVImporter
 
-#n = Network()
-##imp = EMSCSVImporter("C:\PROBE\Models\EMS2015Dec")
-#imp = EMSCSVImporter("C:\EMS2015Dec")
-#imp.Import(n)
+n = Network()
+#imp = EMSCSVImporter("C:\PROBE\Models\EMS2015Dec")
+imp = EMSCSVImporter("C:\EMS2015Dec")
+imp.Import(n)
 
 testclasses = [
                TestBranch.TestBranch,
@@ -31,6 +31,7 @@ testclasses = [
                TestPhaseShifterCSVStream.TestPhaseShifterCSVStream,
                TestRatingSet.TestRatingSet,
                TestShunt.TestShunt,
+               TestShuntCSVStream.TestShuntCSVStream,
                TestStation.TestStation, 
                TestStationCSVStream.TestStationCSVStream,
                TestTransformer.TestTransformer,

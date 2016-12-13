@@ -42,7 +42,7 @@ class TestLoadCSVStream(unittest.TestCase):
             self.assertEqual(c.getMVCon(), math.sqrt((float(mw)/float(pf))**2 - (float(mw))**2))
 
             ld = c.getLoad()
-            self.assertEqual(ld.ID, (st, loadname))
+            self.assertEqual(ld.ID, (st, loadname, "LD"))
 
         os.remove(testfilename)
         return

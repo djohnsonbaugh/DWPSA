@@ -22,7 +22,7 @@ class TestUnit(unittest.TestCase):
 
         nc = Unit(st, kv, nd, name, owner, mwmax, mvmax, mwmin, mvmin, partf, agc, mw, regnodename, pu , dev)
 
-        self.assertEqual(nc.ID, (st,name))
+        self.assertEqual(nc.ID, (st,name, "UN"))
         self.assertEqual(nc.Node, None)
         self.assertEqual(nc.NodeID, (st,nd))
         self.assertEqual(nc.NodeName, nd)

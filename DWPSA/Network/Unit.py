@@ -5,7 +5,7 @@ class Unit(Device):
     def __init__(self, stationid: str, voltage: str, nodename: str, name: str, owner: str, 
                  mwmax: float, mvmax: float, mwmin: float, mvmin: float, partfact: float, agc: bool, imw: float,
                  regnodename : str = "", puvolttarget: float = 1, deviation: float = .05 ):
-        super(Unit, self).__init__(stationid, voltage, nodename, name, owner)
+        super(Unit, self).__init__(stationid, voltage, nodename, name, "UN", owner)
         
         self.AGC = agc
         self.InitialMW = imw

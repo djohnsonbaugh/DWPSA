@@ -8,10 +8,11 @@ class TestDevice(unittest.TestCase):
         nd = "N1"
         name = "D1"
         owner = "C1"
+        dtype = "D"
 
-        nc = Device(st, kv, nd, name, owner)
+        nc = Device(st, kv, nd, name, dtype, owner)
 
-        self.assertEqual(nc.ID, (st,name))
+        self.assertEqual(nc.ID, (st,name, dtype))
         self.assertEqual(nc.Node, None)
         self.assertEqual(nc.NodeID, (st,nd))
         self.assertEqual(nc.NodeName, nd)

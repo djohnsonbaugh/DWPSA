@@ -17,7 +17,7 @@ class TestLoad(unittest.TestCase):
 
         nc = Load(st, kv, nd, name, owner, mwcon, mvcon, pf, mwncon, mvncon)
 
-        self.assertEqual(nc.ID, (st,name))
+        self.assertEqual(nc.ID, (st,name, "LD"))
         self.assertEqual(nc.Node, None)
         self.assertEqual(nc.NodeID, (st,nd))
         self.assertEqual(nc.NodeName, nd)

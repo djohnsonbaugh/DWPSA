@@ -43,6 +43,9 @@
     <Compile Include="EMSCSVFormat\PhaseShifterCSVStream.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="EMSCSVFormat\ShuntCSVStream.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="EMSCSVFormat\StationCSVStream.py">
       <SubType>Code</SubType>
     </Compile>
@@ -135,6 +138,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestEMSCSVFormat\TestPhaseShifterCSVStream.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestEMSCSVFormat\TestShuntCSVStream.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestEMSCSVFormat\TestStationCSVStream.py">
