@@ -11,6 +11,7 @@ from Network.CircuitBreaker import CircuitBreaker
 from Network.CircuitBreaker import CBState
 from Network.Transformer import Transformer
 from Network.PhaseShifter import PhaseShifter
+from Network.Load import Load
 
 class TestEMSCSVImporter(unittest.TestCase):
     #Test Network
@@ -77,6 +78,15 @@ class TestEMSCSVImporter(unittest.TestCase):
     n.AddNodeConnector(PhaseShifter("S3", "5", "N1", "5", "N2","PS1","C1",1.1,2.5, RatingSet(400,500), RatingSet(600, 700)))
     n.AddNodeConnector(PhaseShifter("S6", "115", "N1a", "115", "N2a","PS2","C2",1.1,2.5, RatingSet(400,500), RatingSet(600, 700)))
     n.AddNodeConnector(PhaseShifter("S8", "5", "N11", "5", "N22","PS","C2",1.1,2.5, RatingSet(400,500), RatingSet(600, 700)))
+    #Test Load Data
+    n.AddDevice(Load("S1", "115", "N1", "LD1", "C1", 1,.5, .95))
+    n.AddDevice(Load("S2", "15", "N2", "LD2", "C1", 1,.5, .95))
+    n.AddDevice(Load("S3", "5", "N3", "LD3", "C1", 1,.5, .95))
+    n.AddDevice(Load("S4", "1115", "N1", "LD4", "C1", 1,.5, .95))
+    n.AddDevice(Load("S6", "115", "N1a", "LD1", "C2", 1,.5, .95))
+    n.AddDevice(Load("S7", "15", "N1a", "LD2", "C2", 1,.5, .95))
+    n.AddDevice(Load("S8", "5", "N11", "LD3", "C2", 1,.5, .95))
+    n.AddDevice(Load("S5", "1115", "N2", "LD4", "C2", 1,.5, .95))
 
     companyfile = "tempcompany.csv"
     companyheader = "CompanyName,Changed,PTINUM,LOSS_AREA,AWR_AREA"
@@ -191,6 +201,19 @@ class TestEMSCSVImporter(unittest.TestCase):
                 "Winter Normal" : "WinNorm",
                 "Winter Emergency" : "WinEmer"
                 }
+    ldfile = "templd.csv"
+    ldheader = "Company,Station ,KV  ,Node Name,PTI Name    ,PTI Number,Load Name     ,MW NonConforming,MVar NonConforming,MW Conforming,Power Factor Conforming,Load Area,Load Control Area,Changed"
+    ldpmap = {
+                "Company" : "Owner",
+                "Station" : "StationName",
+                "KV" : "Voltage",
+                "Node Name" : "NodeName",
+                "Load Name" : "LoadName",
+                "MW NonConforming" : "MWNonCon",
+                "MVar NonConforming" : "MVNonCon",
+                "MW Conforming" : "MWCon",
+                "Power Factor Conforming" : "PowerFactorCon"
+                }
     def test_Constructor(self):
 
         encoding = "test"
@@ -292,6 +315,7 @@ class TestEMSCSVImporter(unittest.TestCase):
         self.CreateLineFile(self.linefile)
         self.CreateTransformerFile(self.xffile)
         self.CreatePhaseShifterFile(self.psfile)
+        self.CreateLoadFile(self.ldfile)
 
         imp.Import(net)
 
@@ -302,6 +326,7 @@ class TestEMSCSVImporter(unittest.TestCase):
         self.ValidateCB(net)
         self.ValidateLine(net)
         self.ValidatePhaseShifter(net)
+        self.ValidateLoad(net)
 
         os.remove(self.companyfile)
         os.remove(self.divisionfile)
@@ -311,6 +336,7 @@ class TestEMSCSVImporter(unittest.TestCase):
         os.remove(self.linefile)
         os.remove(self.xffile)
         os.remove(self.psfile)
+        os.remove(self.ldfile)
         return
 
 
@@ -367,6 +393,12 @@ class TestEMSCSVImporter(unittest.TestCase):
         self.assertEqual(self.n.PhaseShifters[("S2","PS1","PS1")].Impedance, net.PhaseShifters[("S2","PS1","PS1")].Impedance)
         self.assertEqual(self.n.PhaseShifters[("S3","PS1","PS1")].Monitored, net.PhaseShifters[("S3","PS1","PS1")].Monitored)
         self.assertEqual(self.n.PhaseShifters[("S8","PS","PS")].ID, net.PhaseShifters[("S8","PS","PS")].ID)
+        return
+    def ValidateLoad(self, net : Network):
+        self.assertEqual(len(self.n.Loads),len(net.Loads))
+        self.assertEqual(self.n.Loads[("S1","LD1")].ID, net.Loads[("S1","LD1")].ID)
+        self.assertEqual(self.n.Loads[("S1","LD1")].PowerFactor, net.Loads[("S1","LD1")].PowerFactor)
+        self.assertEqual(self.n.Loads[("S1","LD1")].Conforming.real, net.Loads[("S1","LD1")].Conforming.real)
         return
     def CreateCompanyFile(self, filename=companyfile):
         with open(filename, 'w') as file:
@@ -511,6 +543,24 @@ class TestEMSCSVImporter(unittest.TestCase):
                                         "","","","",
                                         ""                                      ))
         return
+    def CreateLoadFile(self, filename=ldfile):
+        with open(filename, 'w') as file:
+            file.write(self.ldheader + "\n")
+            #Load Area,Load Control Area,Changed
+            for s in self.n.Loads.values():
+                file.write(self.CSVLine(
+                                        s.OwnerCompanyID,
+                                        s.StationID,
+                                        s.Voltage,
+                                        s.NodeName,
+                                        "","",
+                                        s.Name,
+                                        str(s.NonConforming.real),
+                                        str(s.NonConforming.imag),
+                                        str(s.Conforming.real),
+                                        str(s.PowerFactor)
+                                      ))
+        return
     def GetImporter(self):
         imp = EMSCSVImporter()
         imp.setCSVFileName(FileType.Company, self.companyfile)
@@ -529,6 +579,8 @@ class TestEMSCSVImporter(unittest.TestCase):
         imp.setCSVPropertyMap(FileType.Transformer, self.xfpmap)
         imp.setCSVFileName(FileType.PhaseShifter, self.psfile)
         imp.setCSVPropertyMap(FileType.PhaseShifter, self.pspmap)
+        imp.setCSVFileName(FileType.Load, self.ldfile)
+        imp.setCSVPropertyMap(FileType.Load, self.ldpmap)
         return imp
     def CSVLine(self, *args):
         line = ""

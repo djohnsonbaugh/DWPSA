@@ -4,6 +4,7 @@ from EMSCSVFormat.CompanyCSVStream import CompanyCSVStream
 from EMSCSVFormat.DivisionCSVStream import DivisionCSVStream
 from EMSCSVFormat.FileType import FileType
 from EMSCSVFormat.LineCSVStream import LineCSVStream
+from EMSCSVFormat.LoadCSVStream import LoadCSVStream
 from EMSCSVFormat.PhaseShifterCSVStream import PhaseShifterCSVStream
 from EMSCSVFormat.NodeCSVStream import NodeCSVStream
 from EMSCSVFormat.StationCSVStream import StationCSVStream
@@ -33,6 +34,7 @@ class EMSCSVImporter(object):
             self.ImportLines(network)
             self.ImportTransformers(network)
             self.ImportPhaseShifters(network)
+            self.ImportLoads(network)
         finally:
             os.chdir(ospath)
         return
@@ -179,5 +181,20 @@ class EMSCSVImporter(object):
         with PhaseShifterCSVStream(filename, propertymap, self.Encoding) as csv:
             for PS in csv:
                 network.AddNodeConnector(csv.getPhaseShifter())
+
+        return
+    def ImportLoads(self, network: Network):
+                
+        filename = LoadCSVStream.DefaultFileName 
+        if FileType.Load in self.CSVFileNames:
+            filename = self.CSVFileNames[FileType.Load]
+        
+        propertymap = LoadCSVStream.DefaultPropertyToFileMap 
+        if FileType.Load in self.CSVPropertyMaps:
+            propertymap = self.CSVPropertyMaps[FileType.Load]
+
+        with LoadCSVStream(filename, propertymap, self.Encoding) as csv:
+            for LN in csv:
+                network.AddDevice(csv.getLoad())
 
         return

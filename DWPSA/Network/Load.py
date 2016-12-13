@@ -9,3 +9,6 @@ class Load(Device):
         self.Conforming = complex(mwcon, mvcon)
         self.NonConforming = complex(mwncon, mvncon)
         self.PowerFactor = pfcon
+
+    def __repr__(self):
+        return super(Load, self).__repr__() + " " + str(self.Conforming)

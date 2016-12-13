@@ -5,8 +5,8 @@ from TestEMSCSVFormat import *
 #from EMSCSVFormat.EMSCSVImporter import EMSCSVImporter
 
 #n = Network()
-#imp = EMSCSVImporter("C:\PROBE\Models\EMS2015Dec")
-##imp = EMSCSVImporter("C:\EMS2015Dec")
+##imp = EMSCSVImporter("C:\PROBE\Models\EMS2015Dec")
+#imp = EMSCSVImporter("C:\EMS2015Dec")
 #imp.Import(n)
 
 testclasses = [
@@ -22,6 +22,7 @@ testclasses = [
                TestEMSCSVImporter.TestEMSCSVImporter,
                TestLineCSVStream.TestLineCSVStream,
                TestLoad.TestLoad,
+               TestLoadCSVStream.TestLoadCSVStream,
                TestNetwork.TestNetwork,
                TestNode.TestNode,
                TestNodeConnector.TestNodeConnector,

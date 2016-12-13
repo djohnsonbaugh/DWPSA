@@ -9,4 +9,4 @@ class FileType(Enum):
     Line = 6
     Transformer = 7
     PhaseShifter = 8
-
+    Load = 9

@@ -280,6 +280,9 @@ class TestNetwork(unittest.TestCase):
         sh1 = Shunt(st1, kv115, ndid2, shid, company, 1)
         u1 = Unit(st1, kv365, ndid3, uid, company, 10, 10,5,5,.8, False, 7)
 
+        with self.assertRaises(Exception):
+            n.AddDevice(l1)
+
         n.AddStation(s1)
 
         with self.assertRaises(Exception):

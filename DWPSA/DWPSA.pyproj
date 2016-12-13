@@ -34,6 +34,9 @@
     <Compile Include="EMSCSVFormat\LineCSVStream.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="EMSCSVFormat\LoadCSVStream.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="EMSCSVFormat\NodeCSVStream.py">
       <SubType>Code</SubType>
     </Compile>
@@ -123,6 +126,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestEMSCSVFormat\TestLineCSVStream.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestEMSCSVFormat\TestLoadCSVStream.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestEMSCSVFormat\TestNodeCSVStream.py">
