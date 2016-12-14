@@ -7,9 +7,10 @@ __all__ = [
             "TestDivisionCSVStream",
             "TestLineCSVStream",
             "TestLoadCSVStream",
+            "TestNodeCSVStream",
             "TestPhaseShifterCSVStream",
             "TestStationCSVStream",
             "TestShuntCSVStream",
             "TestTransformerCSVStream",
-            "TestNodeCSVStream"
+            "TestUnitCSVStream"
           ]

@@ -13,6 +13,7 @@ from Network.Transformer import Transformer
 from Network.PhaseShifter import PhaseShifter
 from Network.Load import Load
 from Network.Shunt import Shunt
+from Network.Unit import Unit
 
 class TestEMSCSVImporter(unittest.TestCase):
     #Test Network
@@ -97,6 +98,15 @@ class TestEMSCSVImporter(unittest.TestCase):
     n.AddDevice(Shunt("S7", "15", "N1a", "SH2", "C2", 20))
     n.AddDevice(Shunt("S8", "5", "N11", "SH3", "C2", 20))
     n.AddDevice(Shunt("S5", "1115", "N2", "SH4", "C2", 20))
+    #Test Unit Data
+    n.AddDevice(Unit("S1", "115", "N1", "UN1", "C1", 100.5, 10, 10, -10, .95, False, 20))
+    n.AddDevice(Unit("S2", "15", "N2", "UN2", "C1", 100.5, 10, 10, -10, .95, False, 20))
+    n.AddDevice(Unit("S3", "5", "N3", "UN3", "C1", 100.5, 10, 10, -10, .95, False, 20))
+    n.AddDevice(Unit("S4", "1115", "N1", "UN4", "C1", 100.5, 10, 10, -10, .95, False, 20))
+    n.AddDevice(Unit("S6", "115", "N1a", "UN1", "C2", 100.5, 10, 10, -10, .95, False, 20))
+    n.AddDevice(Unit("S7", "15", "N1a", "UN2", "C2", 100.5, 10, 10, -10, .95, False, 20))
+    n.AddDevice(Unit("S8", "5", "N11", "UN3", "C2", 100.5, 10, 10, -10, .95, False, 20))
+    n.AddDevice(Unit("S5", "1115", "N2", "UN4", "C2", 100.5, 10, 10, -10, .95, False, 20))
 
     companyfile = "tempcompany.csv"
     companyheader = "CompanyName,Changed,PTINUM,LOSS_AREA,AWR_AREA"
@@ -237,6 +247,25 @@ class TestEMSCSVImporter(unittest.TestCase):
                 "Voltage Target PU" : "VoltagePUTarget",
                 "Deviation" : "VoltageTargetDeviation"
                 }
+    unfile = "tempun.csv"
+    unheader = "Company,Station,KV,Unit Name,Connection Node,Regulation Node,BaseM,Participation Factor,MW Max,MW MN,Mvar Max,Mvar Min,Voltage Target (PU),Deviation,Mvar Capability Curve,NO AGC,Changed"
+    unpmap = {
+                "Company" : "Owner",
+                "Station" : "StationName",
+                "KV" : "Voltage",
+                "Unit Name" : "UnitName",
+                "Connection Node" : "NodeName",
+                "Regulation Node" : "RegNodeName",
+                "BaseM" : "InitialMW",
+                "Participation Factor" : "ParticipationFactor",
+                "MW Max" : "MWMax",
+                "MW MN" : "MWMin",
+                "Mvar Max" : "MVarMax",
+                "Mvar Min" : "MVarMin",
+                "Voltage Target (PU)" : "VoltagePUTarget",
+                "Deviation" : "VoltageTargetDeviation",
+                "NO AGC" : "NoAGC"
+                }
     def test_Constructor(self):
 
         encoding = "test"
@@ -340,6 +369,7 @@ class TestEMSCSVImporter(unittest.TestCase):
         self.CreatePhaseShifterFile(self.psfile)
         self.CreateLoadFile(self.ldfile)
         self.CreateShuntFile(self.shfile)
+        self.CreateUnitFile(self.unfile)
 
         imp.Import(net)
 
@@ -352,6 +382,7 @@ class TestEMSCSVImporter(unittest.TestCase):
         self.ValidatePhaseShifter(net)
         self.ValidateLoad(net)
         self.ValidateShunt(net)
+        self.ValidateUnit(net)
 
         os.remove(self.companyfile)
         os.remove(self.divisionfile)
@@ -363,6 +394,7 @@ class TestEMSCSVImporter(unittest.TestCase):
         os.remove(self.psfile)
         os.remove(self.ldfile)
         os.remove(self.shfile)
+        os.remove(self.unfile)
         return
 
 
@@ -430,6 +462,11 @@ class TestEMSCSVImporter(unittest.TestCase):
         self.assertEqual(len(self.n.Shunts),len(net.Shunts))
         self.assertEqual(self.n.Shunts[("S1","SH1", "SH")].ID, net.Shunts[("S1","SH1", "SH")].ID)
         self.assertEqual(self.n.Shunts[("S1","SH1", "SH")].MVar, net.Shunts[("S1","SH1", "SH")].MVar)
+        return
+    def ValidateUnit(self, net : Network):
+        self.assertEqual(len(self.n.Units),len(net.Units))
+        self.assertEqual(self.n.Units[("S1","UN1", "UN")].ID, net.Units[("S1","UN1", "UN")].ID)
+        self.assertEqual(self.n.Units[("S1","UN1", "UN")].MVAMax, net.Units[("S1","UN1", "UN")].MVAMax)
         return
     def CreateCompanyFile(self, filename=companyfile):
         with open(filename, 'w') as file:
@@ -608,6 +645,30 @@ class TestEMSCSVImporter(unittest.TestCase):
                                         str(s.VoltageTargetDeviation),""
                                       ))
         return
+    def CreateUnitFile(self, filename=unfile):
+        with open(filename, 'w') as file:
+            file.write(self.unheader + "\n")
+            #Company,Station,KV,Unit Name,Connection Node,Regulation Node,BaseM,Participation Factor,MW Max,MW MN,Mvar Max,Mvar Min,Voltage Target (PU),Deviation,Mvar Capability Curve,NO AGC,Changed
+            for s in self.n.Units.values():
+                file.write(self.CSVLine(
+                                        s.OwnerCompanyID,
+                                        s.StationID,
+                                        s.Voltage,
+                                        s.Name,
+                                        s.NodeName,
+                                        s.RegulationNodeName,
+                                        str(s.InitialMW),
+                                        str(s.ParticipationFactor),
+                                        str(s.MVAMax.real),
+                                        str(s.MVAMin.real),
+                                        str(s.MVAMax.imag),
+                                        str(s.MVAMin.imag),    
+                                        str(s.VoltagePUTarget),
+                                        str(s.VoltageTargetDeviation),
+                                        "",
+                                        "FALSE", ""
+                                      ))
+        return
     def GetImporter(self):
         imp = EMSCSVImporter()
         imp.setCSVFileName(FileType.Company, self.companyfile)
@@ -630,6 +691,8 @@ class TestEMSCSVImporter(unittest.TestCase):
         imp.setCSVPropertyMap(FileType.Load, self.ldpmap)
         imp.setCSVFileName(FileType.Shunt, self.shfile)
         imp.setCSVPropertyMap(FileType.Shunt, self.shpmap)
+        imp.setCSVFileName(FileType.Unit, self.unfile)
+        imp.setCSVPropertyMap(FileType.Unit, self.unpmap)
         return imp
     def CSVLine(self, *args):
         line = ""

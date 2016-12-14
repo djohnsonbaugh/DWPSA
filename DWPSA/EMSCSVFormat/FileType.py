@@ -10,4 +10,5 @@ class FileType(Enum):
     Transformer = 7
     PhaseShifter = 8
     Load = 9
-    Shunt=10
+    Shunt= 10
+    Unit = 11
