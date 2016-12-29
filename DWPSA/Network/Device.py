@@ -15,3 +15,6 @@ class Device(object):
 
     def __repr__(self):
         return self.StationID + " " + self.Name + " " + self.Voltage
+
+    def __str__(self):
+        return self.StationID + " " + self.Name + " " + self.Voltage

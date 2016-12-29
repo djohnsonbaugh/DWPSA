@@ -12,3 +12,6 @@ class Load(Device):
 
     def __repr__(self):
         return super(Load, self).__repr__() + " " + str(self.Conforming)
+
+    def __str__(self):
+        return "{LD} " + super(Load, self).__repr__() + " " + str(self.Conforming.real)

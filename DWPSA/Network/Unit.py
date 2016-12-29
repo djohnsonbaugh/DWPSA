@@ -17,3 +17,7 @@ class Unit(Device):
         self.RegulationNodeID = (stationid, regnodename)
         self.VoltagePUTarget = puvolttarget
         self.VoltageTargetDeviation = deviation
+
+
+    def __str__(self):
+        return "{UN} " + super(Unit, self).__repr__() + " " + str(self.MVAMax.real)

@@ -3,7 +3,7 @@ from Network.Transformer import Transformer
 from Network.RatingSet import RatingSet
 class TransformerCSVStream(CSVFileStream):
     """Streams EMS Transformer Branch Properties with Data Conversions"""
-
+#,SummerEmergencyLimit,WinterNormalLimit,WinterEmergencyLimit,Changed,Monitored
     DefaultPropertyToFileMap = {
                                 "ID_CO" : "Owner",
                                 "ID_ST" : "StationName",
@@ -21,7 +21,7 @@ class TransformerCSVStream(CSVFileStream):
                                 "x" : "x",
                                 "AVR Status" : "AVRStatus",
                                 "SummerNormalLimit" : "SumNorm",
-                                "SummerEmergencyLimt" : "SumEmer",
+                                "SummerEmergencyLimit" : "SumEmer",
                                 "WinterNormalLimit" : "WinNorm",
                                 "WinterEmergencyLimit" : "WinEmer",
                                 "Monitored" : "Monitored"

@@ -6,8 +6,7 @@
     <ProjectGuid>c4fa1854-cdb6-4f23-8d80-a4dc535a000a</ProjectGuid>
     <ProjectHome>.</ProjectHome>
     <StartupFile>DWPSA.py</StartupFile>
-    <SearchPath>
-    </SearchPath>
+    <SearchPath>..\..\dem\dem\</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>DWPSA</Name>
@@ -22,6 +21,16 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="DEMNetworkExport\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="dem\devices.py" />
+    <Compile Include="dem\devices_test.py" />
+    <Compile Include="dem\network.py" />
+    <Compile Include="dem\__init__.py" />
+    <Compile Include="DEMNetworkExport\SimpleExport.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="EMSCSVFormat\CircuitBreakerCSVStream.py">
       <SubType>Code</SubType>
     </Compile>
@@ -119,6 +128,12 @@
     <Compile Include="Network\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TestDEMNetworkExport\TestSimpleExport.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestDEMNetworkExport\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="TestEMSCSVFormat\TestCSVFileStream.py">
       <SubType>Code</SubType>
     </Compile>
@@ -211,10 +226,19 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="dem\" />
+    <Folder Include="dem\__pycache__\" />
     <Folder Include="Network\" />
     <Folder Include="EMSCSVFormat\" />
+    <Folder Include="DEMNetworkExport\" />
+    <Folder Include="TestDEMNetworkExport\" />
     <Folder Include="TestNetwork\" />
     <Folder Include="TestEMSCSVFormat\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="dem\__pycache__\devices.cpython-35.pyc" />
+    <Content Include="dem\__pycache__\network.cpython-35.pyc" />
+    <Content Include="dem\__pycache__\__init__.cpython-35.pyc" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -23,3 +23,6 @@ class Branch(NodeConnector):
 
     def __repr__(self):
         return "{BR} " + self.FromStationID + "->" + self.ToStationID + " " + self.FromVoltage + " [" + self.Name + " " + self.Segment + "]"
+
+    def __str__(self):
+        return "{BR} " + self.FromStationID + "->" + self.ToStationID + " " + self.FromVoltage + " [" + self.Name + " " + self.Segment + "]"

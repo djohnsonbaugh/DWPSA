@@ -8,7 +8,7 @@ class UnitCSVStream(CSVFileStream):
                                 "Company" : "Owner",
                                 "Station" : "StationName",
                                 "KV" : "Voltage",
-                                "Unit Name" : "UnitName",
+                                "UnitName" : "UnitName",
                                 "Connection Node" : "NodeName",
                                 "Regulation Node" : "RegNodeName",
                                 "BaseM" : "InitialMW",
@@ -17,9 +17,9 @@ class UnitCSVStream(CSVFileStream):
                                 "MW MN" : "MWMin",
                                 "Mvar Max" : "MVarMax",
                                 "Mvar Min" : "MVarMin",
-                                "Voltage Target (PU)" : "VoltagePUTarget",
+                                "Voltage Tartet(PU)" : "VoltagePUTarget",
                                 "Deviation" : "VoltageTargetDeviation",
-                                "NO AGC" : "NoAGC"
+                                "NOAGC" : "NoAGC"
                                 }
     DefaultFileName = "Units.csv"
 

@@ -10,9 +10,9 @@ class LoadCSVStream(CSVFileStream):
                                 "Node Name" : "NodeName",
                                 "Load Name" : "LoadName",
                                 "MW NonConforming" : "MWNonCon",
-                                "MVar NonConforming" : "MVNonCon",
+                                "MVarNonConforming" : "MVNonCon",
                                 "MW Conforming" : "MWCon",
-                                "Power Factor Conforming" : "PowerFactorCon"
+                                "PowerFactor Conforming" : "PowerFactorCon"
                                 }
     DefaultFileName = "Loads.csv"
 
