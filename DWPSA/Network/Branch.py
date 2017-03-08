@@ -26,3 +26,10 @@ class Branch(NodeConnector):
 
     def __str__(self):
         return "{BR} " + self.FromStationID + "->" + self.ToStationID + " " + self.FromVoltage + " [" + self.Name + " " + self.Segment + "]"
+
+    def GetVariableName(self):
+        return "Tr_{0}__{1}__{2}".format(
+            self.ID[0].replace("-","_d_"), 
+            self.ID[1].replace("-","_d_"),
+            self.ID[2].replace("-","_d_")
+            )

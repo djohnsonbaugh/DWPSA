@@ -2,22 +2,22 @@ import unittest
 from TestNetwork import *
 from TestEMSCSVFormat import *
 from TestDEMNetworkExport import *
-from Network.Network import Network
-from EMSCSVFormat.EMSCSVImporter import EMSCSVImporter
-from dem import Group
-from DEMNetworkExport.SimpleExport import NetworkToDEMSimple
-import io
+#from Network.Network import Network
+#from EMSCSVFormat.EMSCSVImporter import EMSCSVImporter
+#from dem import Group
+#from DEMNetworkExport.SimpleExport import NetworkToDEMSimple
+#import io
 
-n = Network()
-#imp = EMSCSVImporter("C:\PROBE\Models\EMS2015Dec")
-imp = EMSCSVImporter("C:\EMS2016Dec")
-imp.Import(n)
-gp = Group([],[])
-gp = NetworkToDEMSimple(n, ["CIN"], [], "C:\\repo\\dem\\main.py")
-gp.init_problem()
-gp.problem.solve()
-with open("testdemresult.txt", 'w') as file:
-    file.write(gp.results.summary())
+#n = Network()
+##imp = EMSCSVImporter("C:\PROBE\Models\EMS2015Dec")
+#imp = EMSCSVImporter("C:\EMS2016Dec")
+#imp.Import(n)
+#gp = Group([],[])
+#gp = NetworkToDEMSimple(n, [], [], "C:\\repo\\dwdem\\main.py", 0.1)
+#gp.init_problem()
+#gp.problem.solve()
+#with open("testdemresult.txt", 'w') as file:
+#    file.write(gp.results.summary())
 
 testclasses = [
                TestBranch.TestBranch,

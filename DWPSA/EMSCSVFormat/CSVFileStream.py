@@ -21,7 +21,7 @@ class CSVFileStream(object):
             strs = self.ReadCSVLine()
             for col in range(len(strs)):
                 for n in self.PropertyToColumnNameMap.keys():
-                    if n == strs[col]:
+                    if n.replace(" ","").upper() == strs[col].replace(" ","").upper():
                         self.Keys[self.PropertyToColumnNameMap[n]] = col
                         break
             if len(self.Keys) == len(self.PropertyToColumnNameMap):

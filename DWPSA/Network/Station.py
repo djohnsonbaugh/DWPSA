@@ -25,3 +25,9 @@ class Station(object):
     
     def AddDevice(self, d: Device):
         self.Devices[d.ID] = d
+
+    def GettVariableName(self, prefix: str):
+        return "{0}_{1}".format(
+            prefix,
+            self.ID.replace("-","_d_")
+            )

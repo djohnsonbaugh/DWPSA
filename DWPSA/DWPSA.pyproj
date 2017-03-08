@@ -238,7 +238,6 @@
   <ItemGroup>
     <Content Include="dem\__pycache__\devices.cpython-35.pyc" />
     <Content Include="dem\__pycache__\network.cpython-35.pyc" />
-    <Content Include="dem\__pycache__\__init__.cpython-35.pyc" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

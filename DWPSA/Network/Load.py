@@ -15,3 +15,10 @@ class Load(Device):
 
     def __str__(self):
         return "{LD} " + super(Load, self).__repr__() + " " + str(self.Conforming.real)
+
+    def GetVariableName(self):
+        return "Ld_{0}__{1}__{2}".format(
+            self.ID[0].replace("-","_d_"), 
+            self.ID[1].replace("-","_d_"),
+            self.ID[2].replace("-","_d_")
+            )
