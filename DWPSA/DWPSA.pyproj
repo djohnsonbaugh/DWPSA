@@ -24,10 +24,6 @@
     <Compile Include="DEMNetworkExport\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="dem\devices.py" />
-    <Compile Include="dem\devices_test.py" />
-    <Compile Include="dem\network.py" />
-    <Compile Include="dem\__init__.py" />
     <Compile Include="DEMNetworkExport\SimpleExport.py">
       <SubType>Code</SubType>
     </Compile>
@@ -226,18 +222,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="dem\" />
-    <Folder Include="dem\__pycache__\" />
     <Folder Include="Network\" />
     <Folder Include="EMSCSVFormat\" />
     <Folder Include="DEMNetworkExport\" />
     <Folder Include="TestDEMNetworkExport\" />
     <Folder Include="TestNetwork\" />
     <Folder Include="TestEMSCSVFormat\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="dem\__pycache__\devices.cpython-35.pyc" />
-    <Content Include="dem\__pycache__\network.cpython-35.pyc" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

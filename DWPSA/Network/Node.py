@@ -33,4 +33,8 @@ class Node(object):
     def __repr__(self):
         return self.StationID + " " + self.Name + " " + self.Voltage
 
+    def Copy(self):
+        '''Deep Copy including all non collection based properties'''
+        return Node(self.StationID, self.Voltage, self.Name, self.CompanyID, self.DivisionID)
+
     o = object()

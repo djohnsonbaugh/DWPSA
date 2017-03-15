@@ -19,4 +19,6 @@ class Division(object):
         station.Division = self
         station.DivisionID = self.ID
         
-
+    def Copy(self):
+        '''Deep Copy including all non collection based properties'''
+        return Division(self.ID, self.CompanyID)

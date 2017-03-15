@@ -1,3 +1,5 @@
+import random
+import copy
 from Network.Company import Company
 from Network.Division import Division
 from Network.Station import Station
@@ -139,3 +141,162 @@ class Network(object):
         if type(d) is Unit:
             self.Units[d.ID] = d
         return
+
+    def GetRandomStationID(self, internalcompaniesonly: bool = False) ->str:
+        sts = self.GetStationIDs(internalcompaniesonly)
+        return sts[random.randint(0,len(sts)-1)]
+
+    def GetStationIDs(self, internalcompaniesonly: bool = False) -> []:
+        sts = []
+        if internalcompaniesonly:
+            for st in self.Stations.values():
+                if st.Company.EnforceLosses:
+                    sts.append(st.ID)
+        else:
+            sts = list(self.Stations.keys())
+        return sts
+
+    def GetRandomCompanyID(self, internalcompaniesonly: bool = False) ->str:
+        cps = self.GetCompanyIDs(internalcompaniesonly)
+        return cps[random.randint(0,len(cps)-1)]
+    def GetCompanyIDs(self, internalcompaniesonly: bool = False) -> []:
+        cps = []
+        if internalcompaniesonly:
+            for cp in self.Companies.values():
+                if cp.EnforceLosses:
+                    cps.append(cp.ID)
+        else:
+            cps = list(self.Companies.keys())
+        return cps
+
+    def GetDefaultLoadTotal(self):
+        load = 0
+        for ld in self.Loads.values():
+            load += ld.Conforming.real
+        return load
+
+    def GetMinMaxGeneration(self)->(float, float):
+        min = 0
+        max = 0
+        for g in self.Units.values():
+            min += g.MVAMin.real
+            max += g.MVAMax.real
+        return (min, max)
+    
+    def ExapandSelectedStations(self, selectedstations = [], expansiondegree: int = 1, internalcompaniesonly: bool = False) -> []:
+        sts = []
+        
+        for st in selectedstations:
+            if st in self.Stations and st not in sts:
+                if self.Stations[st].Company.EnforceLosses or not internalcompaniesonly:
+                    sts.append(st)
+        for i in range(expansiondegree):
+            nexttiersts = []
+            for st in sts:
+                for nc in self.Stations[st].NodeConnectors.values():
+                    if nc.FromNode.StationID not in sts and nc.FromNode.StationID not in nexttiersts: 
+                        nexttiersts.append(nc.FromNode.StationID) 
+                    if nc.ToNode.StationID not in sts and nc.ToNode.StationID not in nexttiersts: 
+                        nexttiersts.append(nc.ToNode.StationID) 
+            for st in nexttiersts:
+                if st in self.Stations:
+                    if self.Stations[st].Company.EnforceLosses or not internalcompaniesonly:
+                        sts.append(st)
+        return sts
+
+    def ExpandSelectedCompanies(self, selectedcompanies = [], expansiondegree: int = 1, internalcompaniesonly: bool = False) -> []:
+        '''Takes a list of company names 'selectedcompanies' and adds connected companies by degree provided 'expansiondegree'. 
+           Setting 'intenralcompaniesonly' will prevent any company from being returned that is external. 
+        '''
+        cps = []
+        for cp in selectedcompanies:
+            if cp in self.Companies and cp not in cps:
+                if self.Companies[cp].EnforceLosses or not internalcompaniesonly:
+                    cps.append(cp)
+ 
+        for i in range(expansiondegree):
+            nexttiercps = []
+            for cp in cps:
+                for st in self.Companies[cp].Stations:
+                    for nc in self.Stations[st].NodeConnectors.values():
+                        if nc.FromNode.CompanyID not in cps and nc.FromNode.CompanyID not in nexttiercps: 
+                            nexttiercps.append(nc.FromNode.CompanyID) 
+                        if nc.ToNode.CompanyID not in cps and nc.ToNode.CompanyID not in nexttiercps: 
+                            nexttiercps.append(nc.ToNode.CompanyID) 
+            for cp in nexttiercps:
+                if cp in self.Companies:
+                    if self.Companies[cp].EnforceLosses or not internalcompaniesonly:
+                        cps.append(cp)
+        return cps         
+
+    def CreateSubNetwork(self, companies = [], stations=[], kvs = []):
+        '''
+        'companies' is array of Company names to include in the subsytem - default is all companies
+        'stations' is array of Station names to include in the subsystem - default is all stations in selected 'companies'
+        'kvs' is array of KV levels to include in the subsystem - default is all
+        '''
+        #Create new network
+        n = Network()
+        #Company
+        if len(companies) == 0:
+            #Add All Companies When none are selected
+            for cp in self.Companies.values():
+                n.AddCompany(cp.Copy())
+        else:
+            #Add selected Companies
+            for cp in companies:
+                if cp in self.Companies:
+                    n.AddCompany(self.Companies[cp].Copy())
+        #Division
+        for cp in n.Companies.keys():
+            for dv in self.Companies[cp].Divisions.values():
+                n.AddDivision(dv.Copy())
+
+        #Station
+        if len(stations) == 0:
+            for st in self.Stations.values():
+                if st.CompanyID in n.Companies:
+                    n.AddStation(st.Copy())
+        else:
+            for st in stations:
+                if st in self.Stations:
+                    if self.Stations[st].CompanyID in n.Companies:
+                        n.AddStation(self.Stations[st].Copy())
+            
+        #Node
+        for nd in self.Nodes.values():
+            if nd.StationID in n.Stations:
+                n.AddNode(nd.Copy())
+
+        #NodeConnector
+        for nc in self.NodeConnectors.values():
+            if nc.FromNodeID in n.Nodes and nc.ToNodeID in n.Nodes:
+                #stupid code to prevent infinite recursion on deep copy
+                FromNode = nc.FromNode
+                ToNode = nc.ToNode
+                nc.FromNode = nc.ToNode = None
+                rNode = None
+                if hasattr(nc, 'RegulationNode'):
+                    rNode = nc.RegulationNode
+                    nc.RegulationNode = None
+                n.AddNodeConnector(copy.deepcopy(nc))
+                nc.FromNode = FromNode
+                nc.ToNode = ToNode
+                if hasattr(nc, 'RegulationNode'):
+                    nc.RegulationNode = rNode
+
+        #Device
+        for d in self.Devices.values():
+            if d.NodeID in n.Nodes:
+                #stupid code to prevent infinite recursion on deep copy
+                dNode = d.Node
+                rNode = None
+                if hasattr(d, 'RegulationNode'):
+                    rNode = d.RegulationNode
+                    d.RegulationNode = None
+                d.Node = None
+                n.AddDevice(copy.deepcopy(d))
+                d.Node = dNode
+                if hasattr(d, 'RegulationNode'):
+                    d.RegulationNode = rNode
+        return n

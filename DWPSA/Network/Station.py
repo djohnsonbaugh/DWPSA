@@ -31,3 +31,7 @@ class Station(object):
             prefix,
             self.ID.replace("-","_d_")
             )
+
+    def Copy(self):
+        '''Deep Copy including all non collection based properties'''
+        return Station(self.ID, self.CompanyID, self.DivisionID)

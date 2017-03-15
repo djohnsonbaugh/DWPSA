@@ -23,3 +23,8 @@ class Company(object):
         self.Stations[station.ID] = station
         station.Company = self
         station.CompanyID = self.ID
+
+    def Copy(self):
+        '''Deep Copy including all non collection based properties'''
+        return Company(self.ID, self.EnforceLosses, self.AWR)
+        

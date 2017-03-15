@@ -9,11 +9,12 @@ from TestDEMNetworkExport import *
 #import io
 
 #n = Network()
-##imp = EMSCSVImporter("C:\PROBE\Models\EMS2015Dec")
-#imp = EMSCSVImporter("C:\EMS2016Dec")
+#imp = EMSCSVImporter("C:\\PROBE\\2016Dec")
+##imp = EMSCSVImporter("C:\EMS2016Dec")
 #imp.Import(n)
+#sn = n.CreateSubNetwork(stations = n.ExapandSelectedStations([n.GetRandomStationID(True)],3,True))
 #gp = Group([],[])
-#gp = NetworkToDEMSimple(n, [], [], "C:\\repo\\dwdem\\main.py", 0.1)
+#gp = NetworkToDEMSimple(sn, [], [], "C:\\repo\\dwdem\\main.py", 1)
 #gp.init_problem()
 #gp.problem.solve()
 #with open("testdemresult.txt", 'w') as file:
