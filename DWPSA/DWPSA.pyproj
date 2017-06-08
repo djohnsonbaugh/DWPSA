@@ -33,6 +33,12 @@
     <Compile Include="EMSCSVFormat\DivisionCSVStream.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Network\CPNode.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Network\EPNode.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="EMSCSVFormat\FileType.py">
       <SubType>Code</SubType>
     </Compile>
@@ -104,6 +110,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Network\PhaseShifter.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Network\PNode.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Network\RatingSet.py">
@@ -178,6 +187,9 @@
     <Compile Include="TestNetwork\TestCompany.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TestNetwork\TestCPNode.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="TestNetwork\TestDevice.py">
       <SubType>Code</SubType>
     </Compile>
@@ -187,6 +199,9 @@
     <Compile Include="TestEMSCSVFormat\TestEMSCSVImporter.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TestNetwork\TestEPNode.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="TestNetwork\TestLoad.py">
       <SubType>Code</SubType>
     </Compile>
@@ -194,6 +209,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestNetwork\TestPhaseShifter.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestNetwork\TestPNode.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestNetwork\TestRatingSet.py">

@@ -12,7 +12,7 @@ from TestDEMNetworkExport import *
 #imp = EMSCSVImporter("C:\\PROBE\\2016Dec")
 ##imp = EMSCSVImporter("C:\EMS2016Dec")
 #imp.Import(n)
-#sn = n.CreateSubNetwork(stations = n.ExapandSelectedStations([n.GetRandomStationID(True)],3,True))
+#sn = n.CreateSubNetwork(n.ExpandSelectedCompanies(['CIN'],1,True))
 #gp = Group([],[])
 #gp = NetworkToDEMSimple(sn, [], [], "C:\\repo\\dwdem\\main.py", 1)
 #gp.init_problem()
@@ -26,11 +26,13 @@ testclasses = [
                TestCircuitBreakerCSVStream.TestCircuitBreakerCSVStream,
                TestCompany.TestCompany, 
                TestCompanyCSVStream.TestCompanyCSVStream,
+               TestCPNode.TestCPNode,
                TestCSVFileStream.TestCSVFileStream,
                TestDevice.TestDevice,
                TestDivision.TestDivision, 
                TestDivisionCSVStream.TestDivisionCSVStream,
                TestEMSCSVImporter.TestEMSCSVImporter,
+               TestEPNode.TestEPNode,
                TestLineCSVStream.TestLineCSVStream,
                TestLoad.TestLoad,
                TestLoadCSVStream.TestLoadCSVStream,
@@ -40,6 +42,7 @@ testclasses = [
                TestNodeCSVStream.TestNodeCSVStream,
                TestPhaseShifter.TestPhaseShifter,
                TestPhaseShifterCSVStream.TestPhaseShifterCSVStream,
+               TestPNode.TestPNode,
                TestRatingSet.TestRatingSet,
                TestSimpleExport.TestSimpleExport,
                TestShunt.TestShunt,

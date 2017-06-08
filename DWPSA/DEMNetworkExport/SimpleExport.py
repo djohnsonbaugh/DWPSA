@@ -30,6 +30,13 @@ def NetworkToDEMSimple(net : Network, companies = [], stations = [], codefile = 
     st = Station("")
 
     with open(codefile, 'w') as file:
+        file.write("#Stations: {0}\n".format(len(net.Stations)))
+        file.write("#Lines: {0}\n".format(len(net.Lines)))
+        file.write("#Loads: {0}\n".format(len(net.Loads)))
+        file.write("#Generators: {0}\n".format(len(net.Units)))
+        file.write("#Total Load: {0}\n".format(round(net.GetDefaultLoadTotal() * fixedloadscale)))
+        file.write("#Min, Max Gen: {0}, {1} \n".format(str(round(net.GetMinMaxGeneration()[0])),str(round(net.GetMinMaxGeneration()[1]))))
+
         file.write("from dem import * \n")
         file.write(" \n")
         file.write("#Loading Transmission Lines\n".format(st.ID))
@@ -39,10 +46,13 @@ def NetworkToDEMSimple(net : Network, companies = [], stations = [], codefile = 
                     if tr.FromStationID != tr.ToStationID:
                         limit = int(tr.WiRating.Emergency * (765 / float(tr.FromVoltage)))
                         if not tr.Monitored:
-                            limit = 99999
-                        TLs[tr.ID] = TransmissionLine(limit, str(tr))
-                        file.write("{0} = TransmissionLine(power_max={1}, name=\"{2}\")\n".format(
-                                   tr.GetVariableName(), limit, str(tr)))
+                            TLs[tr.ID] = TransmissionLine(name=str(tr))
+                            file.write("{0} = TransmissionLine(name=\"{1}\")\n".format(
+                                       tr.GetVariableName(), str(tr)))
+                        else:
+                            TLs[tr.ID] = TransmissionLine(limit, str(tr))
+                            file.write("{0} = TransmissionLine(power_max={1}, name=\"{2}\")\n".format(
+                                       tr.GetVariableName(), limit, str(tr)))
 
         for st in net.Stations.values():
             brcount = 0
