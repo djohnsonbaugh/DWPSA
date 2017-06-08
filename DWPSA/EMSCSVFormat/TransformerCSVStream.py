@@ -1,4 +1,4 @@
-from EMSCSVFormat.CSVFileStream import CSVFileStream
+from CSVFileStream.CSVFileStream import CSVFileStream
 from Network.Transformer import Transformer
 from Network.RatingSet import RatingSet
 class TransformerCSVStream(CSVFileStream):

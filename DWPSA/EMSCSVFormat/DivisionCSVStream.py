@@ -1,4 +1,4 @@
-from EMSCSVFormat.CSVFileStream import CSVFileStream
+from CSVFileStream.CSVFileStream import CSVFileStream
 class DivisionCSVStream(CSVFileStream):
     """Streams EMS Division Properties With Data Conversions"""
 

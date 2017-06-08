@@ -2,6 +2,8 @@ import unittest
 from TestNetwork import *
 from TestEMSCSVFormat import *
 from TestDEMNetworkExport import *
+from TestCSVFileStream import *
+from TestPROBECSVFormat import *
 #from Network.Network import Network
 #from EMSCSVFormat.EMSCSVImporter import EMSCSVImporter
 #from dem import Group

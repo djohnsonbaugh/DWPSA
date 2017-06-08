@@ -21,6 +21,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CSVFileStream\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DEMNetworkExport\__init__.py">
       <SubType>Code</SubType>
     </Compile>
@@ -81,7 +84,7 @@
     <Compile Include="EMSCSVFormat\CompanyCSVStream.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="EMSCSVFormat\CSVFileStream.py">
+    <Compile Include="CSVFileStream\CSVFileStream.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="EMSCSVFormat\EMSCSVExporter.py">
@@ -133,13 +136,16 @@
     <Compile Include="Network\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TestCSVFileStream\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="TestDEMNetworkExport\TestSimpleExport.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestDEMNetworkExport\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="TestEMSCSVFormat\TestCSVFileStream.py">
+    <Compile Include="TestCSVFileStream\TestCSVFileStream.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestEMSCSVFormat\TestCircuitBreakerCSVStream.py">
@@ -238,11 +244,18 @@
     <Compile Include="TestNetwork\TestNode.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TestPROBECSVFormat\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Network\" />
     <Folder Include="EMSCSVFormat\" />
     <Folder Include="DEMNetworkExport\" />
+    <Folder Include="CSVFileStream\" />
+    <Folder Include="TestPROBECSVFormat\" />
+    <Folder Include="TestCSVFileStream\" />
+    <Folder Include="PROBECSVFormat\" />
     <Folder Include="TestDEMNetworkExport\" />
     <Folder Include="TestNetwork\" />
     <Folder Include="TestEMSCSVFormat\" />

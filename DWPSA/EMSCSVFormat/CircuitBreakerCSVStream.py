@@ -1,4 +1,4 @@
-from EMSCSVFormat.CSVFileStream import CSVFileStream
+from CSVFileStream.CSVFileStream import CSVFileStream
 from Network.CircuitBreaker import CircuitBreaker
 from Network.CircuitBreaker import CBState
 class CircuitBreakerCSVStream(CSVFileStream):

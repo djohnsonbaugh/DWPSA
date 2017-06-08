@@ -1,4 +1,4 @@
-from EMSCSVFormat.CSVFileStream import CSVFileStream
+from CSVFileStream.CSVFileStream import CSVFileStream
 class StationCSVStream(CSVFileStream):
     """Streams EMS Station Properties With Data Conversions"""
 

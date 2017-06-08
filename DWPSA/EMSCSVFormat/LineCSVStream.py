@@ -1,4 +1,4 @@
-from EMSCSVFormat.CSVFileStream import CSVFileStream
+from CSVFileStream.CSVFileStream import CSVFileStream
 from Network.Branch import Branch
 from Network.RatingSet import RatingSet
 class LineCSVStream(CSVFileStream):

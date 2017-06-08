@@ -1,4 +1,4 @@
-from EMSCSVFormat.CSVFileStream import CSVFileStream
+from CSVFileStream.CSVFileStream import CSVFileStream
 from Network.Unit import Unit
 import math
 class UnitCSVStream(CSVFileStream):

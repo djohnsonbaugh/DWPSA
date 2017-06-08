@@ -1,4 +1,4 @@
-from EMSCSVFormat.CSVFileStream import CSVFileStream
+from CSVFileStream.CSVFileStream import CSVFileStream
 from Network.PhaseShifter import PhaseShifter
 from Network.RatingSet import RatingSet
 class PhaseShifterCSVStream(CSVFileStream):
