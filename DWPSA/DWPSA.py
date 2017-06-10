@@ -3,7 +3,7 @@ from TestNetwork import *
 from TestEMSCSVFormat import *
 from TestDEMNetworkExport import *
 from TestCSVFileStream import *
-from TestPROBECSVFormat import *
+from TestPROBECSVFormat import TestDayAheadLMPsCSVStream
 #from Network.Network import Network
 #from EMSCSVFormat.EMSCSVImporter import EMSCSVImporter
 #from dem import Group
@@ -30,6 +30,7 @@ testclasses = [
                TestCompanyCSVStream.TestCompanyCSVStream,
                TestCPNode.TestCPNode,
                TestCSVFileStream.TestCSVFileStream,
+               TestDayAheadLMPsCSVStream.TestDayAheadLMPsCSVStream,
                TestDevice.TestDevice,
                TestDivision.TestDivision, 
                TestDivisionCSVStream.TestDivisionCSVStream,

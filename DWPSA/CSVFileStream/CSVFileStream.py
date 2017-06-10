@@ -4,10 +4,12 @@ class CSVFileStream(object):
     """Streams Properties from a CSV File"""
 
     DefaultPropertyToFileMap = {}
+    InvalidPropertyData = {}
 
-    def __init__(self, filepath,  propertytofilemap = DefaultPropertyToFileMap, encoding="utf-8"):
+    def __init__(self, filepath,  propertytofilemap = DefaultPropertyToFileMap, encoding="utf-8", invalidpropertydata = InvalidPropertyData):
         self.Encoding = encoding
         self.PropertyToColumnNameMap = propertytofilemap
+        self.InvalidPropertyData = invalidpropertydata
         self.Keys = {}
         self.Values = {}
         self.AllLines = []
@@ -57,6 +59,9 @@ class CSVFileStream(object):
                 val = strs[i]
             setattr(self, key, val)
             self.Values[key] = val
+            if key in self.InvalidPropertyData.keys():
+                if self.InvalidPropertyData[key] == val:
+                    return self.__next__()
         return self.Values
 
     def ReadCSVLine(self):

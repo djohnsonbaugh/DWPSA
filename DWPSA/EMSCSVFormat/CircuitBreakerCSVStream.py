@@ -14,6 +14,7 @@ class CircuitBreakerCSVStream(CSVFileStream):
                                 "Normal State" : "NormalState",
                                 "KV_ID" : "Voltage"
                                 }
+
     DefaultFileName = "CBs.csv"
 
     def __init__(self, filepath=DefaultFileName,  propertytofilemap=DefaultPropertyToFileMap , encoding="utf-8"):

@@ -29,7 +29,7 @@ class TestTransformerCSVStream(unittest.TestCase):
         ttpn = 4
 
         with open(testfilename, 'w') as file:
-            file.write("ID_CO,ID_DV,ID_ST,ID,From Connection Node (LTC SIDE),From Nominal Voltage (LTC SIDE),From Tap Type (LTC SIDE),From Normal Position (LTC SIDE),To Connection Node (FIXED SIDE),To Nominal KV (FIXED SIDE),To Tap Type (FIXED SIDE),To Normal Tap (FIXED SIDE),Regulation Node,r,x,Regulation Schedule,AVR Status,SummerNormalLimit,SummerEmergencyLimt,WinterNormalLimit,WinterEmergencyLimit,Changed,Monitored")
+            file.write("ID_CO,ID_DV,ID_ST,ID,From Connection Node (LTC SIDE),From Nominal Voltage (LTC SIDE),From Tap Type (LTC SIDE),From Normal Position (LTC SIDE),To Connection Node (FIXED SIDE),To Nominal KV (FIXED SIDE),To Tap Type (FIXED SIDE),To Normal Tap (FIXED SIDE),Regulation Node,r,x,Regulation Schedule,AVR Status,SummerNormalLimit,SummerEmergencyLimit,WinterNormalLimit,WinterEmergencyLimit,Changed,Monitored")
 
         with TransformerCSVStream(testfilename) as c:
             c.FromNodeName = fnd

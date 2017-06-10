@@ -3,14 +3,13 @@ class CPNode(PNode):
     """Commercial Pricing Node in a Power System is defined as an aggregate of other PNodes"""
 
    #Constructor
-    def __init__(self, id: int, name: str, settled: bool, reservezoneid: int):
+    def __init__(self, id: int, name: str, settled: bool):
         super(CPNode, self).__init__(id, name)
         """CPNode Constructor"""
         
         #Attributes
         self.FactorSum = 0.0
         self.Settled = settled
-        self.ReserveZoneID = reservezoneid
         self.PNodeFactors = {}
 
 

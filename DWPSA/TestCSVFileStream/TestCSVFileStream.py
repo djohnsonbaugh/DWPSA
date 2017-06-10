@@ -14,6 +14,7 @@ class TestCSVFileStream(unittest.TestCase):
                     "ColA, ColB, ColC, Col, ColE, ColD\n",
                     "2,3,,,,,,,,,,\n",
                     "\n",
+                    "-99999,,,,,,,\n",
                     "2\n",
                     "1,5,6,8,9,12,\n",
                     "\n"
@@ -33,11 +34,13 @@ class TestCSVFileStream(unittest.TestCase):
                                 "ColA" : "loC",
                                 "ColAE" : "ECol",
                                 "ColAC" : "CCol"
-                                }      
+                                }
+        InvalidPropertyData = { "ACol" : "-99999" }      
         with open(testfilename, 'w') as file:
             file.writelines(lines)
         with self.assertRaises(Exception):
             with CSVFileStream(testfilename,badpropertytofilemap) as c:
+
                 for line in c:
                     print(line)
 
@@ -47,7 +50,7 @@ class TestCSVFileStream(unittest.TestCase):
                     print(line)
                 
 
-        with CSVFileStream(testfilename,propertytofilemap) as c:
+        with CSVFileStream(testfilename,propertytofilemap, "utf-8", InvalidPropertyData) as c:
             i = 0
             for line in c:
                 i += 1

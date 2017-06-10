@@ -10,13 +10,12 @@ class TestCPNode(unittest.TestCase):
         id =    122060565
         name = "nodename"
         sett = True
-        rzid = 3
 
-        nd = CPNode(id, name, sett, rzid)
+
+        nd = CPNode(id, name, sett)
 
         self.assertEqual(nd.ID, id)
         self.assertEqual(nd.Name, name)
-        self.assertEqual(nd.ReserveZoneID, rzid)
         self.assertEqual(nd.Settled, sett)
 
     def test_AddPNodeFactor(self):
@@ -28,6 +27,7 @@ class TestCPNode(unittest.TestCase):
         name2 = "nodename2"
         name3 = "nodename3"
         name4 = "nodename4"
+        ldun = "load1"
         sett = True
         sett2 = False
         rzid = 3
@@ -35,10 +35,10 @@ class TestCPNode(unittest.TestCase):
         pf3 = .2
         pf4 = .2
 
-        nd = CPNode(id, name, sett, rzid)
-        nd2=CPNode(id2,name2,sett2, rzid)
+        nd = CPNode(id, name, sett)
+        nd2=CPNode(id2,name2,sett2)
         nd3 = PNode(id3, name3)
-        nd4=EPNode(id4, name4,234234,("ST","1"))
+        nd4=EPNode(id4, name4,234234,("ST","1"), ldun, rzid)
 
 
         with self.assertRaises(Exception):

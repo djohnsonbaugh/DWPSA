@@ -22,7 +22,7 @@ class TestUnitCSVStream(unittest.TestCase):
         dev = "0.1"
         noagc = "TrUe"
         with open(testfilename, 'w') as file:
-            file.write("Company,Station,KV,Unit Name,Connection Node,Regulation Node,BaseM,Participation Factor,MW Max,MW MN,Mvar Max,Mvar Min,Voltage Target (PU),Deviation,Mvar Capability Curve,NO AGC,Changed")
+            file.write("Company,Station,KV,UnitName,Connection Node, Regulation Node,BaseM,Participation Factor,MW Max,MW MN,Mvar Max,Mvar Min,Voltage Tartet(PU),Deviation,Mvar Capability Curve,NOAGC,Changed")
 
         with UnitCSVStream(testfilename) as c:
             c.UnitName = unitname
