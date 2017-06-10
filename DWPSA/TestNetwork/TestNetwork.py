@@ -13,6 +13,9 @@ from Network.CircuitBreaker import CBState
 from Network.Load import Load
 from Network.Unit import Unit
 from Network.Shunt import Shunt
+from Network.PNode import PNode
+from Network.EPNode import EPNode
+from Network.CPNode import CPNode
 
 class TestNetwork(unittest.TestCase):
     """Test class for the Network Class"""
@@ -308,6 +311,62 @@ class TestNetwork(unittest.TestCase):
         self.assertEqual(len(nd11.Devices), 1)
         self.assertEqual(len(nd12.Devices), 1)
         self.assertEqual(len(nd13.Devices), 1)
-        
+        return
+
+    def test_AddPNode(self):
+        stname = "station"
+        kv = "115"
+        ndid = "AB"
+        ndid2 = "AB2"
+        company = "ABC"
+
+        n = Network()
+        s = Station(stname)
+        n.AddStation(s)     
+        nd = Node(stname, kv, ndid, company)
+        n.AddNode(nd)
+        n.AddNodeByDef(stname, kv, ndid2, company, "div")
+
+        id =  122060565
+        id2 = 122060564
+        id3 = 122060562
+        id4 = 122060563
+        id5 = 34234234
+        name = "nodename"
+        name2 = "nodename2"
+        name3 = "nodename3"
+        name4 = "nodename4"
+        name5 = "nodename5"
+        ldun = "load1"
+        sett = True
+        sett2 = False
+        rzid = 3
+
+        cnd = CPNode(id, name, sett)
+        cnd2=CPNode(id2,name2,sett2)
+        pnd3 = PNode(id3, name3)
+        end4=EPNode(id4, name4,234234,(stname,ndid), ldun, rzid)
+        end5=EPNode(id5, name5,2634234,("",""), ldun, rzid)
+    
+
+        n.AddPNode(cnd)
+        n.AddPNode(cnd2)
+        n.AddPNode(pnd3)
+        n.AddPNode(end4)
+      
+        with self.assertRaises(Exception):
+            n.AddPNode(cnd)
+        with self.assertRaises(Exception):
+            n.AddPNode(end5)       
+
+        self.assertEqual(n.PNodes[id].Name, name)
+        self.assertEqual(n.CPNodes[id].Name, name)
+        self.assertEqual(n.PNodes[id2].Name, name2)
+        self.assertEqual(n.CPNodes[id2].Name, name2)
+        self.assertEqual(n.PNodes[id3].Name, name3)
+        self.assertEqual(n.PNodes[id4].Name, name4)
+        self.assertEqual(n.EPNodes[id4].Name, name4)
+        self.assertEqual(n.EPNodes[id4].Node.ID, nd.ID)
+        return
 if __name__ == '__main__':
     unittest.main()

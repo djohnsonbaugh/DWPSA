@@ -3,17 +3,22 @@ from TestNetwork import *
 from TestEMSCSVFormat import *
 from TestDEMNetworkExport import *
 from TestCSVFileStream import *
-from TestPROBECSVFormat import TestDayAheadLMPsCSVStream
+from TestPROBECSVFormat import *
 #from Network.Network import Network
 #from EMSCSVFormat.EMSCSVImporter import EMSCSVImporter
+#from PROBECSVFormat.PROBECSVImporter import PROBECSVImporter
 #from dem import Group
 #from DEMNetworkExport.SimpleExport import NetworkToDEMSimple
 #import io
+#from datetime import date
 
 #n = Network()
 #imp = EMSCSVImporter("C:\\PROBE\\2016Dec")
 ##imp = EMSCSVImporter("C:\EMS2016Dec")
 #imp.Import(n)
+#mktday = date(2016, 12,22)
+#dimp = PROBECSVImporter(mktday, "C:\\PROBE\\20161222")
+#dimp.Import(n)
 #sn = n.CreateSubNetwork(n.ExpandSelectedCompanies(['CIN'],1,True))
 #gp = Group([],[])
 #gp = NetworkToDEMSimple(sn, [], [], "C:\\repo\\dwdem\\main.py", 1)

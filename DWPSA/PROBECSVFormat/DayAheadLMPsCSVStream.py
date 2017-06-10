@@ -19,9 +19,9 @@ class DayAheadLMPsCSVStream(CSVFileStream):
     InvalidPropertyData = {
                             "PNodeName" : "REFBUS"
                           }
-    DefaultFileName = "day_ahead_lmps_{%Y%m%d}.csv"
+    DefaultFileName = "day_ahead_lmps_{:%Y%m%d}.csv"
 
-    def __init__(self, filepath=DefaultFileName,  propertytofilemap=DefaultPropertyToFileMap , invalidpropertydata = InvalidPropertyData, encoding="utf-8"):
+    def __init__(self, filepath=DefaultFileName,  propertytofilemap=DefaultPropertyToFileMap , encoding="utf-8", invalidpropertydata = InvalidPropertyData):
         super(DayAheadLMPsCSVStream, self).__init__(filepath, propertytofilemap, encoding, invalidpropertydata)      
         self.EPNodeID = ""
         self.LoadName = ""

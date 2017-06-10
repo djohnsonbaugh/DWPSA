@@ -13,6 +13,9 @@ from Network.Unit import Unit
 from Network.Device import Device
 from Network.Shunt import Shunt
 from Network.Load import Load
+from Network.PNode import PNode
+from Network.EPNode import EPNode
+from Network.CPNode import CPNode
 
 class Network(object):
     """ Physical Description of a Power System """
@@ -22,11 +25,14 @@ class Network(object):
         self.Nodes = {}
         self.Stations = {}
         self.Companies = {}
+        self.CPNodes = {}
+        self.EPNodes = {}
         self.NodeConnectors = {}
         self.CircuitBreakers = {}
         self.Lines = {}
         self.Transformers = {}
         self.PhaseShifters = {}
+        self.PNodes = {}
         self.Devices = {}
         self.Loads = {}
         self.Shunts = {}
@@ -119,6 +125,19 @@ class Network(object):
             self.CircuitBreakers[nc.ID] = nc
         return
 
+    #PNode Methods
+    def AddPNode(self, pn: PNode):
+        if pn.ID in self.PNodes:
+            raise Exception("PNode is already loaded", pn.Name)
+        self.PNodes[pn.ID] = pn
+        if type(pn) is CPNode:
+            self.CPNodes[pn.ID] = pn
+        if type(pn) is EPNode:
+            if (pn.NodeID not in self.Nodes):
+                raise Exception("PNode does not map to valid Node", pn.Name)
+            pn.Node = self.Nodes[pn.NodeID]
+            self.EPNodes[pn.ID] = pn
+        return
 
     #Device Methods
     def AddDevice(self, d: Device):
