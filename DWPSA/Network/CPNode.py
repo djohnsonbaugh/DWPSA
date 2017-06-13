@@ -11,6 +11,7 @@ class CPNode(PNode):
         self.FactorSum = 0.0
         self.Settled = settled
         self.PNodeFactors = {}
+        self.PNodes = {}
 
 
     #Methods
@@ -20,6 +21,7 @@ class CPNode(PNode):
         if pnode.ID == self.ID:
             raise Exception("PNode factor cannot have the same ID as CPNode", self.Name)
         self.PNodeFactors[pnode.ID] = factor
+        self.PNodes[pnode.ID] = pnode
         self.FactorSum += factor
 
  

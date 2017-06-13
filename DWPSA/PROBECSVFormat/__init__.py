@@ -1,5 +1,6 @@
 __all__ = [
         "DayAheadLMPsCSVStream",
         "PROBECSVImporter",
-        "FileType"
+        "FileType",
+        "ZonalFactorsCSVStream"
       ]

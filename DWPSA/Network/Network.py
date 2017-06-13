@@ -138,7 +138,13 @@ class Network(object):
             pn.Node = self.Nodes[pn.NodeID]
             self.EPNodes[pn.ID] = pn
         return
-
+    def AddPNodeFactor(self, cpnid: int, pnid: int, factor: float):
+        if cpnid not in self.CPNodes:
+            raise Exception("CPNode is not in the Network", cpnid)
+        if pnid not in self.PNodes:
+            raise Exception("PNode is not in the Network", pnid)
+        self.CPNodes[cpnid].AddPnodeFactor(self.PNodes[pnid],factor)
+        return
     #Device Methods
     def AddDevice(self, d: Device):
         if d.StationID not in self.Stations:

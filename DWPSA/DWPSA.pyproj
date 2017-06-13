@@ -133,7 +133,13 @@
     <Compile Include="Network\Unit.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Network\UnitDailyOffer.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Network\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PROBECSVFormat\BidDataCSVStream.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PROBECSVFormat\DayAheadLMPsCSVStream.py">
@@ -143,6 +149,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PROBECSVFormat\PROBECSVImporter.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PROBECSVFormat\ZonalFactorsCSVStream.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PROBECSVFormat\__init__.py">
@@ -256,7 +265,13 @@
     <Compile Include="TestNetwork\TestNode.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TestPROBECSVFormat\TestBidDataCSVStream.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="TestPROBECSVFormat\TestDayAheadLMPsCSVStream.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestPROBECSVFormat\TestZonalFactorsCSVStream.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestPROBECSVFormat\__init__.py">

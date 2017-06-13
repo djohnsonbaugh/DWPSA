@@ -29,6 +29,7 @@ from TestPROBECSVFormat import *
 
 testclasses = [
                TestBranch.TestBranch,
+               TestBidDataCSVStream.TestBidDataCSVStream,
                TestCircuitBreaker.TestCircuitBreaker,
                TestCircuitBreakerCSVStream.TestCircuitBreakerCSVStream,
                TestCompany.TestCompany, 
@@ -60,7 +61,8 @@ testclasses = [
                TestTransformer.TestTransformer,
                TestTransformerCSVStream.TestTransformerCSVStream,
                TestUnit.TestUnit,
-               TestUnitCSVStream.TestUnitCSVStream
+               TestUnitCSVStream.TestUnitCSVStream,
+               TestZonalFactorsCSVStream.TestZonalFactorsCSVStream
                ]
 
 

@@ -367,6 +367,20 @@ class TestNetwork(unittest.TestCase):
         self.assertEqual(n.PNodes[id4].Name, name4)
         self.assertEqual(n.EPNodes[id4].Name, name4)
         self.assertEqual(n.EPNodes[id4].Node.ID, nd.ID)
+
+        self.assertEqual(n.CPNodes[id].FactorSum, 0)
+        n.AddPNodeFactor(id, id4, .4)
+        n.AddPNodeFactor(id, id3, .6)
+        self.assertEqual(n.CPNodes[id].FactorSum, 1)
+        self.assertEqual(n.CPNodes[id].PNodes[id4].Name, name4)
+        self.assertEqual(n.CPNodes[id].PNodeFactors[id3], .6)
+
+        with self.assertRaises(Exception):
+            n.AddPNodeFactor(id, id4, .4)
+        with self.assertRaises(Exception):
+            n.AddPNodeFactor(34, id4, .4)
+        with self.assertRaises(Exception):
+            n.AddPNodeFactor(id, 45, .4)
         return
 if __name__ == '__main__':
     unittest.main()

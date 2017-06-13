@@ -1,3 +1,5 @@
 __all__ = [
-        "TestDayAheadLMPsCSVStream"
+        "TestBidDataCSVStream",
+        "TestDayAheadLMPsCSVStream",
+        "TestZonalFactorsCSVStream"
       ]

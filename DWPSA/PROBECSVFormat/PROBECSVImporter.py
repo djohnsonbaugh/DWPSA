@@ -1,6 +1,7 @@
 import os
 from Network.Network import Network
 from PROBECSVFormat.DayAheadLMPsCSVStream import DayAheadLMPsCSVStream
+from PROBECSVFormat.ZonalFactorsCSVStream import ZonalFactorsCSVStream
 from PROBECSVFormat.FileType import FileType
 from datetime import date
 
@@ -21,6 +22,7 @@ class PROBECSVImporter(object):
         try:
             os.chdir(self.Directory)
             self.ImportDayAheadLMPs(network)
+            self.ImportZonalFactors(network)
 
         finally:
             os.chdir(ospath)
@@ -62,6 +64,23 @@ class PROBECSVImporter(object):
         with DayAheadLMPsCSVStream(filename, propertymap, self.Encoding) as csv:
             for pnode in csv:
                 network.AddPNode(csv.getPNode())
+
+        return
+
+    def ImportZonalFactors(self, network: Network):
+                
+        filename = ZonalFactorsCSVStream.DefaultFileName 
+        if FileType.ZonalFactors in self.CSVFileNames:
+            filename = self.CSVFileNames[FileType.ZonalFactors]
+        
+        filename = filename.format(self.MktDay)
+        propertymap = ZonalFactorsCSVStream.DefaultPropertyToFileMap 
+        if FileType.ZonalFactors in self.CSVPropertyMaps:
+            propertymap = self.CSVPropertyMaps[FileType.ZonalFactors]
+
+        with ZonalFactorsCSVStream(filename, propertymap, self.Encoding) as csv:
+            for zf in csv:
+                network.AddPNodeFactor(csv.getCPNodeID(), csv.getPNodeID(), csv.getFactor())
 
         return
 
