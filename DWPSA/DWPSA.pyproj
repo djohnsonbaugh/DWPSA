@@ -36,6 +36,9 @@
     <Compile Include="EMSCSVFormat\DivisionCSVStream.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Network\BidOfferCurve.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Network\CPNode.py">
       <SubType>Code</SubType>
     </Compile>
@@ -134,6 +137,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Network\UnitDailyOffer.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Network\UnitHourlyOffer.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Network\__init__.py">
@@ -265,7 +271,13 @@
     <Compile Include="TestNetwork\TestNode.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="PROBECSVFormat\CostCurvesCSVStream.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="TestPROBECSVFormat\TestBidDataCSVStream.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestPROBECSVFormat\TestCostCurvesCSVStream.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestPROBECSVFormat\TestDayAheadLMPsCSVStream.py">

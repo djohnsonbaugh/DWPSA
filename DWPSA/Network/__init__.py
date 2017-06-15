@@ -1,5 +1,6 @@
 __all__ = [
             "Branch",
+            "BidOfferCurve",
             "CBState",
             "CirctuitBreaker",
             "Company",
@@ -17,5 +18,7 @@ __all__ = [
             "Shunt",
             "Station",
             "Transformer",
-            "Unit"
+            "Unit",
+            "UnitDailyOffer",
+            "UnitHourlyOffer"
           ]

@@ -34,6 +34,7 @@ testclasses = [
                TestCircuitBreakerCSVStream.TestCircuitBreakerCSVStream,
                TestCompany.TestCompany, 
                TestCompanyCSVStream.TestCompanyCSVStream,
+               TestCostCurvesCSVStream.TestCostCurvesCSVStream,
                TestCPNode.TestCPNode,
                TestCSVFileStream.TestCSVFileStream,
                TestDayAheadLMPsCSVStream.TestDayAheadLMPsCSVStream,
