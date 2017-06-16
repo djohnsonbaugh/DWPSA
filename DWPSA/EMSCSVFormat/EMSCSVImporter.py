@@ -16,11 +16,12 @@ from Network.Network import Network
 class EMSCSVImporter(object):
     """description of class"""
 
-    def __init__(self, foldername= os.getcwd(), encoding="utf-8"):
+    def __init__(self, foldername= os.getcwd(), encoding="utf-8", printstatus = True):
         self.CSVFileNames = {}
         self.CSVPropertyMaps = {}
         self.Directory = foldername
         self.Encoding = encoding
+        self.PrintStatus = printstatus
         return
 
     def Import(self, network: Network):
@@ -28,17 +29,39 @@ class EMSCSVImporter(object):
         ospath = os.getcwd()
         try:
             os.chdir(self.Directory)
+            print("Processing         Company Data", end = '.')
             self.ImportCompanies(network)
+            print("Done!")
+            print("Processing        Division Data", end = '.')
             self.ImportDivisions(network)
+            print("Done!")
+            print("Processing         Station Data", end = '.')
             self.ImportStations(network)
+            print("Done!")
+            print("Processing            Node Data", end = '.')
             self.ImportNodes(network)
+            print("Done!")
+            print("Processing Circuit Breaker Data", end = '.')
             self.ImportCircuitBreakers(network)
+            print("Done!")
+            print("Processing            Line Data", end = '.')
             self.ImportLines(network)
+            print("Done!")
+            print("Processing     Transformer Data", end = '.')
             self.ImportTransformers(network)
+            print("Done!")
+            print("Processing   Phase Shifter Data", end = '.')
             self.ImportPhaseShifters(network)
+            print("Done!")
+            print("Processing            Load Data", end = '.')
             self.ImportLoads(network)
+            print("Done!")
+            print("Processing           Shunt Data", end = '.')
             self.ImportShunts(network)
+            print("Done!")
+            print("Processing            Unit Data", end = '.')
             self.ImportUnits(network)
+            print("Done!")
         finally:
             os.chdir(ospath)
         return
@@ -76,9 +99,14 @@ class EMSCSVImporter(object):
             propertymap = self.CSVPropertyMaps[FileType.Company]
 
         with CompanyCSVStream(filename, propertymap, self.Encoding) as csv:
+            i = 0
+            d = 0
             for company in csv:
                 network.AddCompanyByDef(csv.getCompanyName(), csv.getEnforceLosses(), csv.getAWR())
-
+                i+=1
+                while i > ((d+1)*.10 * len(csv)):
+                    print("", end = '.')
+                    d+=1
         return
 
     def ImportDivisions(self, network: Network):
@@ -92,8 +120,14 @@ class EMSCSVImporter(object):
             propertymap = self.CSVPropertyMaps[FileType.Division]
 
         with DivisionCSVStream(filename, propertymap, self.Encoding) as csv:
+            i = 0
+            d = 0
             for Division in csv:
                 network.AddDivisionByDef(csv.getDivisionName(), csv.getCompanyName())
+                i+=1
+                while i > ((d+1)*.10 * len(csv)):
+                    print("", end = '.')
+                    d+=1
 
         return
 
@@ -108,8 +142,14 @@ class EMSCSVImporter(object):
             propertymap = self.CSVPropertyMaps[FileType.Station]
 
         with StationCSVStream(filename, propertymap, self.Encoding) as csv:
+            i = 0
+            d = 0
             for Station in csv:
                 network.AddStationByDef(csv.getStationName(), csv.getCompanyName(), csv.getDivisionName())
+                i+=1
+                while i > ((d+1)*.10 * len(csv)):
+                    print("", end = '.')
+                    d+=1
 
         return
     def ImportNodes(self, network: Network):
@@ -123,8 +163,14 @@ class EMSCSVImporter(object):
             propertymap = self.CSVPropertyMaps[FileType.Node]
 
         with NodeCSVStream(filename, propertymap, self.Encoding) as csv:
+            i = 0
+            d = 0
             for Node in csv:
                 network.AddNodeByDef(csv.getStationName(), csv.getVoltage(), csv.getNodeName(), csv.getCompanyName())
+                i+=1
+                while i > ((d+1)*.10 * len(csv)):
+                    print("", end = '.')
+                    d+=1
 
         return
     def ImportCircuitBreakers(self, network: Network):
@@ -138,8 +184,14 @@ class EMSCSVImporter(object):
             propertymap = self.CSVPropertyMaps[FileType.CircuitBreaker]
 
         with CircuitBreakerCSVStream(filename, propertymap, self.Encoding) as csv:
+            i = 0
+            d = 0
             for LN in csv:
                 network.AddNodeConnector(csv.getCircuitBreaker())
+                i+=1
+                while i > ((d+1)*.10 * len(csv)):
+                    print("", end = '.')
+                    d+=1
 
         return
     def ImportLines(self, network: Network):
@@ -153,8 +205,14 @@ class EMSCSVImporter(object):
             propertymap = self.CSVPropertyMaps[FileType.Line]
 
         with LineCSVStream(filename, propertymap, self.Encoding) as csv:
+            i = 0
+            d = 0
             for LN in csv:
                 network.AddNodeConnector(csv.getBranch())
+                i+=1
+                while i > ((d+1)*.10 * len(csv)):
+                    print("", end = '.')
+                    d+=1
 
         return
     def ImportTransformers(self, network: Network):
@@ -168,8 +226,14 @@ class EMSCSVImporter(object):
             propertymap = self.CSVPropertyMaps[FileType.Transformer]
 
         with TransformerCSVStream(filename, propertymap, self.Encoding) as csv:
+            i = 0
+            d = 0
             for XF in csv:
                 network.AddNodeConnector(csv.getTransformer())
+                i+=1
+                while i > ((d+1)*.10 * len(csv)):
+                    print("", end = '.')
+                    d+=1
 
         return
     def ImportPhaseShifters(self, network: Network):
@@ -183,8 +247,14 @@ class EMSCSVImporter(object):
             propertymap = self.CSVPropertyMaps[FileType.PhaseShifter]
 
         with PhaseShifterCSVStream(filename, propertymap, self.Encoding) as csv:
+            i = 0
+            d = 0
             for PS in csv:
                 network.AddNodeConnector(csv.getPhaseShifter())
+                i+=1
+                while i > ((d+1)*.10 * len(csv)):
+                    print("", end = '.')
+                    d+=1
 
         return
     def ImportLoads(self, network: Network):
@@ -198,8 +268,14 @@ class EMSCSVImporter(object):
             propertymap = self.CSVPropertyMaps[FileType.Load]
 
         with LoadCSVStream(filename, propertymap, self.Encoding) as csv:
+            i = 0
+            d = 0
             for LD in csv:
                 network.AddDevice(csv.getLoad())
+                i+=1
+                while i > ((d+1)*.10 * len(csv)):
+                    print("", end = '.')
+                    d+=1
 
         return
     def ImportShunts(self, network: Network):
@@ -213,8 +289,14 @@ class EMSCSVImporter(object):
             propertymap = self.CSVPropertyMaps[FileType.Shunt]
 
         with ShuntCSVStream(filename, propertymap, self.Encoding) as csv:
+            i = 0
+            d = 0
             for SH in csv:
                 network.AddDevice(csv.getShunt())
+                i+=1
+                while i > ((d+1)*.10 * len(csv)):
+                    print("", end = '.')
+                    d+=1
 
         return
     def ImportUnits(self, network: Network):
@@ -228,7 +310,13 @@ class EMSCSVImporter(object):
             propertymap = self.CSVPropertyMaps[FileType.Unit]
 
         with UnitCSVStream(filename, propertymap, self.Encoding) as csv:
+            i = 0
+            d = 0
             for UN in csv:
                 network.AddDevice(csv.getUnit())
+                i+=1
+                while i > ((d+1)*.10 * len(csv)):
+                    print("", end = '.')
+                    d+=1
 
         return

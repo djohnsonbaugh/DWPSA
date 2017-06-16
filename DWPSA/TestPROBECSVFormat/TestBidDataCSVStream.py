@@ -2,7 +2,7 @@ import unittest
 import io
 import os
 from PROBECSVFormat.BidDataCSVStream import BidDataCSVStream
-from Network.UnitDailyOffer import UnitDailyOffer
+from Network.MktUnitDailyOffer import MktUnitDailyOffer
 
 class TestBidDataCSVStream(unittest.TestCase):
     def test_DataConversion(self):
@@ -20,9 +20,13 @@ class TestBidDataCSVStream(unittest.TestCase):
                 i+= 1
                 if i == 1:
                     self.assertEqual(c.getUnitScheduleID(), 938501)
-                    self.assertEqual(c.getUnitType(), "Steam")
-                    self.assertEqual(c.getOperatorName(), "PRESQUE ISLE 6 (WEPM GO)")
-                    udo = c.getUnitDailyOffer()
+                    mu = c.getMktUit()
+                    self.assertEqual(mu.UnitType, "Steam")
+                    self.assertEqual(mu.Name, "PRESQUE ISLE 6 (WEPM GO)")
+                    self.assertEqual(mu.Participant, "MIUP")
+                    self.assertEqual(mu.CPNodeID, 2226460307)
+                    self.assertEqual(mu.ID, 9385)
+                    udo = c.getMktUnitDailyOffer()
 
                     self.assertEqual(udo.ActiveSchedule, True)
                     self.assertEqual(udo.ColdStartupCost, 9130.84)
@@ -37,18 +41,22 @@ class TestBidDataCSVStream(unittest.TestCase):
                     self.assertEqual(udo.MinDownTime, 12)
                     self.assertEqual(udo.MinRunTime, 24)
                     self.assertEqual(udo.MaxEnergy, 0)
-                    self.assertEqual(udo.Participant, "MIUP")
-                    self.assertEqual(udo.CPNodeID, 2226460307)
                     self.assertEqual(udo.QuickStartQualified, False)
                     self.assertEqual(udo.RampCapQualified, True)
                     self.assertEqual(udo.UnitID, 9385)
                     self.assertEqual(udo.UseStartupNoLoad, True)
                 elif i == 2:
 
-                    self.assertEqual(c.getOperatorName(), "PRAIRIE STATE 1 JOU IMPA (PRAR STE)")
                     self.assertEqual(c.getUnitScheduleID(), 1047701)
-                    self.assertEqual(c.getUnitType(), "Steam")
-                    udo = c.getUnitDailyOffer()
+
+                    mu = c.getMktUit()
+                    self.assertEqual(mu.UnitType, "Steam")
+                    self.assertEqual(mu.Name, "PRAIRIE STATE 1 JOU IMPA (PRAR STE)")
+                    self.assertEqual(mu.Participant, "AMIL")
+                    self.assertEqual(mu.CPNodeID, 2632449894)
+                    self.assertEqual(mu.ID, 10477)
+
+                    udo = c.getMktUnitDailyOffer()
 
                     self.assertEqual(udo.ActiveSchedule, True)
                     self.assertEqual(udo.ColdStartupCost, 0)
@@ -63,8 +71,6 @@ class TestBidDataCSVStream(unittest.TestCase):
                     self.assertEqual(udo.MinDownTime, 10)
                     self.assertEqual(udo.MinRunTime, 13.5)
                     self.assertEqual(udo.MaxEnergy, 2640)
-                    self.assertEqual(udo.Participant, "AMIL")
-                    self.assertEqual(udo.CPNodeID, 2632449894)
                     self.assertEqual(udo.QuickStartQualified, False)
                     self.assertEqual(udo.RampCapQualified, True)
                     self.assertEqual(udo.UnitID, 10477)

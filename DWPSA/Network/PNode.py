@@ -9,3 +9,6 @@ class PNode(object):
         #Attributes
         self.ID = id
         self.Name = name
+
+    def __str__(self):
+        return "[{0}] {1}".format(self.ID, self.Name)

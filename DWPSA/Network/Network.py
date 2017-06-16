@@ -16,6 +16,9 @@ from Network.Load import Load
 from Network.PNode import PNode
 from Network.EPNode import EPNode
 from Network.CPNode import CPNode
+from Network.MktUnitDailyOffer import MktUnitDailyOffer
+from Network.MktUnitHourlyOffer import MktUnitHourlyOffer
+from Network.MktUnit import MktUnit
 
 class Network(object):
     """ Physical Description of a Power System """
@@ -37,6 +40,7 @@ class Network(object):
         self.Loads = {}
         self.Shunts = {}
         self.Units = {}
+        self.MktUnits = {}
         return
     #Company Methods
     def AddCompany(self, company):
@@ -167,6 +171,46 @@ class Network(object):
             self.Units[d.ID] = d
         return
 
+#MKTUNIT Methods
+
+    def AddMktUnit(self, mu: MktUnit):
+        if mu.ID not in self.MktUnits.keys():
+            self.MktUnits[mu.ID] = mu
+            if mu.CPNodeID not in self.CPNodes.keys():
+                raise Exception("CPNode ID not found in Network", mu.CPNodeID)
+            mu.CPNode = self.CPNodes[mu.CPNodeID]
+            if len(mu.CPNode.PNodes) > 1:
+                mu.IsCombinedCycle = True
+                mu.IsCombinedCycleParent = True
+                mu.CombinedCycleParent = mu
+            else:
+                for p in mu.CPNode.PNodes.values():
+                    if type(p) is not EPNode:
+                        raise Exception("Unexpected PNodes type for Unit CPNode", mu.CPNodeID)               
+                    n = p.Node
+                    if not mu.EAR:
+                        if mu.DRR1:
+                            loadid = (n.StationID, p.LoadUnitName, "LD")
+                            if loadid not in self.Loads.keys():
+                                raise Exception("Mkt Unit device not found in Network", mu.ID)
+                            mu.Load = self.Loads[loadid]
+                        else:                        
+                            unitid = (n.StationID, p.LoadUnitName, "UN")
+                            if unitid not in self.Units.keys():
+                                raise Exception("Mkt Unit device not found in Network", mu.ID)
+                            mu.Unit =  self.Units[unitid]
+        return                
+
+    def AddMktUnitDailyOffer(self, udo: MktUnitDailyOffer):
+        if udo.UnitID not in self.MktUnits.keys():
+            raise Exception("Mkt Unit ID not found in Network", udo.UnitID)
+        self.MktUnits[udo.UnitID].AddDailyOffer(udo)
+        return
+    def AddMktUnitHourlyOffer(self, uho: MktUnitHourlyOffer):
+        if uho.UnitID not in self.MktUnits.keys():
+            raise Exception("Mkt Unit ID not found in Network", uho.UnitID)
+        self.MktUnits[uho.UnitID].AddHourlyOffer(uho)
+        return
     def GetRandomStationID(self, internalcompaniesonly: bool = False) ->str:
         sts = self.GetStationIDs(internalcompaniesonly)
         return sts[random.randint(0,len(sts)-1)]

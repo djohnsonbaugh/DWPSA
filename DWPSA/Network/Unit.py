@@ -1,4 +1,5 @@
 from Network.Device import Device
+
 class Unit(Device):
     """Unit Device"""
 
@@ -28,3 +29,5 @@ class Unit(Device):
             self.ID[1].replace("-","_d_"),
             self.ID[2].replace("-","_d_")
             )
+
+

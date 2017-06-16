@@ -1,7 +1,7 @@
 from CSVFileStream.CSVFileStream import CSVFileStream
 from datetime import datetime
 from Network.BidOfferCurve import BidOfferCurve
-from Network.UnitHourlyOffer import UnitHourlyOffer
+from Network.MktUnitHourlyOffer import MktUnitHourlyOffer
 
 class CostCurvesCSVStream(CSVFileStream):
     """Streams PROBE PNode Properties With Data Conversions"""
@@ -290,8 +290,8 @@ class CostCurvesCSVStream(CSVFileStream):
     def getUseBidSlope(self) -> bool:
         return (self.UseBidSlope == "1")
 
-    def getUnitHourlyOffer(self):
-        return UnitHourlyOffer(self.getUnitID(), self.getUnitScheduleID(), self.getMktHour(), self.getBidOfferCurve(), self.getUseBidSlope(), self.getNoLoadCost(),
+    def getMktUnitHourlyOffer(self):
+        return MktUnitHourlyOffer(self.getUnitID(), self.getUnitScheduleID(), self.getMktHour(), self.getBidOfferCurve(), self.getUseBidSlope(), self.getNoLoadCost(),
                   self.getColdNotificationTime(), self.getInterNotificationTime(), self.getHotNotificationTime(), 
                   self.getColdStartupTime(), self.getInterStartupTime(), self.getHotStartupTime(),
                   self.getEcoMax(), self.getEcoMin(), self.getEmerMax(), self.getEmerMin(), self.getRegMax(), self.getRegMin(), self.getRampRate(),

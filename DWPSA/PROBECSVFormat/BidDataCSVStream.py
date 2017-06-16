@@ -1,12 +1,13 @@
 from CSVFileStream.CSVFileStream import CSVFileStream
-from Network.UnitDailyOffer import UnitDailyOffer
+from Network.MktUnitDailyOffer import MktUnitDailyOffer
+from Network.MktUnit import MktUnit
 
 class BidDataCSVStream(CSVFileStream):
     """Streams PROBE Unit Daily Offer Properties With Data Conversions"""
     DefaultPropertyToFileMap = {
                                 "PNODEID" : "PNodeID",
                                 "UNITID" : "UnitID",
-                                "OPERATORNAME": "OperatorName",
+                                "OPERATORNAME": "UnitName",
                                 "UNITTYPE" : "UnitType",
                                 "UNITSHEDULEID" : "UnitScheduleID",
                                 "MAX_MW" : "MaxEnergy",
@@ -45,7 +46,7 @@ class BidDataCSVStream(CSVFileStream):
         self.MinDownTime = ""
         self.MinRunTime = ""
         self.MaxEnergy = ""
-        self.OperatorName = ""
+        self.UnitName = ""
         self.Participant = ""
         self.PNodeID = ""
         self.QuickStartQualified = ""
@@ -109,8 +110,8 @@ class BidDataCSVStream(CSVFileStream):
             return float(self.MaxEnergy)
         except:
             return 0
-    def getOperatorName(self) -> str:
-        return self.OperatorName
+    def getUnitName(self) -> str:
+        return self.UnitName
     def getParticipant(self) -> str:
         return self.Participant
     def getPNodeID(self) -> int:
@@ -137,9 +138,11 @@ class BidDataCSVStream(CSVFileStream):
     def getUseStartupNoLoad(self) -> bool:
         return (self.UseStartupNoLoad == "1")
 
-    def getUnitDailyOffer(self) -> UnitDailyOffer:
-        return UnitDailyOffer(self.getUnitID(),self.getPNodeID(), self.getParticipant(), 
-                              self.getMaxEnergy(), self.getMinDownTime(), self.getMinRunTime(), self.getMaxRunTime(), 
+    def getMktUit(self) -> MktUnit:       
+        return MktUnit(self.getUnitID(), self.getUnitName(), self.getUnitType(), self.getPNodeID(), self.getParticipant())
+
+    def getMktUnitDailyOffer(self) -> MktUnitDailyOffer:
+        return MktUnitDailyOffer(self.getUnitID(), self.getMaxEnergy(), self.getMinDownTime(), self.getMinRunTime(), self.getMaxRunTime(), 
                               self.getColdStartupCost(), self.getInterStartupCost(), self.getHotStartupCost(), self.getHotToInterTime(), self.getHotToColdTime(),
                               self.getActiveSchedule(), self.getIntermittent(), self.getDARampDownQualified(), self.getDARampUpQualified(), 
                               self.getRampCapQualified(),self.getUseStartupNoLoad(), self.getQuickStartQualified())

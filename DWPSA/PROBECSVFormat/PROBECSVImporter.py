@@ -2,6 +2,8 @@ import os
 from Network.Network import Network
 from PROBECSVFormat.DayAheadLMPsCSVStream import DayAheadLMPsCSVStream
 from PROBECSVFormat.ZonalFactorsCSVStream import ZonalFactorsCSVStream
+from PROBECSVFormat.BidDataCSVStream import BidDataCSVStream
+from PROBECSVFormat.CostCurvesCSVStream import CostCurvesCSVStream
 from PROBECSVFormat.FileType import FileType
 from datetime import date
 
@@ -23,6 +25,8 @@ class PROBECSVImporter(object):
             os.chdir(self.Directory)
             self.ImportDayAheadLMPs(network)
             self.ImportZonalFactors(network)
+            self.ImportBidData(network)
+            self.ImportCostCurves(network)
 
         finally:
             os.chdir(ospath)
@@ -84,3 +88,40 @@ class PROBECSVImporter(object):
 
         return
 
+    def ImportBidData(self, network: Network):
+                
+        filename = BidDataCSVStream.DefaultFileName 
+        if FileType.BidData in self.CSVFileNames:
+            filename = self.CSVFileNames[FileType.BidData]
+        
+        filename = filename.format(self.MktDay)
+        propertymap = BidDataCSVStream.DefaultPropertyToFileMap 
+        if FileType.BidData in self.CSVPropertyMaps:
+            propertymap = self.CSVPropertyMaps[FileType.BidData]
+
+        with BidDataCSVStream(filename, propertymap, self.Encoding) as csv:
+            for udo in csv:
+                mu = csv.getMktUit()
+                network.AddMktUnit(mu)
+                unitoffer = csv.getMktUnitDailyOffer()
+                unitoffer.MktDay = self.MktDay
+                network.AddMktUnitDailyOffer(unitoffer)
+
+        return
+
+    def ImportCostCurves(self, network: Network):
+                
+        filename = CostCurvesCSVStream.DefaultFileName 
+        if FileType.CostCurves in self.CSVFileNames:
+            filename = self.CSVFileNames[FileType.CostCurves]
+        
+        filename = filename.format(self.MktDay)
+        propertymap = CostCurvesCSVStream.DefaultPropertyToFileMap 
+        if FileType.CostCurves in self.CSVPropertyMaps:
+            propertymap = self.CSVPropertyMaps[FileType.CostCurves]
+
+        with CostCurvesCSVStream(filename, propertymap, self.Encoding) as csv:
+            for uho in csv:
+                network.AddMktUnitHourlyOffer(csv.getMktUnitHourlyOffer())
+
+        return

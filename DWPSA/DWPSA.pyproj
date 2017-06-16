@@ -105,6 +105,9 @@
     <Compile Include="Network\Load.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Network\MktUnit.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Network\Network.py">
       <SubType>Code</SubType>
     </Compile>
@@ -136,10 +139,10 @@
     <Compile Include="Network\Unit.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Network\UnitDailyOffer.py">
+    <Compile Include="Network\MktUnitDailyOffer.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Network\UnitHourlyOffer.py">
+    <Compile Include="Network\MktUnitHourlyOffer.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Network\__init__.py">

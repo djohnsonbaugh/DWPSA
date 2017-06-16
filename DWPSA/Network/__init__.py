@@ -8,7 +8,10 @@ __all__ = [
             "Device", 
             "Division",
             "EPNode",
-            "Load", 
+            "Load",
+            "MktUnit" 
+            "MktUnitDailyOffer",
+            "MktUnitHourlyOffer",
             "Network", 
             "Node", 
             "NodeConnector",
@@ -18,7 +21,5 @@ __all__ = [
             "Shunt",
             "Station",
             "Transformer",
-            "Unit",
-            "UnitDailyOffer",
-            "UnitHourlyOffer"
+            "Unit"
           ]

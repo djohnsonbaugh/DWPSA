@@ -14,3 +14,6 @@ class EPNode(PNode):
         self.NodeID = nodeid
         self.LoadUnitName = loadunitname
         self.ReserveZoneID = reszoneid
+
+    def __str__(self):
+        return "[{0}] {1}".format(self.ID, self.Name)

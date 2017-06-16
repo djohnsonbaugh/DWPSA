@@ -1,8 +1,8 @@
-from Network.Unit import Unit
+from Network.Unit import *
 from datetime import datetime
 from Network.BidOfferCurve import BidOfferCurve
 
-class UnitHourlyOffer(object):
+class MktUnitHourlyOffer(object):
     """Hourly Unit Offer Data"""
 
     def __init__(self, unitid: int, unitscheduleid: int, mkthour: datetime, offercurve: BidOfferCurve, usebidslope: bool, noloadcost: float,

@@ -36,6 +36,9 @@ class CSVFileStream(object):
     def __iter__(self):
         return self
 
+    def __len__(self):
+        return len(self.AllLines)
+
     def __enter__(self):
 
         return self

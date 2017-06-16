@@ -2,7 +2,7 @@ import unittest
 import io
 import os
 from PROBECSVFormat.CostCurvesCSVStream import CostCurvesCSVStream
-from Network.UnitHourlyOffer import UnitHourlyOffer
+from Network.MktUnitHourlyOffer import MktUnitHourlyOffer
 from Network.BidOfferCurve import BidOfferCurve
 from Network.BidOfferCurve import BidOfferPoint
 from datetime import datetime
@@ -22,7 +22,7 @@ class TestCostCurvesCSVStream(unittest.TestCase):
             for zonalfactor in c:
                 i+= 1
                 if i == 1:
-                    uho = c.getUnitHourlyOffer()
+                    uho = c.getMktUnitHourlyOffer()
                     self.assertEqual(uho.ColdNotificationTime, 1 )
                     self.assertEqual(uho.ColdStartupTime, 12 )
                     self.assertEqual(uho.CommitStatus, "EC" )
@@ -78,7 +78,7 @@ class TestCostCurvesCSVStream(unittest.TestCase):
                     self.assertEqual(uho.OfferCurve[9].MW, 55) 
                     self.assertEqual(uho.OfferCurve[9].Price, 23.6) 
                 elif i == 2:
-                    uho = c.getUnitHourlyOffer()
+                    uho = c.getMktUnitHourlyOffer()
                     self.assertEqual(uho.ColdNotificationTime, 0 )
                     self.assertEqual(uho.ColdStartupTime, 0 )
                     self.assertEqual(uho.CommitStatus, "OU" )
