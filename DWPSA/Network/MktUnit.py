@@ -20,8 +20,7 @@ class MktUnit(object):
         self.IsCombinedCycle = False
         self.IsCombinedCycleParent = False
         self.CombinedCycleParent = None
-        self.Unit = None
-        self.Load = None
+        self.Device = None
         self.DRR1 = (unittype.find("DRR1") >= 0)
         self.EAR = (unittype.find("EAR") >= 0)
         self.UnitType = unittype
@@ -32,6 +31,8 @@ class MktUnit(object):
     def AddHourlyOffer(self, uho: MktUnitHourlyOffer):
         self.HourlyOffers[uho.MktHour] = uho
 
+    def GetVariableName(self) -> str:
+        return "UN_" + str(self.ID)
 
     def __str__(self):
         return "[{0}] {1}".format(self.ID, self.Name)

@@ -29,3 +29,8 @@ class BidOfferCurve(object):
         self.Curve[self.getCount() + 1] = BidOfferPoint(price, mw)
 
 
+    def ToArray(self) -> [(float,float)]:
+        curvearray = []
+        for i in range(1, self.getCount()+1):
+            curvearray.append((self[i].MW, self[i].Price))
+        return curvearray

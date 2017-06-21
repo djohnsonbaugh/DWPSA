@@ -10,16 +10,19 @@ from dem.devices import Generator
 from dem.devices import FixedLoad
 import io
 import math
+from datetime import date
+from datetime import datetime
+from GeneratorWithBidCurve import GeneratorWithBidCurve
 
-def NetworkToDEMSimple(net : Network, companies = [], stations = [], codefile = "testdem.py", fixedloadscale = 1.0) -> Group:
+def NetworkToDEMSimple(net : Network, companies = [], stations = [], mktday = date.today(), mkthour= datetime.now(), codefile = "testdem.py", fixedloadscale = 1.0) -> Group:
     """Reduces all Stations to 1 Node,
        Lines are the only Node Connector Exported,
        Unmonitored Line limits set to 99999,
        Monitored Line limits set to Winter Emergency and converted to 765kV
        Unit Minimum is 0
        """
-    defalpha = 0
-    defbeta = 0
+    defalpha = 10
+    defbeta = 20
     AllCom = (len(companies) == 0)
     AllSt = (len(stations) == 0)
     #Define all Transmission Lines
@@ -83,22 +86,44 @@ def NetworkToDEMSimple(net : Network, companies = [], stations = [], codefile = 
                                         DTCode.append("{0}.terminals[1]".format(tr.GetVariableName()))
                                 
                 for d in st.Devices.values():
-                    if type(d) is Unit:
-                        g = Generator(power_min=0, power_max=d.MVAMax.real, alpha=defalpha, beta=defbeta, name=str(d))
-                        file.write("{0} = Generator(power_min={1}, power_max={2}, alpha={3}, beta={4}, name=\"{5}\")\n".format(
-                            d.GetVariableName(), 0, d.MVAMax.real, defalpha, defbeta, str(d)))    
+                    bidcurve = False
+                    if d.MktUnit != None:
+                        if d.MktUnit.HourlyOffers[mkthour].OfferCurve.getCount() > 0 and d.MktUnit.HourlyOffers[mkthour].EcoMax > 0: bidcurve = True
+                    if not bidcurve:
+                        if type(d) is Unit:
+                            g = Generator(power_min=0, power_max=d.MVAMax.real, alpha=defalpha, beta=defbeta, name=str(d))
+                            file.write("{0} = Generator(power_min={1}, power_max={2}, alpha={3}, beta={4}, name=\"{5}\")\n".format(
+                                d.GetVariableName(), 0, d.MVAMax.real, defalpha, defbeta, str(d)))    
+                            Devices.append(g)
+                            DeviceCode.append(d.GetVariableName())
+                            DeviceTerminals.append(g.terminals[0])
+                            DTCode.append("{0}.terminals[0]".format(d.GetVariableName()))
+                        if type(d) is Load:
+                            fl = FixedLoad(d.Conforming.real * fixedloadscale, str(d))
+                            file.write("{0} = FixedLoad(power={1}, name=\"{2}\")\n".format(
+                                d.GetVariableName(), d.Conforming.real * fixedloadscale, str(d)))    
+                            Devices.append(fl)
+                            DeviceCode.append(d.GetVariableName())
+                            DeviceTerminals.append(fl.terminals[0])
+                            DTCode.append("{0}.terminals[0]".format(d.GetVariableName()))
+                    else:
+                        mu = d.MktUnit
+                        g = GeneratorWithBidCurve(no_load_cost=mu.HourlyOffers[mkthour].NoLoadCost, 
+                                                  power_min=0,#mu.HourlyOffers[mkthour].EcoMin,
+                                                  power_max=mu.HourlyOffers[mkthour].EcoMax,
+                                                  bid_curve=mu.HourlyOffers[mkthour].OfferCurve.ToArray(), 
+                                                  name= str(mu))
+                        file.write("{0} = GeneratorWithBidCurve(no_load_cost={1}, power_min={2}, power_max={3}, bid_curve={4}, name=\"{5}\")\n".format(
+                            mu.GetVariableName(), 
+                            mu.HourlyOffers[mkthour].NoLoadCost,
+                            0,#mu.HourlyOffers[mkthour].EcoMin,
+                            mu.HourlyOffers[mkthour].EcoMax, 
+                            str(mu.HourlyOffers[mkthour].OfferCurve.ToArray()), 
+                            str(mu)))    
                         Devices.append(g)
-                        DeviceCode.append(d.GetVariableName())
+                        DeviceCode.append(mu.GetVariableName())
                         DeviceTerminals.append(g.terminals[0])
-                        DTCode.append("{0}.terminals[0]".format(d.GetVariableName()))
-                    if type(d) is Load:
-                        fl = FixedLoad(d.Conforming.real * fixedloadscale, str(d))
-                        file.write("{0} = FixedLoad(power={1}, name=\"{2}\")\n".format(
-                            d.GetVariableName(), d.Conforming.real * fixedloadscale, str(d)))    
-                        Devices.append(fl)
-                        DeviceCode.append(d.GetVariableName())
-                        DeviceTerminals.append(fl.terminals[0])
-                        DTCode.append("{0}.terminals[0]".format(d.GetVariableName()))
+                        DTCode.append("{0}.terminals[0]".format(mu.GetVariableName()))                        
                 if brcount > 0:
                     file.write("{0} = Net([".format(st.GettVariableName("Nt")))
                     for i in range (0 , len(DTCode)):

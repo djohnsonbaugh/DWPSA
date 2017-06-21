@@ -14,6 +14,10 @@ class EPNode(PNode):
         self.NodeID = nodeid
         self.LoadUnitName = loadunitname
         self.ReserveZoneID = reszoneid
-
+    def __repr__(self):
+        return "[" + self.ID + "] " + self.Name
     def __str__(self):
-        return "[{0}] {1}".format(self.ID, self.Name)
+        return "[" + self.ID + "] " + self.Name
+
+    def Copy(self):
+        return EPNode(self.ID, self.Name, self.EPNodeID, self.NodeID, self.LoadUnitName, self.ReserveZoneID)

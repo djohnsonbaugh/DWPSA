@@ -10,5 +10,9 @@ class PNode(object):
         self.ID = id
         self.Name = name
 
+
+    def __repr__(self):
+        return "[" + self.ID + "] " + self.Name
+
     def __str__(self):
-        return "[{0}] {1}".format(self.ID, self.Name)
+        return "[" + self.ID + "] " + self.Name

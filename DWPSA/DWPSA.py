@@ -4,24 +4,23 @@ from TestEMSCSVFormat import *
 from TestDEMNetworkExport import *
 from TestCSVFileStream import *
 from TestPROBECSVFormat import *
-from Network.Network import Network
-from EMSCSVFormat.EMSCSVImporter import EMSCSVImporter
-from PROBECSVFormat.PROBECSVImporter import PROBECSVImporter
-from dem import Group
-from DEMNetworkExport.SimpleExport import NetworkToDEMSimple
-import io
-from datetime import date
+#from Network.Network import Network
+#from EMSCSVFormat.EMSCSVImporter import EMSCSVImporter
+#from PROBECSVFormat.PROBECSVImporter import PROBECSVImporter
+#from dem import Group
+#from DEMNetworkExport.SimpleExport import NetworkToDEMSimple
+#import io
+#from datetime import date
+#from datetime import datetime
 
-n = Network()
-imp = EMSCSVImporter("C:\\PROBE\\2016Dec")
-#imp = EMSCSVImporter("C:\EMS2016Dec")
-imp.Import(n)
-mktday = date(2016, 12,22)
-dimp = PROBECSVImporter(mktday, "C:\\PROBE\\20161222")
-dimp.Import(n)
-#sn = n.CreateSubNetwork(n.ExpandSelectedCompanies(['CIN'],1,True))
-#gp = Group([],[])
-#gp = NetworkToDEMSimple(sn, [], [], "C:\\repo\\dwdem\\main.py", 1)
+#n = Network()
+#imp = EMSCSVImporter("C:\\PROBE\\2016Dec")
+#imp.Import(n)
+#mktday = date(2016, 12,22)
+#dimp = PROBECSVImporter(mktday, "C:\\PROBE\\20161222")
+#dimp.Import(n)
+#sn = n.CreateSubNetwork([],n.ExapandSelectedStations([n.GetRandomStationID(True)], 12, 500, True))
+#gp = NetworkToDEMSimple(sn, [], [], date(2016,12,22), datetime(2016,12,22,14), "C:\\repo\\dwdem\\main.py", 1)
 #gp.init_problem()
 #gp.problem.solve()
 #with open("testdemresult.txt", 'w') as file:

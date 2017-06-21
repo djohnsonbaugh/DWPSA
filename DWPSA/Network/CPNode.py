@@ -33,6 +33,10 @@ class CPNode(PNode):
             NormalizedPNodeFactors[pid] = self.PNodeFactors[pid] / self.FactorSum
 
         return NormalizedPNodeFactors
-
+    def __repr__(self):
+        return "[" + self.ID + "] " + self.Name
     def __str__(self):
         return "[{0}] {1}".format(self.ID, self.Name)
+
+    def Copy(self):
+        return CPNode(self.ID, self.Name, self.Settled)

@@ -11,6 +11,7 @@ class Device(object):
         self.OwnerCompanyID = owner
         self.StationID = stationid
         self.Voltage = voltage
+        self.MktUnit = None
         return
 
     def __repr__(self):

@@ -1,4 +1,5 @@
 from Network.Node import *
+from Network.MktUnit import MktUnit
 
 class Station(object):
     """Physical Location containing a Node or Nodes"""
@@ -13,6 +14,7 @@ class Station(object):
         self.Nodes = {}
         self.NodeConnectors = {}
         self.Devices = {}
+        self.MktUnits = {}
 
     #Methods
     def AddNode(self, node):
@@ -25,6 +27,9 @@ class Station(object):
     
     def AddDevice(self, d: Device):
         self.Devices[d.ID] = d
+
+    def AddMktUnit(self, mu: MktUnit):
+        self.MktUnits[mu.ID] = mu
 
     def GettVariableName(self, prefix: str):
         return "{0}_{1}".format(

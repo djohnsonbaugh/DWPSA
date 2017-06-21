@@ -188,17 +188,20 @@ class Network(object):
                     if type(p) is not EPNode:
                         raise Exception("Unexpected PNodes type for Unit CPNode", mu.CPNodeID)               
                     n = p.Node
+                    self.Stations[n.StationID].AddMktUnit(mu)
                     if not mu.EAR:
                         if mu.DRR1:
                             loadid = (n.StationID, p.LoadUnitName, "LD")
                             if loadid not in self.Loads.keys():
                                 raise Exception("Mkt Unit device not found in Network", mu.ID)
-                            mu.Load = self.Loads[loadid]
+                            mu.Device = self.Loads[loadid]
+                            self.Loads[loadid].MktUnit = mu
                         else:                        
                             unitid = (n.StationID, p.LoadUnitName, "UN")
                             if unitid not in self.Units.keys():
                                 raise Exception("Mkt Unit device not found in Network", mu.ID)
-                            mu.Unit =  self.Units[unitid]
+                            mu.Device =  self.Units[unitid]
+                            self.Units[unitid].MktUnit = mu
         return                
 
     def AddMktUnitDailyOffer(self, udo: MktUnitDailyOffer):
@@ -252,7 +255,7 @@ class Network(object):
             max += g.MVAMax.real
         return (min, max)
     
-    def ExapandSelectedStations(self, selectedstations = [], expansiondegree: int = 1, internalcompaniesonly: bool = False) -> []:
+    def ExapandSelectedStations(self, selectedstations = [], expansiondegree: int = 1, maxstations=30000, internalcompaniesonly: bool = False) -> []:
         sts = []
         
         for st in selectedstations:
@@ -270,7 +273,9 @@ class Network(object):
             for st in nexttiersts:
                 if st in self.Stations:
                     if self.Stations[st].Company.EnforceLosses or not internalcompaniesonly:
+                        if len(sts) >= maxstations: break
                         sts.append(st)
+            if len(sts) >= maxstations: break
         return sts
 
     def ExpandSelectedCompanies(self, selectedcompanies = [], expansiondegree: int = 1, internalcompaniesonly: bool = False) -> []:
@@ -359,13 +364,54 @@ class Network(object):
             if d.NodeID in n.Nodes:
                 #stupid code to prevent infinite recursion on deep copy
                 dNode = d.Node
+                mktunit = d.MktUnit
                 rNode = None
                 if hasattr(d, 'RegulationNode'):
                     rNode = d.RegulationNode
                     d.RegulationNode = None
-                d.Node = None
+                d.Node = d.MktUnit = None
                 n.AddDevice(copy.deepcopy(d))
                 d.Node = dNode
+                d.MktUnit = mktunit
                 if hasattr(d, 'RegulationNode'):
                     d.RegulationNode = rNode
+
+        #EPNodes
+        for epn in self.EPNodes.values():
+            if epn.NodeID in n.Nodes:
+                n.AddPNode(epn.Copy())
+
+        #CPNodes
+        for cpn in self.CPNodes.values():
+            if self.HasIncludedEPNodes(cpn, n):
+                n.AddPNode(cpn.Copy())
+
+        #PNodeFactors
+        for cpn in n.CPNodes.values():
+            for pf in self.CPNodes[cpn.ID].PNodes.keys():
+                if pf in n.PNodes:                
+                    n.AddPNodeFactor(cpn.ID, pf, self.CPNodes[cpn.ID].PNodeFactors[pf])                                    
+
+        #MktUnit
+        for mu in self.MktUnits.values():
+            if mu.Device != None:
+                if mu.Device.ID in n.Devices:
+                    #stupid code to prevent infinite recursion on deep copy
+                    device = mu.Device
+                    cpnode = mu.CPNode
+                    ccp = mu.CombinedCycleParent
+                    mu.Device = mu.CPNode = mu.CombinedCycleParent = None
+                    n.AddMktUnit(copy.deepcopy(mu))
+                    mu.Device = device
+                    mu.CPNode = cpnode
+                    mu.CombinedCycleParent = ccp
+
         return n
+
+    def HasIncludedEPNodes(self, cpn: CPNode, network) -> bool:
+        for  pf in cpn.PNodes.values():
+            if pf.ID in network.EPNodes: return True
+            elif type(pf) is CPNode:
+                if len(pf.PNodes) > 0:
+                    if self.HasIncludedEPNodes(pf, network): return True
+        return False   

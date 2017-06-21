@@ -36,6 +36,9 @@
     <Compile Include="EMSCSVFormat\DivisionCSVStream.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="GeneratorWithBidCurve.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Network\BidOfferCurve.py">
       <SubType>Code</SubType>
     </Compile>
