@@ -10,7 +10,7 @@ class GeneratorWithBidCurve(Generator):
     where a_i is the price for bid curve segment i and b_i is the appropriate
     offset, depending on previous segments.
     """
-    def __init__(self, no_load_cost=0, bid_curve=[],             
+    def __init__(self, no_load_cost=0, bid_curve=[], use_bid_slope=False,             
             power_min=None,
             power_max=None,
             ramp_min=None,
@@ -25,31 +25,23 @@ class GeneratorWithBidCurve(Generator):
             name=name)
         self.no_load_cost = no_load_cost
         self.bid_curve = bid_curve
+        self.use_bid_slope = use_bid_slope
+        self.power =0
 
     @property
     def cost(self):
+        noload = cvx.Constant(self.no_load_cost) 
+        if len(self.bid_curve) == 0: return noload
         p = -self.terminals[0].power_var
-
-        segments = [cvx.Constant(self.no_load_cost)]
-        prev_power = 0
-        prev_price = 0
         offset = self.no_load_cost
-        for power, price in self.bid_curve[1:]:
-            if self.power_min != None:
-                if power > self.power_min and prev_power == 0:
-                    offset += (self.power_min)*price
-                    segments.append(price*(p - self.power_min) + offset)
-                    prev_power = self.power_min
-                    prev_price = price
-            offset += (power - prev_power)*prev_price
-            segments.append(price*(p - power) + offset)
-            prev_power = power
-            prev_price = price
-        if self.power_max != None:
-            if prev_power < self.power_max:
-                offset += (self.power_max - prev_power)*prev_price
-                segments.append(prev_price*(p - self.power_max) + offset)
-
+        segments = [offset + p*self.bid_curve[0][1]]
+        if len(self.bid_curve) == 1:
+            return segments[0]
+        offset += self.bid_curve[0][1] * self.bid_curve[0][0]
+        for i in range(len(self.bid_curve)-1):
+            b = self.bid_curve[i+1][1]
+            segments.append(b*(p - self.bid_curve[i][0]) + offset)
+            offset += b*(self.bid_curve[i+1][0] - self.bid_curve[i][0])
         return cvx.max_elemwise(*segments)
 #gen = GeneratorWithBidCurve(
 #    no_load_cost=290.42,

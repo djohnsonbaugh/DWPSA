@@ -31,9 +31,8 @@ class Station(object):
     def AddMktUnit(self, mu: MktUnit):
         self.MktUnits[mu.ID] = mu
 
-    def GettVariableName(self, prefix: str):
-        return "{0}_{1}".format(
-            prefix,
+    def GetVariableName(self):
+        return "{0}".format(
             self.ID.replace("-","_d_")
             )
 

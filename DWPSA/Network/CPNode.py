@@ -1,4 +1,5 @@
 from Network.PNode import PNode
+
 class CPNode(PNode):
     """Commercial Pricing Node in a Power System is defined as an aggregate of other PNodes"""
 
@@ -12,7 +13,8 @@ class CPNode(PNode):
         self.Settled = settled
         self.PNodeFactors = {}
         self.PNodes = {}
-
+        self.MktUnits = {}
+        self.MktBids = {}
 
     #Methods
     def AddPnodeFactor(self, pnode: PNode, factor: float):
@@ -24,7 +26,12 @@ class CPNode(PNode):
         self.PNodes[pnode.ID] = pnode
         self.FactorSum += factor
 
+    def AddMktUnit(self, mu):
+        self.MktUnits[mu.ID] = mu
  
+    def AddMktBid(self, mb):
+        self.MktBids[mb.ID] = mb
+
     def GetNormalizedPNodeFactors(self):
         NormalizedPNodeFactors = {}
         if self.FactorSum == 0:
@@ -37,6 +44,11 @@ class CPNode(PNode):
         return "[" + self.ID + "] " + self.Name
     def __str__(self):
         return "[{0}] {1}".format(self.ID, self.Name)
+
+    def GetVariableName(self):
+        return "CPN_{0}".format(
+            self.Name.replace("-","_d_").replace(".","__")
+            )
 
     def Copy(self):
         return CPNode(self.ID, self.Name, self.Settled)

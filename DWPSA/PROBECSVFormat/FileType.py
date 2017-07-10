@@ -5,4 +5,5 @@ class FileType(Enum):
     ZonalFactors = 2
     BidData = 3
     CostCurves = 4
+    DemandBids = 5
 

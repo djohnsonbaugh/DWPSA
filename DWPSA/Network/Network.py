@@ -19,6 +19,8 @@ from Network.CPNode import CPNode
 from Network.MktUnitDailyOffer import MktUnitDailyOffer
 from Network.MktUnitHourlyOffer import MktUnitHourlyOffer
 from Network.MktUnit import MktUnit
+from Network.MktBid import MktBid
+
 
 class Network(object):
     """ Physical Description of a Power System """
@@ -41,6 +43,7 @@ class Network(object):
         self.Shunts = {}
         self.Units = {}
         self.MktUnits = {}
+        self.MktBids = {}
         return
     #Company Methods
     def AddCompany(self, company):
@@ -171,6 +174,17 @@ class Network(object):
             self.Units[d.ID] = d
         return
 
+#MKTBID Methods
+    def AddMktBid(self, mb: MktBid):
+        if mb.ID not in self.MktBids:
+            self.MktBids[mb.ID] = mb
+            if mb.CPNodeID not in self.CPNodes.keys():
+                raise Exception("CPNode ID not found in Network", mb.CPNodeID)
+            mb.CPNode = self.CPNodes[mb.CPNodeID]
+            mb.CPNode.AddMktBid(mb)
+        else: self.MktBids[mb.ID].Merge(mb)
+        return      
+
 #MKTUNIT Methods
 
     def AddMktUnit(self, mu: MktUnit):
@@ -179,6 +193,7 @@ class Network(object):
             if mu.CPNodeID not in self.CPNodes.keys():
                 raise Exception("CPNode ID not found in Network", mu.CPNodeID)
             mu.CPNode = self.CPNodes[mu.CPNodeID]
+            mu.CPNode.AddMktUnit(mu)
             if len(mu.CPNode.PNodes) > 1:
                 mu.IsCombinedCycle = True
                 mu.IsCombinedCycleParent = True
@@ -406,7 +421,16 @@ class Network(object):
                     mu.CPNode = cpnode
                     mu.CombinedCycleParent = ccp
 
+        #MktBid
+        for mb in self.MktBids.values():
+            if mb.CPNode.ID in n.CPNodes:
+                cpnode = mb.CPNode
+                mb.CPNode = None
+                n.AddMktBid(copy.deepcopy(mb))
+                mb.CPNode = cpnode
+
         return n
+
 
     def HasIncludedEPNodes(self, cpn: CPNode, network) -> bool:
         for  pf in cpn.PNodes.values():

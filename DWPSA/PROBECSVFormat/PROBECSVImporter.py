@@ -4,6 +4,7 @@ from PROBECSVFormat.DayAheadLMPsCSVStream import DayAheadLMPsCSVStream
 from PROBECSVFormat.ZonalFactorsCSVStream import ZonalFactorsCSVStream
 from PROBECSVFormat.BidDataCSVStream import BidDataCSVStream
 from PROBECSVFormat.CostCurvesCSVStream import CostCurvesCSVStream
+from PROBECSVFormat.DemandBidsCSVStream import DemandBidsCSVStream
 from PROBECSVFormat.FileType import FileType
 from datetime import date
 
@@ -27,6 +28,7 @@ class PROBECSVImporter(object):
             self.ImportZonalFactors(network)
             self.ImportBidData(network)
             self.ImportCostCurves(network)
+            self.ImportDemandBids(network)
 
         finally:
             os.chdir(ospath)
@@ -123,5 +125,22 @@ class PROBECSVImporter(object):
         with CostCurvesCSVStream(filename, propertymap, self.Encoding) as csv:
             for uho in csv:
                 network.AddMktUnitHourlyOffer(csv.getMktUnitHourlyOffer())
+
+        return
+
+    def ImportDemandBids(self, network: Network):
+                
+        filename = DemandBidsCSVStream.DefaultFileName 
+        if FileType.DemandBids in self.CSVFileNames:
+            filename = self.CSVFileNames[FileType.DemandBids]
+        
+        filename = filename.format(self.MktDay)
+        propertymap = DemandBidsCSVStream.DefaultPropertyToFileMap 
+        if FileType.DemandBids in self.CSVPropertyMaps:
+            propertymap = self.CSVPropertyMaps[FileType.DemandBids]
+
+        with DemandBidsCSVStream(filename, propertymap, self.Encoding) as csv:
+            for mb in csv:
+                network.AddMktBid(csv.getMktBid())
 
         return

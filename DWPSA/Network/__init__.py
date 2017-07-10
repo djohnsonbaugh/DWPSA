@@ -9,6 +9,7 @@ __all__ = [
             "Division",
             "EPNode",
             "Load",
+            "MktBid",
             "MktUnit" 
             "MktUnitDailyOffer",
             "MktUnitHourlyOffer",

@@ -24,6 +24,13 @@
     <Compile Include="CSVFileStream\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="demdwext\LoadWithBidCurve.py" />
+    <Compile Include="demdwext\VirtualNet.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="demdwext\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DEMNetworkExport\__init__.py">
       <SubType>Code</SubType>
     </Compile>
@@ -36,7 +43,7 @@
     <Compile Include="EMSCSVFormat\DivisionCSVStream.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="GeneratorWithBidCurve.py">
+    <Compile Include="demdwext\GeneratorWithBidCurve.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Network\BidOfferCurve.py">
@@ -108,6 +115,9 @@
     <Compile Include="Network\Load.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Network\MktBid.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Network\MktUnit.py">
       <SubType>Code</SubType>
     </Compile>
@@ -155,6 +165,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PROBECSVFormat\DayAheadLMPsCSVStream.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PROBECSVFormat\DemandBidsCSVStream.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PROBECSVFormat\FileType.py">
@@ -289,6 +302,9 @@
     <Compile Include="TestPROBECSVFormat\TestDayAheadLMPsCSVStream.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TestPROBECSVFormat\TestDemandBidsCSVStream.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="TestPROBECSVFormat\TestZonalFactorsCSVStream.py">
       <SubType>Code</SubType>
     </Compile>
@@ -301,6 +317,7 @@
     <Folder Include="EMSCSVFormat\" />
     <Folder Include="DEMNetworkExport\" />
     <Folder Include="CSVFileStream\" />
+    <Folder Include="demdwext\" />
     <Folder Include="TestPROBECSVFormat\" />
     <Folder Include="TestCSVFileStream\" />
     <Folder Include="PROBECSVFormat\" />
